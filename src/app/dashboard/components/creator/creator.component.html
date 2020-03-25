@@ -1,0 +1,1384 @@
+
+  <div id="content" class="container-fluid" #creatorContainer>
+  <div class="row" #bannerContainer>
+    <div *ngIf="((screenInnerWidth <= 768) && !(currentTopHint === ''))" class="col-sm-12">
+        <app-top-tooltip *ngIf="!(currentTopHint === '')" [topHint]="currentTopHint"></app-top-tooltip>
+    </div>
+    <div class="col-sm-12">
+        <!-- <app-banner-container
+        [currentBanner]="'https://www.freewebheaders.com/wordpress/wp-content/gallery/cats/kenyan-cat-web-header-image.jpg'"
+        [currentBannerUrl]="'https://www.trojmiasto.pl/'">
+      </app-banner-container> -->
+    </div>
+  </div>
+  <!-- <form [formGroup]="cvForm" (ngSubmit)="generatePDF()" (keydown.enter)="$event.preventDefault()"> -->
+  <form [formGroup]="cvForm">
+  <div class="row">
+    <div *ngIf="(screenInnerWidth > 768)" class="col-md-3">
+      <app-side-tooltip *ngIf="!(currentHint === '')" [hintPosition]="currentHintPosition" [hint]="currentHint"></app-side-tooltip>      
+    </div>
+    <div [ngClass]="{'col-md-9': (screenInnerWidth > 768), 'col-md-12': (screenInnerWidth <= 768) }">
+      <div class="card mt-2 mb-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-12" id="warunkiZatrudnienia">
+              <h5 class="section-header conditions-header"><span class="cv-icon"><i class="fas fa-pen mr-3" #headerIcon1></i></span><strong>WARUNKI ZATRUDNIENIA</strong></h5>
+              <h5 style="opacity: 0;"><i class="fas fa-calendar-alt calendar-icon-default" style="font-size: 1rem;" #calendarIcon></i></h5>
+            </div>
+          </div>
+          <div class="form-row section-row">
+            <div class="form-group col-md-6">
+                <label for="position" class="cv-form-header first-section-label"
+              (mouseover)="setHints(hoverMessages.pozadaneStanowisko)"
+              (mouseout)="clearHints()">Stanowisko:</label>
+                <input type="text"
+                        id="position"
+                        class="form-control"
+                        formControlName="position"
+                        placeholder="Wpisz, na jakie stanowisko aplikujesz"
+                        maxlength="40"
+                        autocomplete="off"
+                        (mouseover)="setHints(hoverMessages.pozadaneStanowisko)"
+                        (mouseout)="clearHints()"
+                        (focus)="setHints(hoverMessages.pozadaneStanowisko)"
+                        (blur)="clearHints()">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="location" class="cv-form-header"
+                   (mouseover)="setHints(hoverMessages.akceptowalnaLokalizacja)"
+                   (mouseout)="clearHints()">Lokalizacja:</label>
+                <input formControlName="location"
+                      type="text"
+                      id="location"
+                      class="form-control"
+                      maxlength="40"
+                      placeholder="Wpisz nazwy miast lub dzielnic (max. 65 znaków)"
+                      autocomplete="off"
+                      (mouseover)="setHints(hoverMessages.akceptowalnaLokalizacja)"
+                      (mouseout)="clearHints()"
+                      (focus)="setHints(hoverMessages.akceptowalnaLokalizacja)"
+                      (blur)="clearHints()">
+            </div>
+          </div>
+          <div class="form-row section-row">
+            <div class="form-group col-md-6">
+              <label for="availability" class="col-form-label cv-form-header" style="padding-bottom: 12px"
+                   (mouseover)="setHints(hoverMessages.dostepnosc)"
+                   (mouseout)="clearHints()">Dostępność:</label>
+              <mat-select id="availability"
+                      formControlName="availability"
+                      autocomplete="off"
+                      (selectionChange)="getSelectedAvailabilityIndex($event)"
+                      (mouseover)="setHints(hoverMessages.dostepnosc)"
+                      (mouseout)="clearHints()"
+                      (focus)="setHints(hoverMessages.dostepnosc)"
+                      (blur)="clearHints()">
+                <mat-option *ngFor="let av of availability" [value]="av">{{av}}</mat-option>
+              </mat-select>
+              <div *ngIf="selectAvailability" class="form-group row mt-2">
+                <div class="col-xl-12">
+                    <input type="text"
+                           class="form-control"
+                           formControlName="availabilityDate"
+                           placeholder="Kliknij, aby wybrać datę"
+                           [bsConfig]="DatePickerConfig"
+                           bsDatepicker
+                           autocomplete="off"
+                           (mouseover)="setHints(hoverMessages.dostepnosc)"
+                           (mouseout)="clearHints()"
+                           (focus)="setHints(hoverMessages.dostepnosc)"
+                           (blur)="clearHints()">
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="disposition"
+                      class="cv-form-header"
+                      style="font-size: 0.95em;"
+                      (mouseover)="setHints(hoverMessages.dyspozycyjnosc)"
+                      (mouseout)="clearHints()">Dyspozycyjność:</label>
+                <input type="text" id="disposition"
+                      class="form-control"
+                      maxlength="40"
+                      formControlName="disposition"
+                      placeholder="Wpisz, w jakich porach dnia jesteś dyspozycyjny/a"
+                      autocomplete="off"
+                      (mouseover)="setHints(hoverMessages.dyspozycyjnosc)"
+                      (mouseout)="clearHints()"
+                      (focus)="setHints(hoverMessages.dyspozycyjnosc)"
+                      (blur)="clearHints()">
+              </div>
+            </div>
+            <div class="form-row section-row mb-4">
+              <div class="form-group col-md-6">
+                  <label for="employment"
+                      class="cv-form-header"
+                      style="padding-top: 5px; padding-bottom: 6px"
+                      (mouseover)="setHints(hoverMessages.formaZatrudnienia)"
+                      (mouseout)="clearHints()">Forma zatrudnienia (opcjonalnie):</label>
+                  <mat-select id="employment" formControlName="employment" multiple
+                          (mouseover)="setHints(hoverMessages.formaZatrudnienia)"
+                          (mouseout)="clearHints()"
+                          (focus)="setHints(hoverMessages.formaZatrudnienia)"
+                          (blur)="clearHints()">
+                    <mat-option *ngFor="let emp of employment" [value]="emp">{{emp}}</mat-option>
+                  </mat-select>
+            </div>
+            <div class="form-group col-md-6">
+             <label for="salary"
+                   class="cv-form-header"
+                   style="padding-top: 5px;"
+                  (mouseover)="setHints(hoverMessages.oczekiwaniaFinansowe)"
+                  (mouseout)="clearHints()">Oczekiwania finansowe (opcjonalnie):</label>
+              <input type="text"
+                    id="salary"
+                    class="form-control"
+                    formControlName="salary"
+                    placeholder="Podaj minimum lub przedział oczekiwanego wynagrodzenia"
+                    autocomplete="off"
+                    maxlength="40"
+                    (mouseover)="setHints(hoverMessages.oczekiwaniaFinansowe)"
+                    (mouseout)="clearHints()"
+                    (focus)="setHints(hoverMessages.oczekiwaniaFinansowe)"
+                    (blur)="clearHints()">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-xl-12">
+                <h5 class="section-header mt-3 personalData-header"><span class="cv-icon"><i class="fas fa-user mr-3" #headerIcon2></i></span><strong>DANE OSOBOWE</strong></h5>
+              </div>
+            </div>
+          <div class="row mb-2">
+            <div class="col-lg-5 col-sm-12" #photoContainer>
+                <div *ngIf="!uploadedImage">
+                    <div class="photo-template">
+                    </div>
+                  </div>
+                  <div *ngIf="uploadedImage" class="user-photo">
+                      <img src="{{uploadedImage}}" alt="">
+                  </div>
+            </div>
+            <div class="col-lg-7 col-sm-12">
+                <div class="form-group mb-4 mt-2">
+                  <input type="text"
+                         id="name"
+                         class="form-control"
+                         formControlName="name"
+                         placeholder="IMIĘ"
+                         style="text-transform: uppercase; font-size: 3em;"
+                         autocomplete="off"
+                         (mouseover)="setHints(hoverMessages.imie)"
+                         (mouseout)="clearHints()"
+                         (focus)="setHints(hoverMessages.imie)"
+                         (blur)="clearHints()">
+                </div>
+                <div class="form-group mb-4">
+                    <input type="text"
+                           id="surname"
+                           class="form-control"
+                           formControlName="surname"
+                           placeholder="NAZWISKO"
+                           style="text-transform: uppercase; font-size: 3em;"
+                           autocomplete="off"
+                           (mouseover)="setHints(hoverMessages.nazwisko)"
+                           (mouseout)="clearHints()"
+                           (focus)="setHints(hoverMessages.nazwisko)"
+                           (blur)="clearHints()">
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-5">
+                        <input type="email"
+                               class="form-control"
+                               id="email"
+                               formControlName="email"
+                               placeholder="Adres e-mail"
+                               autocomplete="off"
+                               (mouseover)="setHints(hoverMessages.adresEmail)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.adresEmail)"
+                               (blur)="clearHints()">
+                               <span *ngIf="!cvForm.get('email').valid && cvForm.get('email').touched" class="help-block">Proszę wpisać poprawny adres e-mail</span>
+                      </div>
+                      <div class="form-group offset-md-2 col-md-5">
+                        <input type="text"
+                               class="form-control"
+                               id="phone"
+                               placeholder="Numer telefonu"
+                               formControlName="phone"
+                               autocomplete="off"
+                               (mouseover)="setHints(hoverMessages.numerTelefonu)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.numerTelefonu)"
+                               (blur)="clearHints()">
+                      </div>
+                    </div>
+                    <div *ngIf="!uploadedImage" class="upload-button file btn btn-info"
+                               (mouseover)="setHints(hoverMessages.zdjecie)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.zdjecie)"
+                               (blur)="clearHints()">
+                        Dodaj zdjęcie
+                        <input type="file" name="file" accept="image/*" (change)="uploadImage($event)">
+                    </div>
+                    <div *ngIf="uploadedImage" class="upload-button file btn btn-info"
+                               (mouseover)="setHints(hoverMessages.zmienZdjecie)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.zmienZdjecie)"
+                               (blur)="clearHints()">
+                        Zmień zdjęcie
+                        <input type="file" name="file" accept="image/*" (change)="uploadImage($event)">
+                    </div>
+              </div>
+          </div>
+              <hr>
+              <div id="experience">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <h5 class="section-header mb-4 mt-3 experience-header"><span class="cv-icon"><i class="fas fa-briefcase mr-3" #headerIcon3></i></span><strong>DOŚWIADCZENIE ZAWODOWE</strong></h5>
+                  </div>
+                </div>
+                <hr style="opacity: 0.5;">
+                <div formArrayName="experience" *ngFor="let exp of experienceArray.controls; let i = index">
+                  <div [formGroupName]="i">
+                    <div *ngIf="!this.experienceCompleted[i]">
+                    <div class="form-group row section-row">
+                      <label *ngIf="(screenInnerWidth > 768)"
+                             [attr.for]="'workPeriodStart'+i" class="col-md-1 col-form-label"
+                             (mouseover)="setHints(hoverMessages.okresZatrudnienia)"
+                             (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                      <div class="col-xl-2 mb-2">
+                          <input type="text"
+                                 class="form-control experience-date-input"
+                                 [id]="'workPeriodStart'+i"
+                                 placeholder="Od..."
+                                 formControlName="workPeriodStart"
+                                 [bsConfig]="DatePickerWithoutDays"
+                                 bsDatepicker
+                                 (mouseover)="setHints(hoverMessages.okresZatrudnieniaOd)"
+                                 (mouseout)="clearHints()"
+                                 (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
+                                 (blur)="clearHints()"
+                                 (ngModelChange)="checkWorkPeriodDate(i)"
+                                 autocomplete="off">
+                      </div>
+                        <div class="col-xl-2">
+                          <input *ngIf="!(getExperienceControls(i).get('experienceTillNow').value)" type="text"
+                              class="form-control experience-date-input"
+                              [id]="'workPeriodEnd'+i"
+                              placeholder="Do..."
+                              formControlName="workPeriodEnd"
+                              [bsConfig]="DatePickerWithoutDays"
+                              bsDatepicker
+                              (mouseover)="setHints(hoverMessages.okresZatrudnieniaDo)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
+                              (blur)="clearHints()"
+                              (ngModelChange)="checkWorkPeriodDate(i)"
+                              autocomplete="off">
+                          <input *ngIf="getExperienceControls(i).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i" formControlName="workPeriodNow" readonly>
+                        </div>
+                        <div class="col-xl-1">
+                          <div class="form-check now-checkbox">
+                            <input type="checkbox"
+                                   [id]="'experienceTillNowCbox'+i"
+                                   class="form-check-input"
+                                   formControlName="experienceTillNow"
+                                   (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                   (mouseout)="clearHints()"
+                                   (focus)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                   (blur)="clearHints()"
+                                   (ngModelChange)="setExperienceTillNow(i); checkWorkPeriodDate(i)">
+                            <label class="form-check-label now-label"
+                                   [attr.for]="'experienceTillNowCbox'+i"
+                                   (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                   (mouseout)="clearHints()">Obecnie</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="this.workPeriodEndDateIssue[i]" class="row">
+                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodEndDateIssueMessage[i]}}</strong></p>
+                      </div>
+                      <div *ngIf="this.workPeriodCurrentDateIssue[i]" class="row">
+                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodCurrentDateIssueMessage[i]}}</strong></p>
+                      </div>
+                    <div class="form-group row section-row">
+                        <!-- <label [attr.for]="'employerName'+i"
+                               class="col-xl-1 col-form-label"
+                               (mouseover)="setHints(hoverMessages.nazwaFirmy)"
+                               (mouseout)="clearHints()">Nazwa firmy:</label> -->
+                        <div class="col-xl-4">
+                            <input type="text"
+                                   class="form-control employer-name-input"
+                                   style="font-size: 1.5em; font-weight: 700;"
+                                   [id]="'employerName'+i"
+                                   placeholder="Nazwa firmy"
+                                   formControlName="employerName"
+                                   autocomplete="off"
+                                   (mouseover)="setHints(hoverMessages.nazwaFirmy)"
+                                   (mouseout)="clearHints()"
+                                   (focus)="setHints(hoverMessages.nazwaFirmy)"
+                                   (blur)="clearHints()">
+                        </div>
+                        <div class="col-xl-4">
+                            <input type="text"
+                                  class="form-control trade-input"
+                                  [id]="'trade'+i"
+                                  placeholder="Branża (np. edukacja, budownictwo, bankowość)"
+                                  formControlName="trade"
+                                  autocomplete="off"
+                                  (mouseover)="setHints(hoverMessages.branza)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.branza)"
+                                  (blur)="clearHints()">
+                      </div>
+                        <!-- <label [attr.for]="'occupation'+i"
+                               class="col-xl-1 col-form-label"
+                               (mouseover)="setHints(hoverMessages.stanowisko)"
+                               (mouseout)="clearHints()">Stanowisko:</label> -->
+                        <div class="col-xl-4">
+                            <input type="text"
+                                   class="form-control"
+                                   [id]="'occupation'+i"
+                                   placeholder="Stanowisko"
+                                   formControlName="occupation"
+                                   autocomplete="off"
+                                   (mouseover)="setHints(hoverMessages.stanowisko)"
+                                   (mouseout)="clearHints()"
+                                   (focus)="setHints(hoverMessages.stanowisko)"
+                                   (blur)="clearHints()">
+                        </div>
+                    </div>
+                    <div class="form-group row section-row">
+                        <!-- <label [attr.for]="'responsibilities'+i"
+                               class="col-xl-1 col-form-label"
+                               (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
+                               (mouseout)="clearHints()">Zakres obowiązków:</label> -->
+                        <div class="col-xl-5">
+                          <div #resp *ngFor="let resp of getResponsibilitiesControls(i).controls; let x = index" formArrayName="responsibilities">
+                            <div [formGroupName]="x">
+                              <input type="text"
+                                     class="form-control mb-3"
+                                     [id]="'responsibilities'+x"
+                                     placeholder="Zakres obowiązków"
+                                     formControlName="responsibility"
+                                     autocomplete="off"
+                                     respFocus
+                                     [shouldFocus]="focusOnResp"
+                                     (keydown.enter)="addNewResponsibility(i)"
+                                     (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
+                                     (mouseout)="clearHints()"
+                                     (focus)="setHints(hoverMessages.zakresObowiazkow)"
+                                     (blur)="clearHints()">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-1">
+                          <button class="btn btn-info"
+                                  type="button"
+                                  id="addRespButton"
+                                  (click)="addNewResponsibility(i)"
+                                  (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                  (blur)="clearHints()"><i class="fas fa-plus"></i>
+                          </button>
+                          <button *ngIf="(getResponsibilitiesControls(i).length) > 1"
+                                  class="btn btn-danger"
+                                  type="button"
+                                  id="removeRespButton"
+                                  (click)="removeResponsibility(i)"
+                                  (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                  (blur)="clearHints()"><i class="fas fa-minus"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div *ngIf="experienceCompletionError" class="row">
+                        <div class="col-xl-4">
+                          <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
+                        </div>
+                      </div>
+                      <div class="form-group row section-row">
+                          <div class="col-xl-6">
+                              <button *ngIf="(getExperienceControls(i).get('workPeriodStart').dirty) && !hideNextExpButton"
+                              class="btn btn-info"
+                              type="button"
+                              id="addExperienceButton"
+                              (click)="addExperienceButtonClick(i)"
+                              (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                              (blur)="clearHints()">Dodaj kolejną pozycję</button>
+                          </div>
+                        </div>
+                    <button *ngIf="experienceEditMode[i]" class="btn btn-success" type="button" (click)="finishExperienceEdition(i)">Zakończ edycję</button>
+                  </div>
+
+                    <div id="experience-completed" *ngIf="(this.experienceCompleted[i] == true)" class="mb-4 ml-4">
+                      <small *ngIf="getExperienceControls(i).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
+                        <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                          {{ (getExperienceControls(i).get('workPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                      </small>
+                      <ng-template #experienceCompletedDate>
+                        <small class="text-muted">
+                          <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                          {{ (getExperienceControls(i).get('workPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getExperienceControls(i).get('workPeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                        </small>
+                      </ng-template>
+                      <p style="font-size: 16px; margin-bottom: 5px">
+                       <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }} / {{ getExperienceControls(i).get('occupation').value }}
+                      </p>
+                      <ul *ngIf="getResponsibilitiesControls(i).length != null" style="margin-top: 5px;">
+                        <li *ngFor="let chosenResp of getResponsibilitiesControls(i).controls; let x = index">
+                            {{ getResponsibilitiesControls(i).controls[x].get('responsibility').value }}
+                        </li>
+                      </ul>
+                      <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>
+                    </div>
+
+                  <!-- *** -->
+                  <!-- <hr class="mt-2 mb-4"> -->
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div id="education">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <h5 class="section-header education-header mb-4 mt-3"><span class="cv-icon"><i class="fas fa-graduation-cap mr-3" #headerIcon4></i></span><strong>EDUKACJA</strong></h5>
+                  </div>
+                </div>
+                <hr style="opacity: 0.5;">
+                <div formArrayName="education" *ngFor="let edu of educationArray.controls; let e = index">
+                  <div [formGroupName]="e">
+                    <div *ngIf="!this.educationCompleted[e]">
+                      <div class="form-group row section-row">
+                        <label [attr.for]="'schoolType'+e"
+                               class="col-xl-1 col-form-label"
+                               (mouseover)="setHints(hoverMessages.rodzajSzkoly)"
+                               (mouseout)="clearHints()">Rodzaj szkoły:</label>
+                        <div class="col-xl-5">
+                          <mat-select [id]="'schoolType'+e"
+                                  formControlName="schoolType"
+                                  placeholder="rodzaj szkoły"
+                                  autocomplete="off"
+                                  (selectionChange)="getSelectedEducationIndex($event, e)"
+                                  (mouseover)="setHints(hoverMessages.rodzajSzkoly)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.rodzajSzkoly)"
+                                  (blur)="clearHints()">
+                            <mat-option [value]="1">Wyższa</mat-option>
+                            <mat-option [value]="2">Średnia</mat-option>
+                          </mat-select>
+                        </div>
+                    </div>
+                    <div *ngIf="this.schoolTypeSelected[e] == 1">
+                      <div class="form-group row section-row">
+                        <label *ngIf="(screenInnerWidth > 768)"
+                               [attr.for]="'educationPeriodStart'+e"
+                               class="col-xl-1 col-form-label"
+                               (mouseover)="setHints(hoverMessages.okresNauki)"
+                               (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                     <div class="col-xl-2">
+                         <input type="text"
+                                class="form-control education-date-input"
+                                [id]="'educationPeriodStart'+e"
+                                placeholder="Od..."
+                                formControlName="educationPeriodStart"
+                                [bsConfig]="DatePickerWithoutDays"
+                                bsDatepicker
+                                (mouseover)="setHints(hoverMessages.okresNaukiOd)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.okresNaukiOd)"
+                                (blur)="clearHints()"
+                                autocomplete="off"
+                                (ngModelChange)="checkEducationDate(e)">
+                     </div>
+                     <div class="col-xl-2">
+                        <input *ngIf="!(getEducationControls(e).get('educationTillNow').value)" type="text"
+                               class="form-control education-date-input"
+                               [id]="'educationPeriodEnd'+e"
+                               placeholder="Do..."
+                               formControlName="educationPeriodEnd"
+                               [bsConfig]="DatePickerWithoutDays"
+                               bsDatepicker
+                               (mouseover)="setHints(hoverMessages.okresNaukiDo)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.okresNaukiDo)"
+                               (blur)="clearHints()"
+                               autocomplete="off"
+                               (ngModelChange)="checkEducationDate(e)">
+                         <input *ngIf="getEducationControls(e).get('educationTillNow').value" type="text" class="form-control education-date-input" [id]="'educationPeriodNow'+e" formControlName="educationPeriodNow" readonly>
+                       </div>
+                       <div class="col-xl-1">
+                         <div class="form-check now-checkbox">
+                           <input type="checkbox"
+                                  [id]="'educationTillNowCbox'+e"
+                                  class="form-check-input"
+                                  formControlName="educationTillNow"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (blur)="clearHints()"
+                                  (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)">
+                           <label class="form-check-label now-label"
+                                  [attr.for]="'educationTillNowCbox'+e"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()">Obecnie</label>
+                         </div>
+                       </div>
+                        </div>
+                        <div *ngIf="this.educationEndDateIssue[e]" class="row">
+                            <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationEndDateIssueMessage[e]}}</strong></p>
+                          </div>
+                          <div *ngIf="this.educationCurrentDateIssue[e]" class="row">
+                            <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
+                          </div>
+
+                        <div class="form-group row section-row">
+                            <!-- <label [attr.for]="'schoolName'+e"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.nazwaUczelni)"
+                                   (mouseout)="clearHints()">Nazwa uczelni:</label> -->
+                            <div class="col-xl-5">
+                                <input type="text"
+                                       class="form-control"
+                                       [id]="'schoolName'+e"
+                                       placeholder="Nazwa uczelni"
+                                       style="font-size: 1.5em; font-weight: 700;"
+                                       formControlName="schoolName"
+                                       autocomplete="off"
+                                       (mouseover)="setHints(hoverMessages.nazwaUczelni)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.nazwaUczelni)"
+                                       (blur)="clearHints()">
+                            </div>
+                             <!-- <label [attr.for]="'specialization'+e"
+                                       class="col-xl-1 col-form-label"
+                                       (mouseover)="setHints(hoverMessages.specjalizacjaStudiow)"
+                                       (mouseout)="clearHints()">Specjalizacja:</label> -->
+                            <div class="col-xl-5 mb-4">
+                              <input type="text"
+                                      class="form-control"
+                                      [id]="'specialization'+e"
+                                      placeholder="Specjalizacja"
+                                      formControlName="specialization"
+                                      autocomplete="off"
+                                      (mouseover)="setHints(hoverMessages.specjalizacjaStudiow)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.specjalizacjaStudiow)"
+                                      (blur)="clearHints()">
+                          </div>
+                        </div>
+                          <div class="form-group row section-row">
+                            <label [attr.for]="'educationMode'+e"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.trybStudiow)"
+                                   (mouseout)="clearHints()">Tryb studiów:</label>
+                              <div class="col-xl-5">
+                                <mat-select [id]="'educationMode'+e"
+                                        formControlName="educationMode"
+                                        placeholder="tryb studiów"
+                                        autocomplete="off"
+                                        (mouseover)="setHints(hoverMessages.trybStudiow)"
+                                        (mouseout)="clearHints()"
+                                        (focus)="setHints(hoverMessages.trybStudiow)"
+                                        (blur)="clearHints()">
+                                  <mat-option *ngFor="let mode of studiesMode" [value]="mode">{{ mode }}</mat-option>
+                                </mat-select>
+                              </div>
+                            </div>
+                            <div class="form-group row section-row">
+
+                            </div>
+                    </div>
+                    <div *ngIf="this.schoolTypeSelected[e] == 2">
+                        <div class="form-group row section-row">
+                            <label *ngIf="(screenInnerWidth > 768)"
+                                   [attr.for]="'educationPeriodStart'+e"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.okresNauki)"
+                                   (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                            <div class="col-xl-2">
+                                <input type="text"
+                                        class="form-control education-date-input"
+                                        [id]="'educationPeriodStart'+e"
+                                        placeholder="Od..."
+                                        formControlName="educationPeriodStart"
+                                        [bsConfig]="DatePickerWithoutDays"
+                                        bsDatepicker
+                                        autocomplete="off"
+                                        (ngModelChange)="checkEducationDate(e)"
+                                        (mouseover)="setHints(hoverMessages.okresNaukiOd)"
+                                        (mouseout)="clearHints()"
+                                        (focus)="setHints(hoverMessages.okresNaukiOd)"
+                                        (blur)="clearHints()">
+                            </div>
+                            <div class="col-xl-2">
+                              <input *ngIf="!(getEducationControls(e).get('educationTillNow').value)" type="text"
+                                  class="form-control education-date-input"
+                                  [id]="'educationPeriodEnd'+e"
+                                  placeholder="Do..."
+                                  formControlName="educationPeriodEnd"
+                                  [bsConfig]="DatePickerWithoutDays"
+                                  bsDatepicker
+                                  autocomplete="off"
+                                  (ngModelChange)="checkEducationDate(e)"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiDo)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresNaukiDo)"
+                                  (blur)="clearHints()">
+                              <input *ngIf="getEducationControls(e).get('educationTillNow').value" type="text" class="form-control education-date-input" [id]="'educationPeriodNow'+e" formControlName="educationPeriodNow" readonly>
+                            </div>
+                       <div class="col-xl-1">
+                         <div class="form-check now-checkbox">
+                           <input type="checkbox"
+                                  [id]="'educationTillNowCbox'+e"
+                                  class="form-check-input"
+                                  formControlName="educationTillNow"
+                                  (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (blur)="clearHints()">
+                           <label class="form-check-label now-label"
+                                  [attr.for]="'educationTillNowCbox'+e"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()">Obecnie</label>
+                         </div>
+                       </div>
+                     </div>
+                     <div *ngIf="this.educationEndDateIssue[e]" class="row">
+                       <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationEndDateIssueMessage[e]}}</strong></p>
+                     </div>
+                     <div *ngIf="this.educationCurrentDateIssue[e]" class="row">
+                       <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
+                     </div>
+                     <div class="form-group row section-row">
+                          <!-- <label [attr.for]="'schoolName'+e"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
+                                   (mouseout)="clearHints()">Nazwa szkoły:</label> -->
+                            <div class="col-xl-5">
+                                <input type="text"
+                                       class="form-control"
+                                       [id]="'schoolName'+e"
+                                       placeholder="Nazwa szkoły"
+                                       style="font-size: 1.5em; font-weight: 700;"
+                                       formControlName="schoolName"
+                                       autocomplete="off"
+                                       (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.nazwaSzkoly)"
+                                       (blur)="clearHints()">
+                            </div>
+                            <!-- <label [attr.for]="'classProfile'+e"
+                                       class="col-xl-1 col-form-label"
+                                       (mouseover)="setHints(hoverMessages.profilSzkoly)"
+                                       (mouseout)="clearHints()">Profil:</label> -->
+                                       <div class="col-xl-5 mb-4">
+                                          <input type="text"
+                                                 class="form-control"
+                                                 [id]="'classProfile'+e"
+                                                 placeholder="Profil szkoły lub klasy"
+                                                 formControlName="classProfile"
+                                                 autocomplete="off"
+                                                 (mouseover)="setHints(hoverMessages.profilSzkoly)"
+                                                 (mouseout)="clearHints()"
+                                                 (focus)="setHints(hoverMessages.profilSzkoly)"
+                                                 (blur)="clearHints()">
+                                      </div>
+                     </div>
+                    </div>
+
+                    <div *ngIf="educationCompletionError" class="row">
+                        <div class="col-xl-4">
+                          <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
+                        </div>
+                      </div>
+                      <div class="form-group row section-row">
+                          <div class="col-xl-6">
+                              <button *ngIf="(getEducationControls(e).get('educationPeriodStart').dirty) && !hideNextEduButton"
+                              class="btn btn-info"
+                              type="button"
+                              id="addEducationButton"
+                              (click)="addEducationButtonClick(e)"
+                              (mouseover)="setHints(hoverMessages.edukacjaDodaj)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.edukacjaDodaj)"
+                              (blur)="clearHints()">Dodaj kolejną pozycję</button>
+                          </div>
+                        </div>
+                    <button *ngIf="educationEditMode[e]" class="btn btn-success" type="button" (click)="finishEducationEdition(e)">Zakończ edycję</button>
+
+                  </div>
+
+                  <div id="education-completed" *ngIf="(this.educationCompleted[e] == true)" class="mb-4 ml-4">
+                      <small *ngIf="(getEducationControls(e).get('educationTillNow')).value; else educationCompletedDate" class="text-muted">
+                        <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                          {{ (getEducationControls(e).get('educationPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                      </small>
+                      <ng-template #educationCompletedDate>
+                        <small class="text-muted">
+                          <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                          {{ (getEducationControls(e).get('educationPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getEducationControls(e).get('educationPeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                        </small>
+                      </ng-template>
+                      <p *ngIf="this.schoolTypeSelected[e] == 1; else schoolSelected" style="font-size: 16px; margin-bottom: 5px">
+                       <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('specialization').value }}
+                      </p>
+                      <ng-template #schoolSelected>
+                        <p style="font-size: 16px; margin-bottom: 5px">
+                          <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('classProfile').value }}
+                        </p>
+                      </ng-template>
+                      <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleEducationEdit(e)">Edytuj</button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenEducation(e)">Usuń</button>
+                    </div>
+
+                </div>
+                </div>
+              </div>
+              <hr>
+              <div id="courses">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <h5 class="section-header courses-header mb-3 mt-3"><span class="cv-icon"><i class="fas fa-award mr-3" #headerIcon5></i></span><strong>KURSY I SZKOLENIA</strong></h5>
+                  </div>
+                </div>
+                <!-- <div formArrayName="courses" *ngFor="let course of cvForm.get('courses').controls; let c = index"> -->
+                <div formArrayName="courses" *ngFor="let course of coursesArray.controls; let c = index">
+                  <div *ngIf="!this.coursesCompleted[c]">
+                    <div [formGroupName]="c">
+                        <div class="form-group row section-row">
+
+                            <label *ngIf="(screenInnerWidth > 768)"
+                                   [attr.for]="'coursePeriodStart'+c"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.czasTrwaniaKursu)"
+                                   (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                            <div class="col-xl-2">
+                                <input type="text"
+                                       class="form-control courses-date-input"
+                                       [id]="'coursePeriodStart'+c"
+                                       placeholder="Od..."
+                                       formControlName="coursePeriodStart"
+                                       [bsConfig]="DatePickerWithoutDays"
+                                       bsDatepicker
+                                       autocomplete="off"
+                                       (ngModelChange)="checkCoursesDate(c)"
+                                       (mouseover)="setHints(hoverMessages.czasTrwaniaKursuOd)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.czasTrwaniaKursuOd)"
+                                       (blur)="clearHints()">
+                            </div>
+                              <div class="col-xl-2">
+                                <input *ngIf="!(getCoursesControls(c).get('courseTillNow').value)" type="text"
+                                    class="form-control courses-date-input"
+                                    [id]="'coursePeriodEnd'+c"
+                                    placeholder="Do..."
+                                    formControlName="coursePeriodEnd"
+                                    [bsConfig]="DatePickerWithoutDays"
+                                    bsDatepicker
+                                    autocomplete="off"
+                                    (ngModelChange)="checkCoursesDate(c)"
+                                    (mouseover)="setHints(hoverMessages.czasTrwaniaKursuDo)"
+                                    (mouseout)="clearHints()"
+                                    (focus)="setHints(hoverMessages.czasTrwaniaKursuDo)"
+                                    (blur)="clearHints()">
+                                <input *ngIf="getCoursesControls(c).get('courseTillNow').value" type="text" class="form-control courses-date-input" [id]="'coursePeriodNow'+c" formControlName="coursePeriodNow" readonly>
+                              </div>
+                              <div class="col-xl-1">
+                                <div class="form-check now-checkbox">
+                                  <input type="checkbox"
+                                         [id]="'courseTillNowCbox'+c"
+                                         class="form-check-input"
+                                         formControlName="courseTillNow"
+                                         (ngModelChange)="setCourseTillNow(c); checkCoursesDate(c)"
+                                         (mouseover)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
+                                         (mouseout)="clearHints()"
+                                         (focus)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
+                                         (blur)="clearHints()">
+                                  <label class="form-check-label now-label"
+                                         [attr.for]="'courseTillNowCbox'+c"
+                                         (mouseover)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
+                                         (mouseout)="clearHints()">Obecnie</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="this.coursesEndDateIssue[c]" class="row">
+                              <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesEndDateIssueMessage[c]}}</strong></p>
+                            </div>
+                            <div *ngIf="this.coursesCurrentDateIssue[c]" class="row">
+                              <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesCurrentDateIssueMessage[c]}}</strong></p>
+                            </div>
+                            <div class="form-group row section-row">
+                                <!-- <label [attr.for]="'organizerName'+c"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.nazwaOrganizatora)"
+                                   (mouseout)="clearHints()">Nazwa organizatora:</label> -->
+                            <div class="col-xl-5">
+                                <input type="text"
+                                       class="form-control"
+                                       [id]="'courseName'+c"
+                                       placeholder="Nazwa kursu"
+                                       style="font-size: 1.5em; font-weight: 700;"
+                                       formControlName="courseName"
+                                       autocomplete="off"
+                                       (mouseover)="setHints(hoverMessages.nazwaKursu)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.nazwaKursu)"
+                                       (blur)="clearHints()">
+                            </div>
+                                <!-- <label [attr.for]="'courseName'+c"
+                                       class="col-xl-1 col-form-label"
+                                       (mouseover)="setHints(hoverMessages.specjalizacjaKursu)"
+                                       (mouseout)="clearHints()">Specjalizacja:</label> -->
+                                <div class="col-xl-5">
+                                    <input type="text"
+                                           class="form-control"
+                                           [id]="'courseSubject'+c"
+                                           placeholder="Przedmiot kursu (opcjonalnie)"
+                                           formControlName="courseSubject"
+                                           autocomplete="off"
+                                           (mouseover)="setHints(hoverMessages.specjalizacjaKursu)"
+                                           (mouseout)="clearHints()"
+                                           (focus)="setHints(hoverMessages.specjalizacjaKursu)"
+                                           (blur)="clearHints()">
+                                </div>
+                            </div>
+                  </div>
+
+                  <div *ngIf="coursesCompletionError" class="row">
+                      <div class="col-xl-4">
+                        <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
+                      </div>
+                    </div>
+                    <div class="form-group row section-row">
+                        <div class="col-xl-6">
+                            <button *ngIf="(getCoursesControls(c).get('coursePeriodStart').dirty) && !hideNextCourseButton"
+                            class="btn btn-info"
+                            type="button"
+                            id="addCoursesButton"
+                            (click)="addCoursesButtonClick(c)"
+                            (mouseover)="setHints(hoverMessages.kursyDodaj)"
+                            (mouseout)="clearHints()"
+                            (focus)="setHints(hoverMessages.kursyDodaj)"
+                            (blur)="clearHints()">Dodaj kolejną pozycję</button>
+                        </div>
+                      </div>
+                  <button *ngIf="coursesEditMode[c]" class="btn btn-success" type="button" (click)="finishCoursesEdition(c)">Zakończ edycję</button>
+
+                </div>
+
+                <div id="course-completed" *ngIf="this.coursesCompleted[c]" class="mb-4 ml-4">
+                    <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted">
+                      <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                        {{ (getCoursesControls(c).get('coursePeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                    </small>
+                    <ng-template #courseCompletedDate>
+                      <small class="text-muted">
+                        <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                        {{ (getCoursesControls(c).get('coursePeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getCoursesControls(c).get('coursePeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                      </small>
+                    </ng-template>
+                    <p *ngIf="!(getCoursesControls(c).get('courseSubject').value === ''); else onlyCourseName" style="font-size: 16px; margin-bottom: 5px">
+                     <strong> {{ getCoursesControls(c).get('courseName').value }} </strong> / {{ getCoursesControls(c).get('courseSubject').value }}
+                    </p>
+                    <ng-template #onlyCourseName>
+                      <p style="font-size: 16px; margin-bottom: 5px">
+                        <strong> {{ getCoursesControls(c).get('courseName').value }} </strong>
+                      </p>
+                    </ng-template>
+                    <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleCoursesEdit(c)">Edytuj</button>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenCourse(c)">Usuń</button>
+                  </div>
+
+                </div>
+
+              </div>
+              <hr>
+              <div id="languages">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <h5 class="section-header languages-header mb-3 mt-3"><span class="cv-icon"><i class="fas fa-comment-alt mr-3" #headerIcon6></i></span><strong>JĘZYKI OBCE</strong></h5>
+                  </div>
+                </div>
+                <div formArrayName="languages" *ngFor="let lang of languagesArray.controls; let l = index">
+                  <div [formGroupName]="l">
+                        <div class="form-group row section-row mb-3">
+                            <label [attr.for]="'languageName'+l"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.jezykObcy)"
+                                   (mouseout)="clearHints()">Język:</label>
+                            <div class="col-xl-2">
+                              <mat-select [id]="'languageName'+l"
+                                      formControlName="languageName"
+                                      autocomplete="off"
+                                      style="font-size: 1.2em; font-weight: 700;"
+                                      (selectionChange)="getSelectedLanguageName($event, l)"
+                                      (mouseover)="setHints(hoverMessages.jezykObcy)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.jezykObcy)"
+                                      (blur)="clearHints()">
+                                <mat-option *ngFor="let lang of languagesList" [value]="lang.lang">{{lang.lang}}</mat-option>
+                              </mat-select>
+                              <div *ngIf="(this.otherLanguageSelected[l])" class="form-group row mt-2">
+                                <div class="col-xl-12">
+                                    <input type="text"
+                                           class="form-control"
+                                           formControlName="otherLanguage"
+                                           [id]="'otherLanguage'+l"
+                                           placeholder="Wpisz nazwę języka"
+                                           autocomplete="off"
+                                           style="font-size: 1.5em; font-weight: 700;"
+                                           (mouseover)="setHints(hoverMessages.innyJezykObcy)"
+                                           (mouseout)="clearHints()"
+                                           (focus)="setHints(hoverMessages.innyJezykObcy)"
+                                           (blur)="clearHints()">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-8">
+                              <label class="col-xl-2 col-form-label languageLevelLabel"
+                                     (mouseover)="setHints(hoverMessages.poziomZnajomosciJezyka)"
+                                     (mouseout)="clearHints()">Poziom umiejętności:</label>
+                              <div *ngFor="let llevel of languageLevels; let li = index" class="form-check form-check-inline col-xl-1">
+                                <input type="radio"
+                                       [id]="'language'+l+'_degree'+li"
+                                       class="form-check-input"
+                                       formControlName="level"
+                                       [value]="llevel.degree"
+                                       (change)="onLanguageLevelChange(llevel, l)"
+                                       (mouseover)="setHints(llevel.description, 30)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(llevel.description, 30)"
+                                       (blur)="clearHints()">
+                                <label class="form-check-label"
+                                       [attr.for]="'language'+l+'_degree'+li"
+                                       (mouseover)="setHints(llevel.description)"
+                                       (mouseout)="clearHints()">{{llevel.degree}}</label>
+                              </div>
+                            </div>
+                            <div *ngIf="(selectedLanguageDegree.length > 0)" class="row">
+                                <small class="col text-muted pr-3 pl-4"><i>{{selectedLanguageDegree[l]}}</i></small>
+                            </div>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="languagesArray.controls[0].get('languageName').dirty"
+                        class="btn btn-info mb-2"
+                        type="button"
+                        id="addLanguagesButton"
+                        (click)="addLanguagesButtonClick()"
+                        (mouseover)="setHints(hoverMessages.jezykObcyDodaj)"
+                        (mouseout)="clearHints()"
+                        (focus)="setHints(hoverMessages.jezykObcyDodaj)"
+                        (blur)="clearHints()">Dodaj kolejny język</button>
+              <button *ngIf="languagesArray.controls.length > 1"
+                      class="btn btn-danger"
+                      type="button"
+                      id="removeLanguagesButton"
+                      (click)="removeLanguagesButtonClick()"
+                      (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
+                      (mouseout)="clearHints()"
+                      (focus)="setHints(hoverMessages.jezykObcyUsun)"
+                      (blur)="clearHints()">Usuń pozycję</button>
+            </div>
+            <hr>
+              <div id="skills">
+                <div class="row"
+                     (mouseover)="setHints(hoverMessages.umiejetnosci)"
+                     (mouseout)="clearHints()">
+                  <div class="col-xl-12">
+                    <h5 class="section-header skills-header"><span class="cv-icon"><i class="fas fa-crown mr-3" #headerIcon7></i></span><strong>UMIEJĘTNOŚCI</strong></h5>
+                  </div>
+                </div>
+                  <div class="form-group row section-row mt-3 pr-2">
+                      <div class="col-xl-2">
+                        <div class="form-check">
+                          <input type="checkbox"
+                                 class="form-check-input"
+                                 id="drivingLicence"
+                                 formControlName="drivingLicence"
+                                 (change)="toggleDrivingLicenceDescription($event)"
+                                 (mouseover)="setHints(hoverMessages.prawoJazdy)"
+                                 (mouseout)="clearHints()"
+                                 (focus)="setHints(hoverMessages.prawoJazdy)"
+                                 (blur)="clearHints()">
+                          <label for="drivingLicence"
+                                 class="form-check-label skills-label"
+                                 (mouseover)="setHints(hoverMessages.prawoJazdy)"
+                                 (mouseout)="clearHints()">Prawo jazdy</label>
+                        </div>
+                      </div>
+                      <input type="text"
+                             class="form-control col-xl-4"
+                             id="drivingLicenceDescription"
+                             formControlName="drivingLicenceDescription"
+                             placeholder="Jakie posiadasz kategorie prawa jazdy?"
+                             autocomplete="off"
+                             (mouseover)="setHints(hoverMessages.prawoJazdyOpis)"
+                             (mouseout)="clearHints()"
+                             (focus)="setHints(hoverMessages.prawoJazdyOpis)"
+                             (blur)="clearHints()">
+                      <div class="col-xl-2">
+                          <div class="form-check ml-xl-5">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="knownPrograms"
+                                   formControlName="knownPrograms"
+                                   (change)="toggleKnownProgramsDescription($event)"
+                                   (mouseover)="setHints(hoverMessages.obslugaProgramow)"
+                                   (mouseout)="clearHints()"
+                                   (focus)="setHints(hoverMessages.obslugaProgramow)"
+                                   (blur)="clearHints()">
+                            <label for="knownPrograms"
+                                   class="form-check-label skills-label"
+                                   (mouseover)="setHints(hoverMessages.obslugaProgramow)"
+                                   (mouseout)="clearHints()">Znajomość obsługi programów</label>
+                          </div>
+                        </div>
+                        <input type="text"
+                               class="form-control col-xl-4"
+                               id="knownProgramsDescription"
+                               formControlName="knownProgramsDescription"
+                               placeholder="Którymi programami komputerowymi potrafisz się posługiwać?"
+                               autocomplete="off"
+                               (mouseover)="setHints(hoverMessages.obslugaProgramowOpis)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.obslugaProgramowOpis)"
+                               (blur)="clearHints()">
+                  </div>
+                  <div class="form-group row section-row mt-3 pr-2">
+                    <div class="col-xl-2">
+                      <div class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               id="programmingSkills"
+                               formControlName="programmingSkills"
+                               (change)="toggleProgrammingSkillsDescription($event)"
+                               (mouseover)="setHints(hoverMessages.jezykiProgramowania)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.jezykiProgramowania)"
+                               (blur)="clearHints()">
+                        <label for="programmingSkills"
+                               class="form-check-label skills-label"
+                               (mouseover)="setHints(hoverMessages.jezykiProgramowania)"
+                               (mouseout)="clearHints()">Znajomość języków programowania</label>
+                      </div>
+                    </div>
+                    <input type="text"
+                           class="form-control col-xl-4"
+                           id="programmingSkillsDescription"
+                           formControlName="programmingSkillsDescription"
+                           placeholder="W jakich językach potrafisz programować?"
+                           autocomplete="off"
+                           (mouseover)="setHints(hoverMessages.jezykiProgramowaniaOpis)"
+                           (mouseout)="clearHints()"
+                           (focus)="setHints(hoverMessages.jezykiProgramowaniaOpis)"
+                           (blur)="clearHints()">
+                    <div class="col-xl-2">
+                        <div class="form-check ml-xl-5">
+                          <input type="checkbox"
+                                 class="form-check-input"
+                                 id="devicesUsage"
+                                 formControlName="devicesUsage"
+                                 (change)="toggleDevicesUsageDescription($event)"
+                                 (mouseover)="setHints(hoverMessages.obslugaUrzadzen)"
+                                 (mouseout)="clearHints()"
+                                 (focus)="setHints(hoverMessages.obslugaUrzadzen)"
+                                 (blur)="clearHints()">
+                          <label for="devicesUsage"
+                                 class="form-check-label skills-label"
+                                 (mouseover)="setHints(hoverMessages.obslugaUrzadzen)"
+                                 (mouseout)="clearHints()">Obsługa urządzeń</label>
+                        </div>
+                      </div>
+                      <input type="text"
+                             class="form-control col-xl-4"
+                             id="devicesUsageDescription"
+                             formControlName="devicesUsageDescription"
+                             placeholder="Jakimi specjalistycznymi urządzeniami potrafisz się posługiwać?"
+                             autocomplete="off"
+                             (mouseover)="setHints(hoverMessages.obslugaUrzadzenOpis)"
+                             (mouseout)="clearHints()"
+                             (focus)="setHints(hoverMessages.obslugaUrzadzenOpis)"
+                             (blur)="clearHints()">
+                </div>
+                <div class="form-group row section-row mt-3 pr-2">
+                    <div class="col-xl-2">
+                      <div class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               id="permissions"
+                               formControlName="permissions"
+                               (change)="togglePermissionsDescription($event)"
+                               (mouseover)="setHints(hoverMessages.uprawnienia)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.uprawnienia)"
+                        (blur)="clearHints()">
+                        <label for="permissions"
+                               class="form-check-label skills-label"
+                               (mouseover)="setHints(hoverMessages.uprawnienia)"
+                               (mouseout)="clearHints()">Uprawnienia</label>
+                      </div>
+                    </div>
+                    <input type="text"
+                           class="form-control col-xl-4"
+                           id="permissionsDescription"
+                           formControlName="permissionsDescription"
+                           placeholder="Jakie posiadasz specjalistyczne uprawnienia?"
+                           autocomplete="off"
+                           (mouseover)="setHints(hoverMessages.uprawnieniaOpis)"
+                           (mouseout)="clearHints()"
+                           (focus)="setHints(hoverMessages.uprawnieniaOpis)"
+                           (blur)="clearHints()">
+                    <div class="col-xl-2">
+                        <div class="form-check ml-xl-5">
+                          <input type="checkbox"
+                                 class="form-check-input"
+                                 id="knownRegulations"
+                                 formControlName="knownRegulations"
+                                 (change)="toggleKnownRegulationsDescription($event)"
+                                 (mouseover)="setHints(hoverMessages.znajomoscPrzepisow)"
+                                 (mouseout)="clearHints()"
+                                 (focus)="setHints(hoverMessages.znajomoscPrzepisow)"
+                                 (blur)="clearHints()">
+                          <label for="knownRegulations"
+                                 class="form-check-label skills-label"
+                                 (mouseover)="setHints(hoverMessages.znajomoscPrzepisow)"
+                                 (mouseout)="clearHints()">Znajomość ustaw/przepisów</label>
+                        </div>
+                      </div>
+                      <input type="text"
+                             class="form-control col-xl-4"
+                             id="knownRegulationsDescription"
+                             formControlName="knownRegulationsDescription"
+                             placeholder="Na temat których ustaw i przepisów posiadasz wiedzę?"
+                             autocomplete="off"
+                             (mouseover)="setHints(hoverMessages.znajomoscPrzepisowOpis)"
+                             (mouseout)="clearHints()"
+                             (focus)="setHints(hoverMessages.znajomoscPrzepisowOpis)"
+                             (blur)="clearHints()">
+                </div>
+                <div class="form-group row section-row mt-3 pr-2">
+                    <div class="col-xl-2">
+                      <div class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               id="otherSkills"
+                               formControlName="otherSkills"
+                               (change)="toggleOtherSkillsDescription($event)"
+                               (mouseover)="setHints(hoverMessages.inneUmiejetnosci)"
+                               (mouseout)="clearHints()"
+                               (focus)="setHints(hoverMessages.inneUmiejetnosci)"
+                               (blur)="clearHints()">
+                        <label for="otherSkills"
+                               class="form-check-label skills-label"
+                               (mouseover)="setHints(hoverMessages.inneUmiejetnosci)"
+                               (mouseout)="clearHints()">Inne umiejętności</label>
+                      </div>
+                    </div>
+                    <input type="text"
+                           class="form-control col-xl-10"
+                           id="otherSkillsDescription"
+                           formControlName="otherSkillsDescription"
+                           placeholder="Jakie jeszcze inne istotne umiejętności posiadasz?"
+                           autocomplete="off"
+                           (mouseover)="setHints(hoverMessages.inneUmiejetnosciOpis)"
+                           (mouseout)="clearHints()"
+                           (focus)="setHints(hoverMessages.inneUmiejetnosciOpis)"
+                           (blur)="clearHints()">
+                </div>
+            </div>
+            <hr>
+              <div id="advantages">
+                <div class="row"
+                     (mouseover)="setHints(hoverMessages.mocneStrony)"
+                     (mouseout)="clearHints()">
+                  <div class="col-xl-12">
+                    <h5 class="section-header advantages-header"><span class="cv-icon"><i class="fas fa-dumbbell mr-3" #headerIcon8></i></span><strong>MOCNE STRONY</strong></h5>
+                  </div>
+                </div>
+                  <div class="form-group row section-row mt-3">
+                        <div class="col-xl-2" formArrayName="advantages" *ngFor="let adv of advantagesArray.controls; let a = index">
+                          <div class="form-check">
+                              <input class="form-check-input" [formControl]="adv" [id]="'advantage'+a" type="checkbox" [value]="[a]" (change)="getSelectedAdvantagesValues()">
+                              <label class="form-check-label" [attr.for]="'advantage'+a">{{ advantagesList[a] }}</label>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="row section-row mt-3">
+                    <small *ngIf="(!advantagesError && advantagesLeft > 0)" class="col-xl-12 ml-2 text-muted">
+                      Możesz zaznaczyć jeszcze {{this.advantagesLeft}} cech{{this.polishAdvantageSuffix}}.
+                    </small>
+                    <small *ngIf="(!advantagesError && advantagesLeft == 0)" class="col-xl-12 ml-2 text-danger">
+                       Zaznaczyłeś/aś maksymalną liczbę cech.
+                    </small>
+                  </div>
+                  <div *ngIf="advantagesError && checkAdvantagesControlsDirty()" class="row section-row mt-2">
+                    <small class="col-xl-12 text-danger ml-2"><strong>Proszę zaznaczyć nie więcej niż 7 pozycji!</strong></small>
+                  </div>
+                  <div class="mb-5">
+                    <br>
+                    <h5 class="row section-row section-header chosenAdvantages">
+                        <strong>Wybrane przez Ciebie mocne strony: </strong>
+                    </h5>
+                    <p *ngFor="let selectedAdv of selectedAdvantagesValues" class="row section-row selected-advantage">
+                        {{ selectedAdv }}
+                    </p>
+                  </div>
+            </div>
+            <hr>
+            <div id="hobby">
+              <div class="row"
+                   (mouseover)="setHints(hoverMessages.zainteresowania)"
+                   (mouseout)="clearHints()">
+                <div class="col-xl-12">
+                  <h5 class="section-header hobby-header"><span class="cv-icon"><i class="fas fa-theater-masks mr-3" #headerIcon9></i></span><strong>ZAINTERESOWANIA</strong></h5>
+                </div>
+              </div>
+              <div class="form-group section-row row">
+                <div class="col-xl-12">
+                    <!-- <label for="hobbies" class="col-form-label col-xl-2">Zainteresowania:</label> -->
+                    <div class="col-xl-10">
+                      <input formControlName="hobbies"
+                                type="text"
+                                id="hobbies"
+                                class="form-control"
+                                autocomplete="off"
+                                placeholder="Zainteresowania"
+                                (mouseover)="setHints(hoverMessages.zainteresowania)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.zainteresowania)"
+                                (blur)="clearHints()">
+                    </div>
+                </div>
+              </div>
+          </div>
+          <hr style="border: 1px dashed;" class="mt-5 mb-4">
+
+          <div id="requirements">
+            <div class="row"
+                 (mouseover)="setHints(hoverMessages.wymaganiaPracodawcy)"
+                 (mouseout)="clearHints()">
+              <div class="col-xl-12">
+                <h5 class="section-header requirements-header"><span class="cv-icon"><i class="fas fa-file-alt mr-3" #headerIcon10></i></span><strong>WYMAGANIA REKRUTACYJNE Z OFERTY (OPCJONALNIE)</strong></h5>
+              </div>
+            </div>
+            <div formArrayName="requirements" *ngFor="let req of requirementsArray.controls; let r = index">
+              <div [formGroupName]="r">
+                    <div class="form-group row section-row mb-3">
+                      <div class="col-xl-1">
+                        <p class="py-3 requirement-index">{{ r+1 }}.</p>
+                      </div>
+                        <div class="col-xl-5">
+                          <input type="text"
+                                     class="form-control mb-3"
+                                     [id]="'requirement'+r"
+                                     placeholder="Wymaganie rekrutacyjne"
+                                     formControlName="requirement"
+                                     autocomplete="off"
+                                     (mouseover)="setHints(hoverMessages.wymaganie)"
+                                     (mouseout)="clearHints()"
+                                     (focus)="setHints(hoverMessages.wymaganie)"
+                                     (blur)="clearHints()">
+                        </div>
+                        <div class="col-xl-5">
+                          <input type="text"
+                                     class="form-control mb-3"
+                                     [id]="'answer'+r"
+                                     placeholder="Odpowiedź na wymaganie"
+                                     formControlName="answer"
+                                     autocomplete="off"
+                                     (mouseover)="setHints(hoverMessages.wymaganie)"
+                                     (mouseout)="clearHints()"
+                                     (focus)="setHints(hoverMessages.wymaganie)"
+                                     (blur)="clearHints()">
+                        </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-xl-6">
+                <div class="form-group">
+                  <button class="btn btn-info mr-2 mb-2"
+                          type="button"
+                          (click)="addNewRequirement()"
+                          (mouseover)="setHints(hoverMessages.wymaganieDodaj)"
+                          (mouseout)="clearHints()"
+                          (focus)="setHints(hoverMessages.wymaganieDodaj)"
+                          (blur)="clearHints()">Dodaj wymaganie</button>
+                  <button *ngIf="requirementsArray.length > 1"
+                          class="btn btn-danger"
+                          type="button"
+                          (click)="removeRequirement(requirementsListLength-1)"
+                          (mouseover)="setHints(hoverMessages.wymaganieUsun)"
+                          (mouseout)="clearHints()"
+                          (focus)="setHints(hoverMessages.wymaganieUsun)"
+                          (blur)="clearHints()">Usuń wymaganie</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <hr style="border: 1px dashed;" class="mt-3 mb-5">
+            <div id="clause">
+              <div class="row"
+                   (mouseover)="setHints(hoverMessages.zainteresowania)"
+                   (mouseout)="clearHints()">
+                <div class="col-xl-12">
+                  <h5 class="section-header clause-header"><span class="cv-icon"><i class="fas fa-pen-fancy mr-3"></i></span><strong>TREŚĆ KLAUZULI</strong></h5>
+                </div>
+              </div>
+              <div class="form-group section-row row">
+                <div class="col-xl-12">
+                      <textarea formControlName="clause"
+                                type="text"
+                                id="clause"
+                                class="form-control"
+                                rows="4"
+                                maxlength="1000"
+                                autocomplete="off"
+                                [value]="defaultClause"
+                                (input)="defaultClause = $event.target.value"
+                                (mouseover)="setHints(hoverMessages.klauzula)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.klauzula)"
+                                (blur)="clearHints()"></textarea>
+                </div>
+              </div>
+          </div>
+          <hr>
+                <div *ngIf="isLoading">
+                  <mat-spinner>Trwa generowanie PDF</mat-spinner>
+                  <div>
+                    <p style="text-align: center; margin-top: 5px;">Proszę czekać. Trwa generowanie CV...</p>
+                  </div>
+                </div>
+                  <div class="row mt-2">
+                    <div class="col-xl-4">
+                      <div class="form-group">
+                        <button class="btn btn-info"
+                                type="button"
+                                (click)="generatePDF(photoContainer, headerIcon1, headerIcon2, headerIcon3, headerIcon4, headerIcon5, headerIcon6, headerIcon7, headerIcon8, headerIcon9, headerIcon10, calendarIcon)"
+                                (mouseover)="setHints(hoverMessages.generujPDF)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.generujPDF)"
+                                (blur)="clearHints()">Zapisz jako PDF</button>
+                      </div>
+                    </div>
+                  </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</form>
+</div>
+
+
+
+

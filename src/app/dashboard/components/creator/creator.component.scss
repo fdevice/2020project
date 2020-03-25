@@ -1,0 +1,1407 @@
+
+@media only screen and (max-width: 1199px) {
+
+    .requirement-index {
+      float: left !important;
+    }
+  
+  }
+  
+    // Urządzenia inne niż telefony
+  @media only screen and (min-width: 415px) {
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 1em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 1em !important;
+    }
+  
+  }
+  
+    // WYŚWIETLANIE NA TELEFONACH
+  
+    // iPhone 6/7/8, iPhone X
+  @media only screen and (min-width: 361px) and (max-width: 410px) {
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 11px !important;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-ms-input-placeholder,
+    input[type="email"]::-ms-input-placeholder,
+    input[type="number"]::-ms-input-placeholder,
+    select::-ms-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-moz-placeholder,
+    input[type="email"]::-moz-placeholder,
+    input[type="number"]::-moz-placeholder,
+    select::-moz-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    #salary::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    #salary::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    .experience-header, .education-header, .courses-header,
+    .languages-header, .advantages-header,
+    .hobby-header, .clause-header, .conditions-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .personalData-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+    }
+  
+    .skills-header {
+      font-weight: 1000;
+      font-size: 0.8em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .requirements-header {
+      font-weight: 1000;
+      font-size: 0.75em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .chosenAdvantages {
+      font-size: 0.85em;
+      margin-top: 15px;
+    }
+  
+    .selected-advantage {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: 600;
+      font-size: 0.75em;
+    }
+  
+    div.photo-template {
+      height: 160px !important;
+      width: 160px !important;
+    }
+  
+    .user-photo {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .user-photo img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .skills-label {
+      font-size: 0.8em;
+    }
+  
+    .upload-button {
+      padding: 7px !important;
+    }
+  
+    #clause {
+      font-size: 0.85em;
+      margin-top: 12px;
+    }
+  
+    .clause-header {
+      margin-top: 5px !important;
+    }
+  
+    .languageLevelLabel {
+      margin-bottom: 10px;
+    }
+  
+    div.card {
+      box-shadow: 2px 2px 10px grey;
+      margin-right: 5px !important;
+      margin-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-left: 20px;
+      padding-right: 0px !important;
+    }
+  
+    mat-option {
+      font-size: 0.85em !important;
+    }
+  
+    #availability {
+      font-size: 0.9em;
+    }
+  
+  }
+  
+  
+      // Landscape & iPad
+  @media only screen and (min-width: 558px) and (max-width: 768px) {
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 11px !important;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-ms-input-placeholder,
+    input[type="email"]::-ms-input-placeholder,
+    input[type="number"]::-ms-input-placeholder,
+    select::-ms-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-moz-placeholder,
+    input[type="email"]::-moz-placeholder,
+    input[type="number"]::-moz-placeholder,
+    select::-moz-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    #salary::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    #salary::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    .experience-header, .education-header, .courses-header,
+    .languages-header, .advantages-header,
+    .hobby-header, .clause-header, .conditions-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: left;
+      margin-top: 20px;
+    }
+  
+    .personalData-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: left;
+    }
+  
+    .skills-header {
+      font-weight: 1000;
+      font-size: 0.8em !important;
+      text-align: left;
+      margin-top: 20px;
+    }
+  
+    .requirements-header {
+      font-weight: 1000;
+      font-size: 0.75em !important;
+      text-align: left;
+      margin-top: 20px;
+    }
+  
+    .chosenAdvantages {
+      font-size: 0.85em;
+      margin-top: 15px;
+    }
+  
+    .selected-advantage {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: 600;
+      font-size: 0.75em;
+    }
+  
+    div.photo-template {
+      height: 160px !important;
+      width: 160px !important;
+    }
+  
+    .user-photo {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .user-photo img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .skills-label {
+      font-size: 0.8em;
+    }
+  
+    .upload-button {
+      padding: 7px !important;
+    }
+  
+    #clause {
+      font-size: 0.85em;
+      margin-top: 12px;
+    }
+  
+    .clause-header {
+      margin-top: 5px !important;
+    }
+  
+    .languageLevelLabel {
+      margin-bottom: 10px;
+    }
+  
+    div.card {
+      box-shadow: 2px 2px 10px grey;
+      margin-right: 5px !important;
+      margin-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-left: 20px;
+    }
+  
+    mat-option {
+      font-size: 0.85em !important;
+    }
+  
+    #availability {
+      font-size: 0.9em;
+    }
+  
+  }
+  
+  
+    // iPhone 6/7/8 Plus, Pixel 2/2 XL
+  @media only screen and (min-width: 411px) and (max-width: 414px) {
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 11px !important;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-ms-input-placeholder,
+    input[type="email"]::-ms-input-placeholder,
+    input[type="number"]::-ms-input-placeholder,
+    select::-ms-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-moz-placeholder,
+    input[type="email"]::-moz-placeholder,
+    input[type="number"]::-moz-placeholder,
+    select::-moz-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    #salary::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.7em !important;
+    }
+  
+    #salary::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.7em !important;
+    }
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    .experience-header, .education-header, .courses-header,
+    .languages-header, .advantages-header,
+    .hobby-header, .clause-header, .conditions-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .personalData-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+    }
+  
+    .skills-header {
+      font-weight: 1000;
+      font-size: 0.8em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .requirements-header {
+      font-weight: 1000;
+      font-size: 0.75em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .chosenAdvantages {
+      font-size: 0.85em;
+      margin-top: 15px;
+    }
+  
+    .selected-advantage {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: 600;
+      font-size: 0.75em;
+    }
+  
+    div.photo-template {
+      height: 160px !important;
+      width: 160px !important;
+    }
+  
+    .user-photo {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .user-photo img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .skills-label {
+      font-size: 0.8em;
+    }
+  
+    .upload-button {
+      padding: 7px !important;
+    }
+  
+    #clause {
+      font-size: 0.85em;
+      margin-top: 12px;
+    }
+  
+    .clause-header {
+      margin-top: 5px !important;
+    }
+  
+    .languageLevelLabel {
+      margin-bottom: 10px;
+    }
+  
+    div.card {
+      box-shadow: 2px 2px 10px grey;
+      margin-right: 5px !important;
+      margin-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-left: 20px;
+    }
+  
+    mat-option {
+      font-size: 0.85em !important;
+    }
+  
+    #availability {
+      font-size: 0.9em;
+    }
+  
+  }
+  
+    // Samsung Galaxy S5
+  @media only screen and (min-width: 321px) and (max-width: 360px) {
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 11px !important;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-ms-input-placeholder,
+    input[type="email"]::-ms-input-placeholder,
+    input[type="number"]::-ms-input-placeholder,
+    select::-ms-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-moz-placeholder,
+    input[type="email"]::-moz-placeholder,
+    input[type="number"]::-moz-placeholder,
+    select::-moz-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.56em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.56em !important;
+    }
+  
+    #location::-webkit-input-placeholder,
+    #disposition::-webkit-input-placeholder,
+    #knownRegulationsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.58em !important;
+    }
+  
+    #location::-moz-input-placeholder,
+    #disposition::-moz-input-placeholder,
+    #knownRegulationsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.58em !important;
+    }
+  
+    #salary::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.55em !important;
+    }
+  
+    #salary::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.55em !important;
+    }
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.9em !important;
+    }
+  
+    .experience-header, .education-header, .courses-header,
+    .languages-header, .advantages-header,
+    .hobby-header, .clause-header, .conditions-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .personalData-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+    }
+  
+    .skills-header {
+      font-weight: 1000;
+      font-size: 0.8em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .requirements-header {
+      font-weight: 1000;
+      font-size: 0.75em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .chosenAdvantages {
+      font-size: 0.85em;
+      margin-top: 15px;
+    }
+  
+    .selected-advantage {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: 600;
+      font-size: 0.75em;
+    }
+  
+    div.photo-template {
+      height: 160px !important;
+      width: 160px !important;
+    }
+  
+    .user-photo {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .user-photo img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .skills-label {
+      font-size: 0.8em;
+    }
+  
+    .upload-button {
+      padding: 7px !important;
+    }
+  
+    #clause {
+      font-size: 0.85em;
+      margin-top: 12px;
+    }
+  
+    .clause-header {
+      margin-top: 5px !important;
+    }
+  
+    .languageLevelLabel {
+      margin-bottom: 10px;
+    }
+  
+    div.card {
+      box-shadow: 2px 2px 10px grey;
+      margin-right: 5px !important;
+      margin-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-left: 20px;
+    }
+  
+    mat-option {
+      font-size: 0.85em !important;
+    }
+  
+    #availability {
+      font-size: 0.9em;
+    }
+  
+  }
+  
+   // iPhone 5/SE
+   @media only screen and (max-width: 320px) {
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 11px !important;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-ms-input-placeholder,
+    input[type="email"]::-ms-input-placeholder,
+    input[type="number"]::-ms-input-placeholder,
+    select::-ms-input-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    input[type="text"]::-moz-placeholder,
+    input[type="email"]::-moz-placeholder,
+    input[type="number"]::-moz-placeholder,
+    select::-moz-placeholder {
+      color: #B8B8B8;
+      font-size: 10px !important;
+    }
+  
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.5em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.5em !important;
+    }
+  
+    #location::-webkit-input-placeholder,
+    #disposition::-webkit-input-placeholder,
+    #knownRegulationsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.55em !important;
+    }
+  
+    #location::-moz-input-placeholder,
+    #disposition::-moz-input-placeholder,
+    #knownRegulationsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.55em !important;
+    }
+  
+    #otherSkillsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.65em !important;
+    }
+  
+    #otherSkillsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.65em !important;
+    }
+  
+    #salary::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.49em !important;
+    }
+  
+    #salary::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.49em !important;
+    }
+  
+    input.trade-input::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    input.trade-input::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.6em !important;
+    }
+  
+    #name::-webkit-input-placeholder,
+    #surname::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.8em !important;
+    }
+  
+    #name::-moz-input-placeholder,
+    #surname::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.8em !important;
+    }
+  
+    .experience-header, .education-header, .courses-header,
+    .languages-header, .advantages-header,
+    .hobby-header, .clause-header, .conditions-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .personalData-header {
+      font-weight: 1000;
+      font-size: 0.9em !important;
+      text-align: right;
+    }
+  
+    .skills-header {
+      font-weight: 1000;
+      font-size: 0.8em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .requirements-header {
+      font-weight: 1000;
+      font-size: 0.75em !important;
+      text-align: right;
+      margin-top: 20px;
+    }
+  
+    .chosenAdvantages {
+      font-size: 0.8em;
+      margin-top: 15px;
+    }
+  
+    .selected-advantage {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: 600;
+      font-size: 0.7em;
+    }
+  
+    div.photo-template {
+      height: 150px !important;
+      width: 150px !important;
+    }
+  
+    .user-photo {
+      position: relative;
+      width: 150px !important;
+      height: 150px !important;
+      overflow: hidden;
+      border: 2px solid rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 20px !important;
+    }
+  
+    .user-photo img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .skills-label {
+      font-size: 0.8em;
+    }
+  
+    .upload-button {
+      padding: 7px !important;
+    }
+  
+    #clause {
+      font-size: 0.8em;
+      margin-top: 12px;
+    }
+  
+    .clause-header {
+      margin-top: 5px !important;
+    }
+  
+    .languageLevelLabel {
+      margin-bottom: 10px;
+    }
+  
+    div.card {
+      box-shadow: 2px 2px 10px grey;
+      margin-right: 5px !important;
+      margin-bottom: 10px !important;
+      padding-top: 5px !important;
+      padding-left: 20px;
+    }
+  
+    mat-option {
+      font-size: 0.85em !important;
+    }
+  
+    #availability {
+      font-size: 0.85em;
+    }
+  
+  }
+  
+  mat-spinner {
+    margin: auto;
+  }
+  
+  mat-select {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+    padding: 7px;
+  }
+  
+  .requirement-index {
+    float: right;
+  }
+  
+  h5, p {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .cv-form-header {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+    padding-top: 15px;
+  }
+  
+  .experience-header {
+    font-weight: 1000;
+    font-size: 1.45em;
+  }
+  
+  .education-header {
+    font-weight: 1000;
+    font-size: 1.45em;
+  }
+  
+  .section-row {
+    @media only screen and (min-width: 768px) {
+      padding-left: 65px;
+    }
+  }
+  
+  .selected-advantage {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 600;
+  }
+  
+  div.card {
+    box-shadow: 2px 2px 10px grey;
+    margin-right: 20px;
+    margin-bottom: 50px !important;
+    padding-top: 30px;
+    padding-left: 20px;
+  }
+  
+  div.photo-template {
+    height: 250px;
+    width: 250px;
+  }
+  
+  .user-photo {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    border: 2px solid rgba(128, 128, 128, 0.5);
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  
+  .user-photo img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .upload-button {
+    position: relative;
+    overflow: hidden;
+    width: auto;
+    padding: 0.5% 2%;
+  }
+  
+  .upload-button>input {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+  }
+  
+  #addExperienceButton, #removeExperienceButton,
+  #addEducationButton, #removeEducationButton,
+  #addCoursesButton, #removeCoursesButton,
+  #addLanguagesButton, #removeLanguagesButton,
+  #addRespButton, #removeRespButton {
+    margin: 0 3px;
+  }
+  
+  hr.style8 {
+      border-top: 1px solid #8c8b8b;
+      border-bottom: 1px solid #fff;
+  }
+  
+  hr.style8:after {
+      content: '';
+      display: block;
+      margin-top: 2px;
+      border-top: 1px solid #8c8b8b;
+      border-bottom: 1px solid #fff;
+  }
+  
+  hr.style18 {
+    height: 30px;
+    border-style: solid;
+    border-color: #8c8b8b;
+    border-width: 1px 0 0 0;
+    border-radius: 20px;
+  }
+  
+  hr.style18:before {
+    display: block;
+    content: "";
+    height: 30px;
+    margin-top: -31px;
+    border-style: solid;
+    border-color: #8c8b8b;
+    border-width: 0 0 1px 0;
+    border-radius: 20px;
+  }
+  
+  .calendar-icon {
+    float: right;
+    padding-top: 4px;
+    padding-right: 0px;
+    margin-right: 0px;
+    color: rgba(128, 128, 128, 0.65);
+    font-size: 1.2em;
+  }
+  
+  .calendar-icon-default {
+    padding-top: 4px;
+    padding-right: 0px;
+    margin-right: 0px;
+    color: rgba(128, 128, 128, 0.65);
+    font-size: 1.2em;
+  }
+  
+  .now-checkbox {
+    padding-top: 14px;
+  }
+  
+  .now-label {
+    color: rgba(128, 128, 128, 0.75);
+  }
+  
+  .experience-date-input {
+    color: rgba(128, 128, 128, 0.75);
+  }
+  
+  .education-date-input {
+    color: rgba(128, 128, 128, 0.75);
+  }
+  
+  .courses-date-input {
+    color: rgba(128, 128, 128, 0.75);
+  }
+  
+  // i.fa-pen {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.5em;
+  // }
+  
+  i.fa-pen {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.5em;
+  }
+  
+  // i.fa-user {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.6em;
+  // }
+  
+  i.fa-user {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.6em;
+  }
+  
+  // i.fa-briefcase {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.5em;
+  // }
+  
+  i.fa-briefcase {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.5em;
+  }
+  
+  // i.fa-graduation-cap {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.4em;
+  // }
+  
+  i.fa-graduation-cap {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.4em;
+  }
+  
+  // i.fa-award {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.65em;
+  // }
+  
+  i.fa-award {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.65em;
+  }
+  
+  // i.fa-comment-alt {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.5em 0.4em;
+  // }
+  
+  i.fa-comment-alt {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.5em 0.4em;
+  }
+  
+  // i.fa-crown {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.4em;
+  // }
+  
+  i.fa-crown {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.4em;
+  }
+  
+  // i.fa-dumbbell {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.55em 0.4em;
+  // }
+  
+  i.fa-dumbbell {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.55em 0.4em;
+  }
+  
+  // i.fa-theater-masks {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.4em;
+  // }
+  
+  i.fa-theater-masks {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.4em;
+  }
+  
+  // i.fa-file-alt {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.6em;
+  // }
+  
+  i.fa-file-alt {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.6em;
+  }
+  
+  // i.fa-pen-fancy {
+  //   color: whitesmoke;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   display: inline-block;
+  //   border-radius: 100px;
+  //   padding: 0.5em 0.5em;
+  // }
+  
+  i.fa-pen-fancy {
+    color: rgba(0, 0, 0, 0.8);
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    padding: 0.5em 0.5em;
+  }
+  
+  input.ng-invalid.ng-touched {
+    border: 2px solid red;
+  }
+  
+  form {
+  
+    input[type="text"], input[type="email"], input[type="number"], select {
+    box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+    border: none;
+    border-radius: 0px;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+      background: transparent;
+      margin-bottom: 10px;
+      // font: 16px Arial, Helvetica, sans-serif;
+      height: 45px;
+    }
+  
+    #name, #surname {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+      border: none;
+      border-radius: 0px;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+      background: transparent;
+      margin-bottom: 10px;
+      // font: 16px Arial, Helvetica, sans-serif;
+      height: 70px;
+    }
+  
+    .employer-name-input {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+      border: none;
+      border-radius: 0px;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+      background: transparent;
+      margin-bottom: 10px;
+      // font: 16px Arial, Helvetica, sans-serif;
+      height: 70px;
+    }
+  
+    input[type="text"]::-webkit-input-placeholder,
+    input[type="email"]::-webkit-input-placeholder,
+    input[type="number"]::-webkit-input-placeholder,
+    select::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 13px;
+    }
+  
+    input[type="text"]::-moz-input-placeholder,
+    input[type="email"]::-moz-input-placeholder,
+    input[type="number"]::-moz-input-placeholder,
+    select::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 13px;
+    }
+  
+    // #name::-webkit-input-placeholder,
+    // #surname::-webkit-input-placeholder {
+    //   color: #B8B8B8;
+    //   font-size: 1em !important;
+    // }
+  
+    // #name::-moz-input-placeholder,
+    // #surname::-moz-input-placeholder {
+    //   color: #B8B8B8;
+    //   font-size: 1em !important;
+    // }
+  
+    input[type="text"]:disabled {
+    box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+    border: none;
+    border-radius: 0px;
+      // border-bottom: 1px solid #39CCCC;
+      background: whitesmoke;
+      margin-bottom: 10px;
+      // font: 16px Arial, Helvetica, sans-serif;
+      height: 45px;
+    }
+  
+    input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, select:focus {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+      border: none;
+      border-radius: 0px;
+      border-bottom: 1px solid orange;
+      background: transparent;
+      margin-bottom: 10px;
+      // font: 16px Arial, Helvetica, sans-serif;
+      height: 45px;
+      }
+  
+  }
+  
+  

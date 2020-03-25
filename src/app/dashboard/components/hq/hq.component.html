@@ -1,0 +1,23 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">          
+          <div *ngIf="savedCV" class="card overflow-hidden w-full max-w-xs" style="margin: 6% auto">        
+            <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+              <div class="text-center">
+                <img class="w-16" style="margin: auto" src="assets/img/gorillajob/gorilla.png">
+              </div>
+            </div>        
+            <div class="text-center mt-4">
+              <h1 class="title m-0">!!! Under Constrakszyn !!!</h1>              
+            </div>                            
+          </div>
+          <div *ngIf="!savedCV" class="card overflow-hidden w-full max-w-xs" style="margin: 6% auto">        
+            <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+              <div class="text-center">
+                <img class="w-16" style="margin: auto" src="assets/img/gorillajob/gorilla.png">
+              </div>
+            </div>        
+            <div class="text-center mt-4 mb-4">
+              <h2 class="title m-0">Goryl widzi, że nie posiadasz jeszcze CV</h2>
+              <h2 class="title m-0">Kliknij <a routerLink="/kreator" style="color: #455ABA;">tutaj</a>, aby je wygenerować!</h2>                  
+            </div>                            
+          </div>
+        </div>

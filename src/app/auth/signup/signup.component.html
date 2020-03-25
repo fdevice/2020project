@@ -1,0 +1,51 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <div @fadeInUp *ngIf="!isLoading" class="card w-full overflow-auto max-w-xs">
+
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="fill-current text-center">
+        <img class="w-16" src="assets/img/gorillajob/gorilla.png">
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <h2 class="title m-0">Zarejestruj nowe konto</h2>
+      <h4 class="body-2 text-secondary m-0">Wypełnij poniższe pola</h4>
+    </div>
+
+    <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+    <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading" class="p-6" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="auto" fxLayout="column">
+        <mat-form-field fxFlex="grow">
+          <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+          <mat-error *ngIf="emailInput.invalid">Proszę wpisać poprawny adres e-mail.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" name="password" ngModel matInput placeholder="Hasło (min. 6 znaków, w tym litery i cyfry)" #passwordInput="ngModel" required pattern="(?=.*\d)(?=.*[a-z]).{6,}">
+          <div *ngIf="passwordInput.invalid && (signupForm.submitted || passwordInput.touched)">
+            <mat-error *ngIf="passwordInput.errors.required">Proszę wpisać hasło. </mat-error>
+            <mat-error *ngIf="passwordInput.errors.pattern">Hasło powinno zawierać min. 6 znaków, w tym litery i przynajmniej jedną cyfrę.</mat-error>
+          </div>
+          <!-- <mat-error *ngIf="passwordInput.errors.required && (signupForm.submitted || passwordInput.touched)">Proszę wpisać hasło.</mat-error>
+          <mat-error *ngIf="passwordInput.errors.pattern && (signupForm.submitted || passwordInput.touched)">Hasło powinno zawierać min. 6 znaków, w tym litery i przynajmniej jedną cyfrę.</mat-error> -->
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" name="repeatPassword" ngModel matInput placeholder="Powtórz hasło" #repeatPassword="ngModel" required pattern="{{ passwordInput.value }}">
+          <div *ngIf=" repeatPassword.invalid && (signupForm.submitted || repeatPassword.touched)">
+            <mat-error *ngIf="repeatPassword.errors.required">Proszę ponownie wpisać hasło. </mat-error>
+            <mat-error *ngIf="repeatPassword.errors.pattern">Wpisane hasła różnią się od siebie.</mat-error>
+          </div>
+          <!-- <mat-error *ngIf="repeatPassword.errors.required && (signupForm.submitted || repeatPassword.touched)">Proszę ponownie wpisać hasło.</mat-error>
+          <mat-error *ngIf="repeatPassword.errors.pattern && (signupForm.submitted || repeatPassword.touched)">Hasła różnią się od siebie.</mat-error> -->
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading">Zarejestruj</button>
+        <p class="mt-3 text-secondary text-center">
+          Posiadasz już konto?<br/>
+          <a [routerLink]="['/logowanie']">Kliknij tutaj, aby zalogować się do serwisu</a>
+        </p>        
+      </div>
+    </form>
+  </div>
+</div>
+  
+  
