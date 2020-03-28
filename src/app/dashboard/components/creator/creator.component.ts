@@ -919,10 +919,20 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     if (this.formValid) {
 
       this.isLoading = true;
+      console.log(this.screenInnerWidth);
       console.log(uploadedPhoto.clientWidth);
       console.log(uploadedPhoto.clientHeight);
 
-      const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: uploadedPhoto.clientWidth, height: uploadedPhoto.clientHeight});
+      let userPhotoWidth = uploadedPhoto.clientWidth;
+      let userPhotoHeight = uploadedPhoto.clientHeight;
+
+      if (this.screenInnerWidth < 1980 && this.screenInnerWidth >= 1800) {
+        userPhotoWidth = userPhotoWidth * 0.95; 
+      } else if (this.screenInnerWidth < 1800 && this.screenInnerWidth >= 1650) {
+        userPhotoWidth = userPhotoWidth * 1.25; 
+      }
+      
+      const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight});
       const headerIcon1 = await domtoimage.toPng(icon1, {width: icon1.clientWidth, height: icon1.clientHeight});
       const headerIcon2 = await domtoimage.toPng(icon2, {width: icon2.clientWidth, height: icon2.clientHeight});
       const headerIcon3 = await domtoimage.toPng(icon3, {width: icon3.clientWidth, height: icon3.clientHeight});
