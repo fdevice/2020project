@@ -928,9 +928,23 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       if (this.screenInnerWidth < 1980 && this.screenInnerWidth >= 1800) {
         userPhotoWidth = userPhotoWidth * 0.95; 
-      } else if (this.screenInnerWidth < 1800 && this.screenInnerWidth >= 1650) {
+      } else if (this.screenInnerWidth < 1800 && this.screenInnerWidth >= 1500) {
         userPhotoWidth = userPhotoWidth * 1.25; 
-      }
+      } else if (this.screenInnerWidth < 1500 && this.screenInnerWidth >= 1450) {
+        userPhotoWidth = userPhotoWidth * 1.4;
+      } else if (this.screenInnerWidth < 1450 && this.screenInnerWidth >= 1400) {
+        userPhotoWidth = userPhotoWidth * 1.5;
+      } else if (this.screenInnerWidth < 1400 && this.screenInnerWidth >= 1280) {
+        userPhotoWidth = userPhotoWidth * 1.55;
+      } else if (this.screenInnerWidth < 1280 && this.screenInnerWidth >= 1160) {
+        userPhotoWidth = userPhotoWidth * 1.3; 
+      } else if (this.screenInnerWidth < 1160 && this.screenInnerWidth >= 1100) {
+        userPhotoWidth = userPhotoWidth * 1.35; 
+      } else if (this.screenInnerWidth < 1100 && this.screenInnerWidth >= 992) {
+        userPhotoWidth = userPhotoWidth * 1.55; 
+      } else if (this.screenInnerWidth < 992 && this.screenInnerWidth >= 900) {
+        userPhotoWidth = userPhotoWidth * 0.7; 
+      } 
       
       const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight});
       const headerIcon1 = await domtoimage.toPng(icon1, {width: icon1.clientWidth, height: icon1.clientHeight});
