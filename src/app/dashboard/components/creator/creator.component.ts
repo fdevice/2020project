@@ -942,8 +942,22 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         userPhotoWidth = userPhotoWidth * 1.35; 
       } else if (this.screenInnerWidth < 1100 && this.screenInnerWidth >= 992) {
         userPhotoWidth = userPhotoWidth * 1.55; 
-      } else if (this.screenInnerWidth < 992 && this.screenInnerWidth >= 900) {
+      } else if (this.screenInnerWidth < 992 && this.screenInnerWidth >= 900) { 
         userPhotoWidth = userPhotoWidth * 0.7; 
+      } else if (this.screenInnerWidth < 900 && this.screenInnerWidth >= 850) { 
+        userPhotoWidth = userPhotoWidth * 0.75; 
+      } else if (this.screenInnerWidth < 850 && this.screenInnerWidth >= 769) { 
+        userPhotoWidth = userPhotoWidth * 0.8; 
+      } else if (this.screenInnerWidth < 769 && this.screenInnerWidth >= 720) { 
+        userPhotoWidth = userPhotoWidth * 0.4; 
+      } else if (this.screenInnerWidth < 720 && this.screenInnerWidth >= 630) {
+        userPhotoWidth = userPhotoWidth * 0.45; 
+      } else if (this.screenInnerWidth < 630 && this.screenInnerWidth >= 580) { 
+        userPhotoWidth = userPhotoWidth * 0.5; 
+      } else if (this.screenInnerWidth < 580 && this.screenInnerWidth >= 558) {
+        userPhotoWidth = userPhotoWidth * 0.6; 
+      } else if (this.screenInnerWidth < 558 && this.screenInnerWidth >= 500) { //500
+        userPhotoWidth = userPhotoWidth * 0.9; 
       } 
       
       const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight});

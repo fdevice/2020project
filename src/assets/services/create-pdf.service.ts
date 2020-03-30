@@ -195,13 +195,13 @@ export class CreatePdfService {
     this.document.addImage(this.userPhoto, 'PNG', this.leftMargin - 5, this.fromTop - 5, 75, 50);    
     this.document.setTextColor(black);
     this.document.setFontSize(30);
-    this.document.text(55, this.fromTop + 16, this.name);
-    this.document.text(55, this.fromTop + 26, this.surname);
+    this.document.text(65, this.fromTop + 16, this.name);
+    this.document.text(65, this.fromTop + 26, this.surname);
     this.document.setTextColor(gray);
     this.document.setFontSize(9);
-    this.document.text(55, this.fromTop + 35, this.email);
-    this.document.text(135, this.fromTop + 35, 'Nr telefonu: ' + this.phone);
-    this.fromTop += 45;
+    this.document.text(65, this.fromTop + 35, this.email);
+    this.document.text(140, this.fromTop + 35, 'Nr telefonu: ' + this.phone);
+    this.fromTop += 50;
 
     // pozioma linia po Danych Osobowych
     this.document.setDrawColor('#CFE6EF');
