@@ -956,8 +956,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         userPhotoWidth = userPhotoWidth * 0.5; 
       } else if (this.screenInnerWidth < 580 && this.screenInnerWidth >= 558) {
         userPhotoWidth = userPhotoWidth * 0.6; 
-      } else if (this.screenInnerWidth < 558 && this.screenInnerWidth >= 500) { //500
+      } else if (this.screenInnerWidth < 558 && this.screenInnerWidth >= 500) {
         userPhotoWidth = userPhotoWidth * 0.9; 
+      } else if (this.screenInnerWidth < 500 && this.screenInnerWidth >= 450) { // 480
+        userPhotoWidth = userPhotoWidth * 1.0; 
       } 
       
       const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight});
