@@ -1,11 +1,31 @@
 
-@media only screen and (max-width: 1199px) {
+  @media only screen and (min-width: 1200px) {
 
-    .requirement-index {
-      float: left !important;
+    #addRespButton, #removeRespButton {
+      font-size: small;
+    }
+
+    #devicesUsageDescription::-webkit-input-placeholder,
+    #knownProgramsDescription::-webkit-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
+    }
+  
+    #devicesUsageDescription::-moz-input-placeholder,
+    #knownProgramsDescription::-moz-input-placeholder {
+      color: #B8B8B8;
+      font-size: 0.59em !important;
     }
   
   }
+
+  @media only screen and (max-width: 1199px) {
+
+      .requirement-index {
+        float: left !important;
+      }
+    
+    }
   
     // Urządzenia inne niż telefony
   @media only screen and (min-width: 415px) {

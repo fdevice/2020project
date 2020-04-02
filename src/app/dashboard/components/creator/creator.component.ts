@@ -958,7 +958,15 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         userPhotoWidth = userPhotoWidth * 0.6; 
       } else if (this.screenInnerWidth < 558 && this.screenInnerWidth >= 500) {
         userPhotoWidth = userPhotoWidth * 0.9; 
-      } else if (this.screenInnerWidth < 500 && this.screenInnerWidth >= 450) { // 480
+      } else if (this.screenInnerWidth < 500 && this.screenInnerWidth >= 480) {
+        userPhotoWidth = userPhotoWidth * 1.0; 
+      } else if (this.screenInnerWidth < 480 && this.screenInnerWidth >= 420) {
+        userPhotoWidth = userPhotoWidth * 1.2; 
+      } else if (this.screenInnerWidth < 420 && this.screenInnerWidth >= 400) {
+        userPhotoWidth = userPhotoWidth * 0.8; 
+      } else if (this.screenInnerWidth < 400 && this.screenInnerWidth >= 360) {
+        userPhotoWidth = userPhotoWidth * 0.9; 
+      } else if (this.screenInnerWidth < 360 && this.screenInnerWidth >= 300) {
         userPhotoWidth = userPhotoWidth * 1.0; 
       } 
       
