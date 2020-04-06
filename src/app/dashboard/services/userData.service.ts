@@ -15,7 +15,7 @@ export class UserDataService {
   private tokenTimer: any;
   // private userId: string;
   private loggedAs: string;
-  private hasCV: boolean;
+  private hasBaseCV: boolean;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -26,12 +26,12 @@ export class UserDataService {
   } 
 
   retrieveCV(email: string): boolean {
-    this.http.get<{ hasSavedCV: boolean }>(BACKEND_URL + "/user/" + email)
+    this.http.get<{ hasBaseCV: boolean }>(BACKEND_URL + "/user/" + email)
       .subscribe(result => {
-        this.hasCV = result.hasSavedCV;
-        console.log(this.hasCV);        
+        this.hasBaseCV = result.hasBaseCV;
+        console.log(this.hasBaseCV);        
       });
-      return this.hasCV;
+      return this.hasBaseCV;
   }
 
 //   getToken() {

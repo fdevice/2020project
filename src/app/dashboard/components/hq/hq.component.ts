@@ -9,7 +9,7 @@ import { UserDataService } from '../../services/userData.service';
 export class HqComponent implements OnInit {
 
   loggedUser: string;
-  savedCV: boolean;
+  hasBaseCV: boolean;
 
   constructor(
     private userDataService: UserDataService
@@ -17,7 +17,7 @@ export class HqComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser = this.userDataService.getLoggedAs();      
-    this.savedCV = this.userDataService.retrieveCV(this.loggedUser);
+    this.hasBaseCV = this.userDataService.retrieveCV(this.loggedUser);
   }
 
 }

@@ -10,7 +10,8 @@ router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
       const user = new User({
         email: req.body.email,
-        password: hash
+        password: hash,
+        hasBaseCV: false
       });
       user
         .save()
@@ -64,25 +65,22 @@ router.post("/signup", (req, res, next) => {
       });
   });
 
-  router.get("/:email", (req, res, next) => {
-    let hasSavedCV;
+  router.get("/:email", (req, res, next) => {    
     User.findOne({ email: req.params.email })
-      .then(user => {
-        if (!user.documentPath) {   
-          console.log(hasSavedCV);       
-          hasSavedCV = false;
-          console.log(hasSavedCV);
-          console.log("Brak zapisanego CV");
+      .then(result => {
+        if (result.hasBaseCV == true) {   
+          console.log(result.hasBaseCV);                
+          console.log("Odnaleziono bazowe CV!");
           res.status(200).json({
-            message: "Brak zapisanego CV!",
-            hasSavedCV: hasSavedCV            
+            message: "Odnaleziono bazowe CV!",
+            hasBaseCV: result.hasBaseCV            
           });
-        } else {
-          hasSavedCV = true; 
-          console.log(hasSavedCV);
+        } else {           
+          console.log(result.hasBaseCV);
+          console.log("Brak zapisanego bazowego CV!");
           res.status(200).json({
-            message: "Odnaleziono zapisane CV!",
-            hasSavedCV: hasSavedCV
+            message: "Brak zapisanego bazowego CV!",
+            hasBaseCV: false
           })
         }               
       })      
