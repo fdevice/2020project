@@ -77,5 +77,6 @@ export const HOVER_MESSAGE =
     wymaganieDodaj: "Kliknij, żeby dodać kolejne wymaganie do listy",
     wymaganieUsun: "Kliknij, żeby usunąć ostatnią pozycję z listy wymagań",
     klauzula: 'Pamiętaj, że Twoje CV musi zawierać treść klauzuli pozwalającej na przetwarzanie Twoich danych osobowych na potrzeby rekrutacji. Jeżeli pracodawca wymaga klauzuli o konkretnej treści, możesz wkleić ją w miejsce obecnej',
-    generujPDF: "Kliknij w przycisk, żeby wygenerować plik w formacie PDF zawierający Twoje CV"
+    generujPDF: "Kliknij w przycisk, żeby wygenerować plik w formacie PDF zawierający Twoje CV",
+    zapiszBazoweCV: "Kliknij w przycisk, żeby zapisać swoje bazowe CV"
   }

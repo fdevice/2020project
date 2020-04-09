@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../../../../assets/components/warning-dialog/warning-dialog.component';
 import { DialogService } from '../../../../assets/services/dialog.service';
+import { CVDataService } from 'src/assets/services/cv-data.service';
 
 defineLocale('pl', plLocale);
 
@@ -149,6 +150,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   constructor(
     private PDF: CreatePdfService,
+    private baseCV: CVDataService,
     private localeService: BsLocaleService,
     private fb: FormBuilder,
     private sharedLists: ListsViewerService,
@@ -909,8 +911,43 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     return true;
   }
 
+  //********************  TWORZENIE BAZOWEGO CV  ********************************/
 
-  //****************************************************/
+  public saveBaseCV() {
+    this.baseCV.name = this.cvForm.get('name').value.charAt(0).toUpperCase() + this.cvForm.get('name').value.slice(1);
+    this.baseCV.surname = this.cvForm.get('surname').value.charAt(0).toUpperCase() + this.cvForm.get('surname').value.slice(1);
+    this.baseCV.email = this.cvForm.get('email').value;
+    this.baseCV.phone = this.cvForm.get('phone').value;
+    this.baseCV.position = this.cvForm.get('position').value;
+    this.baseCV.location = this.cvForm.get('location').value;
+    this.baseCV.disposition = this.cvForm.get('disposition').value;
+    this.baseCV.salary = this.cvForm.get('salary').value;
+    
+    if (!this.selectAvailability) {
+      this.baseCV.availability = this.cvForm.get('availability').value;
+    } else {
+      this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
+    };
+
+    if (this.cvForm.get('employment').value != '') {
+      this.baseCV.employment = this.cvForm.get('employment').value;
+    } else {
+      this.baseCV.employment = [];
+    };
+
+    let emp = this.cvForm.get('employment').value;
+
+
+
+    console.log(emp);
+
+    this.baseCV.sendBaseCVData();
+    
+  }
+
+
+
+  //********************  GENEROWANIE CV DO PDF  ********************************/
 
   public async generatePDF(uploadedPhoto, icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10, calendar: HTMLElement): Promise<void> {
 
@@ -1005,7 +1042,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       // WARUNKI ZATRUDNIENIA
       this.PDF.position = this.cvForm.get('position').value;
-      this.PDF.location = this.cvForm.get('location').value
+      this.PDF.location = this.cvForm.get('location').value;
 
       if (!this.selectAvailability) {
         this.PDF.availability = this.cvForm.get('availability').value;
@@ -1021,7 +1058,6 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.PDF.employment = '';
       };
 
-      // console.log(this.PDF.employment);
       this.PDF.salary = this.cvForm.get('salary').value;
 
       // DANE OSOBOWE

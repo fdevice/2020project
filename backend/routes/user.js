@@ -6,6 +6,8 @@ const User = require("../models/user");
 
 const router = express.Router();
 
+  
+    // REJESTRACJA NOWEGO UŻYTKOWNIKA
 router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
       const user = new User({
@@ -29,6 +31,7 @@ router.post("/signup", (req, res, next) => {
     });
   });
 
+      // LOGOWANIE
   router.post("/login", (req, res, next) => {
     let fetchedUser;
     User.findOne({ email: req.body.email })
@@ -65,6 +68,7 @@ router.post("/signup", (req, res, next) => {
       });
   });
 
+        // SPRAWDZANIE, CZY UŻYTKOWNIK POSIADA ZAPISANE BAZOWE CV
   router.get("/:email", (req, res, next) => {    
     User.findOne({ email: req.params.email })
       .then(result => {
@@ -88,5 +92,62 @@ router.post("/signup", (req, res, next) => {
         console.log(err);
       });
   });
+
+
+      // ZAPISYWANIE BAZOWEGO CV
+    router.put("/cv", (req, res, next) => {
+      // console.log(req.body);
+      User.findOne({ email: req.body.loggedUserEmail })
+        .then(user => {
+          if (!user) {
+            return res.status(401).json({
+              message: "Nie odnaleziono takiego użytkownika!"
+            });          
+          }
+          if (req.body.cvData.name) {
+            user.name = req.body.cvData.name;
+          }
+          if (req.body.cvData.surname) {
+            user.surname = req.body.cvData.surname;
+          }
+          if (req.body.cvData.contactEmail) {
+            user.contactEmail = req.body.cvData.contactEmail;
+          }
+          if (req.body.cvData.phone) {
+            user.phone = req.body.cvData.phone;
+          }
+          if (req.body.cvData.position) {
+            user.baseCVData.position = req.body.cvData.position;
+          }
+          if (req.body.cvData.disposition) {
+            user.baseCVData.disposition = req.body.cvData.disposition;
+          }
+          if (req.body.cvData.location) {
+            user.baseCVData.location = req.body.cvData.location;
+          }
+          if (req.body.cvData.availability) {
+            user.baseCVData.availability = req.body.cvData.availability;
+          }
+          if (req.body.cvData.salary) {
+            user.baseCVData.salary = req.body.cvData.salary;
+          }
+          if (req.body.cvData.employment) {
+            user.baseCVData.employment = req.body.cvData.employment;
+          }
+          user.save()
+            .then(updatedUser => {
+              res.status(200).json({
+                message: "Aktualizacja danych użytkownika zakończona!",
+                result: updatedUser                
+              });
+              console.log(updatedUser);
+              console.log("Updated!")
+            })
+            .catch(err => {
+              res.status(500).send();
+              console.log(err);
+            })
+        })
+    });
 
   module.exports = router;
