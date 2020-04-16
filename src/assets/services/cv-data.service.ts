@@ -8,10 +8,8 @@ import { environment } from 'src/environments/environment';
 const BACKEND_URL = environment.apiUrl;
 
 @Injectable({ providedIn: "root" })
-export class CVDataService {
-
-    baseCVData: CVData = {};    
-
+export class CVDataService {      
+            
     name: string;
     surname: string;
     email: string;
@@ -36,6 +34,7 @@ export class CVDataService {
     finishEducation: any = new Array();
     schoolName: any = new Array();
     schoolProfile: any = new Array();
+    schoolMode: any = new Array();
     startCourse: any = new Array();
     finishCourse: any = new Array();
     courseName: any = new Array();
@@ -56,37 +55,139 @@ export class CVDataService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    sendBaseCVData() {
+    sendBaseCVData() {        
+
+        let baseCVData: CVData = {
+            name: '',
+            surname: '',
+            contactEmail: '',
+            phone: '',      
+            photoPath: '',
+            experience: [],
+            education: [],
+            courses: []
+        };         
+
+        console.dir(baseCVData);               
         
-        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika
+        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika        
 
-        console.log(loggedUserEmail);
+        // const bCVData = new FormData();
 
-        this.baseCVData.name = this.name;
-        this.baseCVData.surname = this.surname;
-        this.baseCVData.contactEmail = this.email;
-        this.baseCVData.phone = this.phone;
-        this.baseCVData.position = this.position;
-        this.baseCVData.disposition = this.disposition;
-        this.baseCVData.location = this.location;
-        this.baseCVData.availability = this.availability;
-        this.baseCVData.employment = this.employment;
-        this.baseCVData.salary = this.salary;
+        console.log(loggedUserEmail);        
 
-        console.log(this.baseCVData);
-        console.log(this.employment);
+        // WARUNKI ZATRUDNIENIA
+        // this.baseCVData.position = this.position;
+        // this.baseCVData.disposition = this.disposition;
+        // this.baseCVData.location = this.location;
+        // this.baseCVData.availability = this.availability;
+        // this.baseCVData.employment = this.employment;
+        // this.baseCVData.salary = this.salary;
 
-        const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: this.baseCVData };
+        // bCVData.append("position", this.position);
+        // bCVData.append("disposition", this.disposition);
+        // bCVData.append("location", this.location);
+        // bCVData.append("availability", this.availability);
+        // // employment array
+        // bCVData.append("salary", this.salary);
 
-        console.log(baseCV);
+        // DANE OSOBOWE + ZDJĘCIE
+        baseCVData.name = this.name;
+        baseCVData.surname = this.surname;
+        baseCVData.contactEmail = this.email;
+        baseCVData.phone = this.phone;
 
-        this.http
-            .put(BACKEND_URL + "/user/cv", baseCV)
-            .subscribe(()=>{
+        console.log("Obiekt baseCVData z niektórymi wartościami: " + baseCVData.name);    
+        
+        // DOŚWIADCZENIE ZAWODOWE
+        for (let i = 0; i < this.totalExperienceLength; i++) {            
 
-            }, error => {
+            if (this.employer[i] != undefined) {                
 
-            });
+                // for (let j = 0; j < this.responsibilities[i].length; j++) {                    
+                //     console.log(this.responsibilities[i]);                    
+                // };     
+                
+                // console.log(this.responsibilities[i]);
+
+                let experienceData: any[] = [
+                {
+                   workStart: this.startWork[i],
+                   workFinish: this.finishWork[i],
+                   employerName: this.employer[i],
+                   trade: this.trade[i],
+                   occupation: this.occupation[i],
+                   responsibilities: this.responsibilities[i]
+                }
+                ];
+
+                baseCVData.experience.push(experienceData);                                                                                                              
+              
+            } 
+            else {
+                console.log("Doświadczenie zawodowe puste!")
+            }
+        };
+
+        // EDUKACJA   
+
+        for (let e = 0; e < this.totalEducationLength; e++) {
+
+            if (this.schoolName[e] != undefined) {      
+                
+                let educationData: any[] = [
+                {
+                    educationStart: this.startEducation[e],
+                    educationFinish: this.finishEducation[e],
+                    schoolName: this.schoolName[e],
+                    schoolProfile: this.schoolProfile[e],
+                    schoolMode: this.schoolMode[e]
+                }
+                ];
+                
+                baseCVData.education.push(educationData);
+        
+            } else {
+                console.log("Edukacja pusta!")
+            };
+        };
+
+        // KURSY   
+
+        for (let c = 0; c < this.totalCoursesLength; c++) {
+
+            if (this.courseName[c] != undefined) {      
+                
+                let coursesData: any[] = [
+                {
+                    courseStart: this.startCourse[c],
+                    courseFinish: this.finishCourse[c],
+                    courseName: this.courseName[c],
+                    courseSubject: this.courseSubject[c]                    
+                }
+                ];
+                
+                baseCVData.courses.push(coursesData);
+        
+            } else {
+                console.log("Kursy puste!")
+            };
+        };
+
+
+        // console.log(this.baseCVData);       
+
+        // const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: this.baseCVData };
+
+        // console.log(baseCV);
+
+        // this.http
+        //     .put(BACKEND_URL + "/user/cv", baseCV)
+        //     .subscribe(()=>{
+
+        //     }, error => {
+
+        //     });
     }
 
 }
