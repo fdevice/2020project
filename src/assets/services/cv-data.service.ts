@@ -45,7 +45,7 @@ export class CVDataService {
     advantages: any = new Array();    
     answers: any = new Array();
     drivingLicence: string;
-    computerPrograms: string;
+    knownPrograms: string;
     programmingLanguages: string;
     devices: string;
     permissions: string;
@@ -65,7 +65,24 @@ export class CVDataService {
             photoPath: '',
             experience: [],
             education: [],
-            courses: []
+            courses: [],
+            languages: [],
+            drivingLicenceChecked: false,
+            drivingLicenceDescription: '',
+            knownProgramsChecked: false,
+            knownProgramsDescription: '',
+            programmingSkillsChecked: false,
+            programmingSkillsDescription: '',
+            devicesUsageChecked: false,
+            devicesUsageDescription: '',
+            permissionsChecked: false,
+            permissionsDescription: '',
+            knownRegulationsChecked: false,
+            knownRegulationsDescription: '',
+            otherSkillsChecked: false,
+            otherSkillsDescription: '',
+            advantages: [],
+            hobby: ''
         };         
 
         console.dir(baseCVData);               
@@ -74,7 +91,9 @@ export class CVDataService {
 
         // const bCVData = new FormData();
 
-        console.log(loggedUserEmail);        
+        console.log(loggedUserEmail);    
+        console.log(this.drivingLicence);
+        console.log(this.otherSkills);    
 
         // WARUNKI ZATRUDNIENIA
         // this.baseCVData.position = this.position;
@@ -129,8 +148,8 @@ export class CVDataService {
             }
         };
 
-        // EDUKACJA   
 
+        // EDUKACJA   
         for (let e = 0; e < this.totalEducationLength; e++) {
 
             if (this.schoolName[e] != undefined) {      
@@ -152,8 +171,8 @@ export class CVDataService {
             };
         };
 
-        // KURSY   
 
+        // KURSY  
         for (let c = 0; c < this.totalCoursesLength; c++) {
 
             if (this.courseName[c] != undefined) {      
@@ -174,6 +193,62 @@ export class CVDataService {
             };
         };
 
+        // JĘZYKI
+        for (let l = 0; l < this.totalLanguagesLength; l++) {
+
+            if (this.languageName[l] != undefined) {      
+                
+                let languagesData: any[] = [
+                {
+                    languageName: this.languageName[l],
+                    languageLevel: this.languageLevel[l],
+                    languageDescription: this.languageDescription[l]                                       
+                }
+                ];
+                
+                baseCVData.languages.push(languagesData);
+        
+            } else {
+                console.log("Języki puste!")
+            };
+        };
+
+
+        // UMIEJĘTNOŚCI
+        if (this.drivingLicence != undefined || this.drivingLicence !== '') {
+            baseCVData.drivingLicenceChecked = true;
+            baseCVData.drivingLicenceDescription = this.drivingLicence;
+        };
+        if (this.knownPrograms != undefined || this.knownPrograms !== '') {
+            baseCVData.knownProgramsChecked = true;
+            baseCVData.knownProgramsDescription = this.knownPrograms;
+        };
+        if (this.programmingLanguages != undefined || this.programmingLanguages !== '') {
+            baseCVData.programmingSkillsChecked = true;
+            baseCVData.programmingSkillsDescription = this.programmingLanguages;
+        };
+        if (this.devices != undefined || this.devices !== '') {
+            baseCVData.devicesUsageChecked = true;
+            baseCVData.devicesUsageDescription = this.devices;
+        };
+        if (this.permissions != undefined || this.permissions !== '') {
+            baseCVData.permissionsChecked = true;
+            baseCVData.permissionsDescription = this.permissions;
+        };
+        if (this.regulations != undefined || this.regulations !== '') {
+            baseCVData.knownRegulationsChecked = true;
+            baseCVData.knownRegulationsDescription = this.regulations;
+        };
+        if (this.otherSkills != undefined || this.otherSkills !== '') {
+            baseCVData.otherSkillsChecked = true;
+            baseCVData.otherSkillsDescription = this.otherSkills;
+        };
+
+        // MOCNE STRONY
+        baseCVData.advantages = this.advantages;
+
+        //HOBBY
+        baseCVData.hobby = this.hobbies;
 
         // console.log(this.baseCVData);       
 

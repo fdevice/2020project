@@ -602,7 +602,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     });
 
     console.log(this.selectedAdvantagesValues);
-    this.advantagesError = (this.selectedAdvantagesValues.length > 7) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
+    this.advantagesError = ((this.selectedAdvantagesValues.length > 7) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
 
     // this.selectedAdvantagesValuesToPrint = this.selectedAdvantagesValues.join('\n');
 
@@ -1029,6 +1029,55 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       };
     };
 
+
+     // JĘZYKI OBCE
+     this.baseCV.totalLanguagesLength = (<FormArray>this.cvForm.get('languages')).length;
+
+     for (let l = 0; l < (<FormArray>this.cvForm.get('languages')).length; l++) {
+
+       if ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value !== '') {
+
+         if ((<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value !== '') {
+           this.baseCV.languageName[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value);
+         } else {
+           this.baseCV.languageName[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value);
+         }
+
+         this.baseCV.languageLevel[l] = ('(' + (<FormArray>this.cvForm.get('languages')).controls[l].get('level').value + ')');
+         this.baseCV.languageDescription[l] = this.selectedLanguageDegree[l];
+
+       };
+     };
+
+
+     // UMIEJĘTNOŚCI
+     if (this.cvForm.get('drivingLicenceDescription').value) {
+      this.baseCV.drivingLicence = this.cvForm.get('drivingLicenceDescription').value;
+    };
+    if (this.cvForm.get('knownProgramsDescription').value) {
+      this.baseCV.knownPrograms = this.cvForm.get('knownProgramsDescription').value;
+    };
+    if (this.cvForm.get('programmingSkillsDescription').value) {
+      this.baseCV.programmingLanguages = this.cvForm.get('programmingSkillsDescription').value;
+    };
+    if (this.cvForm.get('devicesUsageDescription').value) {
+      this.baseCV.devices = this.cvForm.get('devicesUsageDescription').value;
+    };
+    if (this.cvForm.get('permissionsDescription').value) {
+      this.baseCV.permissions = this.cvForm.get('permissionsDescription').value;
+    };
+    if (this.cvForm.get('knownRegulationsDescription').value) {
+      this.baseCV.regulations = this.cvForm.get('knownRegulationsDescription').value;
+    };
+    if (this.cvForm.get('otherSkillsDescription').value) {
+      this.baseCV.otherSkills = this.cvForm.get('otherSkillsDescription').value;
+    };
+
+    // MOCNE STRONY
+    this.baseCV.advantages = this.selectedAdvantagesValues;
+
+    // ZAINTERESOWANIA
+    this.baseCV.hobbies = this.cvForm.get('hobbies').value;
 
     this.baseCV.sendBaseCVData();
     

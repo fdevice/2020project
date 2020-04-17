@@ -90,7 +90,7 @@ const userSchema = mongoose.Schema({
     advantages: [
       { type: Boolean }
     ],
-    hobby: {type: String }
+    hobby: { type: String }
    }   
 });
 

@@ -39,11 +39,11 @@ export interface CVData {
         //     courseSubject?: string;
         // }
     ];
-    languages?: [
-        {
-            languageName?: string;
-            level?: string;
-        }
+    languages?: any[
+        // {
+        //     languageName?: string;
+        //     level?: string;
+        // }
     ];
     drivingLicenceChecked?: boolean;
     drivingLicenceDescription?: string;
