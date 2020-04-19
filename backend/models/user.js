@@ -18,9 +18,7 @@ const userSchema = mongoose.Schema({
     location: { type: String },
     availability: { type: String },
     disposition: { type: String },
-    employment: [
-      { type: String }
-    ],
+    employment: [],
     salary: { type: String },
     experience: [
       // {

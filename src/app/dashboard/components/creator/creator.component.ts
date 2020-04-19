@@ -50,7 +50,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   uploadedImage: any;
   cvForm: FormGroup;
-  employment: string[];
+  employment: any[];
   availability: string[];
   languagesList: any[];
   languageLevels: any[];
@@ -805,7 +805,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     } else {
       this.coursesCurrentDateIssue[c] = false;
     };
-  };
+  };  
 
   public checkFormValidity() {
     let position = this.cvForm.get('position');
@@ -1083,19 +1083,36 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     
   }
 
+  compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.value === f2.value; 
+  }
+
 
   //********************  POBIERANIE BAZOWEGO CV  ********************************/
 
   public populateCVForm() {
     this.baseCV.getBaseCVData();
-    this.baseCV.receivedFormData.subscribe((baseCVData) => {
-      console.log(baseCVData);
+    let employmentFromDatabase = [];
+    this.baseCV.receivedFormData.subscribe((CVData) => {
+      console.log(CVData);
+      employmentFromDatabase = CVData.data.baseCVData.employment;
+      this.cvForm.get('employment').setValue(employmentFromDatabase);
+      console.log(employmentFromDatabase);
       this.cvForm.patchValue({
-        name: baseCVData.data.name,
-        surname: baseCVData.data.surname,
-        phone: baseCVData.data.phone,
-        email: baseCVData.data.contactEmail
+        name: CVData.data.name,
+        surname: CVData.data.surname,
+        phone: CVData.data.phone,
+        email: CVData.data.contactEmail,
+        position: CVData.data.baseCVData.position,
+        location: CVData.data.baseCVData.location,
+        availability: CVData.data.baseCVData.availability,
+        disposition: CVData.data.baseCVData.disposition,
+        salary: CVData.data.baseCVData.salary              
       });
+
+
     },
     (error) => {
       console.log(error);

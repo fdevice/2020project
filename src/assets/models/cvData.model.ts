@@ -17,7 +17,7 @@ export interface CVData {
     location?: string;
     availability?: string;
     disposition?: string;
-    employment?: string[];
+    employment?: any[];
     salary?: string;
     experience?: any[];  // experience[0], experience[1]...
     education?: any[
