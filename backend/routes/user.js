@@ -104,6 +104,10 @@ router.post("/signup", (req, res, next) => {
               message: "Nie odnaleziono takiego użytkownika!"
             });          
           }
+
+          console.log(req.body.cvData.experience);
+
+          // DANE OSOBOWE I KONTAKTOWE
           if (req.body.cvData.name) {
             user.name = req.body.cvData.name;
           }
@@ -116,6 +120,7 @@ router.post("/signup", (req, res, next) => {
           if (req.body.cvData.phone) {
             user.phone = req.body.cvData.phone;
           }
+          // PREFEROWANE WARUNKI ZATRUDNIENIA
           if (req.body.cvData.position) {
             user.baseCVData.position = req.body.cvData.position;
           }
@@ -133,6 +138,80 @@ router.post("/signup", (req, res, next) => {
           }
           if (req.body.cvData.employment) {
             user.baseCVData.employment = req.body.cvData.employment;
+          }
+          // DOŚWIADCZENIE ZAWODOWE
+          if (req.body.cvData.experience) {            
+            user.baseCVData.experience = req.body.cvData.experience;
+          }
+          // EDUKACJA
+          if (req.body.cvData.education) {            
+            user.baseCVData.education = req.body.cvData.education;
+          }
+          // KURSY
+          if (req.body.cvData.courses) {            
+            user.baseCVData.courses = req.body.cvData.courses;
+          }
+          // JĘZYKI
+          if (req.body.cvData.languages) {            
+            user.baseCVData.languages = req.body.cvData.languages;
+          }
+          // UMIEJĘTNOŚCI
+          if (req.body.cvData.drivingLicenceChecked) {            
+            user.baseCVData.skills.drivingLicence.checked = req.body.cvData.drivingLicenceChecked;
+            user.baseCVData.skills.drivingLicence.description = req.body.cvData.drivingLicenceDescription;
+          } else {
+            user.baseCVData.skills.drivingLicence.checked = req.body.cvData.drivingLicenceChecked;
+            user.baseCVData.skills.drivingLicence.description = req.body.cvData.drivingLicenceDescription;
+          } 
+          if (req.body.cvData.knownProgramsChecked) {            
+            user.baseCVData.skills.knownPrograms.checked = req.body.cvData.knownProgramsChecked;
+            user.baseCVData.skills.knownPrograms.description = req.body.cvData.knownProgramsDescription;
+          } else {
+            user.baseCVData.skills.knownPrograms.checked = req.body.cvData.knownProgramsChecked;
+            user.baseCVData.skills.knownPrograms.description = req.body.cvData.knownProgramsDescription;
+          } 
+          if (req.body.cvData.programmingSkillsChecked) {            
+            user.baseCVData.skills.programmingSkills.checked = req.body.cvData.programmingSkillsChecked;
+            user.baseCVData.skills.programmingSkills.description = req.body.cvData.programmingSkillsDescription;
+          } else {
+            user.baseCVData.skills.programmingSkills.checked = req.body.cvData.programmingSkillsChecked;
+            user.baseCVData.skills.programmingSkills.description = req.body.cvData.programmingSkillsDescription;
+          }          
+          if (req.body.cvData.devicesUsageChecked) {            
+            user.baseCVData.skills.devicesUsage.checked = req.body.cvData.devicesUsageChecked;
+            user.baseCVData.skills.devicesUsage.description = req.body.cvData.devicesUsageDescription;
+          } else {
+            user.baseCVData.skills.devicesUsage.checked = req.body.cvData.devicesUsageChecked;
+            user.baseCVData.skills.devicesUsage.description = req.body.cvData.devicesUsageDescription;
+          } 
+          if (req.body.cvData.permissionsChecked) {            
+            user.baseCVData.skills.permissions.checked = req.body.cvData.permissionsChecked;
+            user.baseCVData.skills.permissions.description = req.body.cvData.permissionsDescription;
+          } else {
+            user.baseCVData.skills.permissions.checked = req.body.cvData.permissionsChecked;
+            user.baseCVData.skills.permissions.description = req.body.cvData.permissionsDescription;
+          } 
+          if (req.body.cvData.knownRegulationsChecked) {            
+            user.baseCVData.skills.knownRegulations.checked = req.body.cvData.knownRegulationsChecked;
+            user.baseCVData.skills.knownRegulations.description = req.body.cvData.knownRegulationsDescription;
+          } else {
+            user.baseCVData.skills.knownRegulations.checked = req.body.cvData.knownRegulationsChecked;
+            user.baseCVData.skills.knownRegulations.description = req.body.cvData.knownRegulationsDescription;
+          }
+          if (req.body.cvData.otherSkillsChecked) {            
+            user.baseCVData.skills.otherSkills.checked = req.body.cvData.otherSkillsChecked;
+            user.baseCVData.skills.otherSkills.description = req.body.cvData.otherSkillsDescription;
+          } else {
+            user.baseCVData.skills.otherSkills.checked = req.body.cvData.otherSkillsChecked;
+            user.baseCVData.skills.otherSkills.description = req.body.cvData.otherSkillsDescription;
+          }
+          // MOCNE STRONY
+          if (req.body.cvData.advantages) {            
+            user.baseCVData.advantages = req.body.cvData.advantages;
+          }
+          // ZAINTERESOWANIA / HOBBY
+          if (req.body.cvData.hobby) {            
+            user.baseCVData.hobby = req.body.cvData.hobby;
           }
           user.save()
             .then(updatedUser => {

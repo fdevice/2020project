@@ -96,12 +96,12 @@ export class CVDataService {
         console.log(this.otherSkills);    
 
         // WARUNKI ZATRUDNIENIA
-        // this.baseCVData.position = this.position;
-        // this.baseCVData.disposition = this.disposition;
-        // this.baseCVData.location = this.location;
-        // this.baseCVData.availability = this.availability;
-        // this.baseCVData.employment = this.employment;
-        // this.baseCVData.salary = this.salary;
+        baseCVData.position = this.position;
+        baseCVData.disposition = this.disposition;
+        baseCVData.location = this.location;
+        baseCVData.availability = this.availability;
+        baseCVData.employment = this.employment;
+        baseCVData.salary = this.salary;
 
         // bCVData.append("position", this.position);
         // bCVData.append("disposition", this.disposition);
@@ -215,31 +215,31 @@ export class CVDataService {
 
 
         // UMIEJĘTNOŚCI
-        if (this.drivingLicence != undefined || this.drivingLicence !== '') {
+        if (this.drivingLicence != undefined && this.drivingLicence !== '') {
             baseCVData.drivingLicenceChecked = true;
             baseCVData.drivingLicenceDescription = this.drivingLicence;
         };
-        if (this.knownPrograms != undefined || this.knownPrograms !== '') {
+        if (this.knownPrograms != undefined && this.knownPrograms !== '') {
             baseCVData.knownProgramsChecked = true;
             baseCVData.knownProgramsDescription = this.knownPrograms;
         };
-        if (this.programmingLanguages != undefined || this.programmingLanguages !== '') {
+        if (this.programmingLanguages != undefined && this.programmingLanguages !== '') {
             baseCVData.programmingSkillsChecked = true;
             baseCVData.programmingSkillsDescription = this.programmingLanguages;
         };
-        if (this.devices != undefined || this.devices !== '') {
+        if (this.devices != undefined && this.devices !== '') {
             baseCVData.devicesUsageChecked = true;
             baseCVData.devicesUsageDescription = this.devices;
         };
-        if (this.permissions != undefined || this.permissions !== '') {
+        if (this.permissions != undefined && this.permissions !== '') {
             baseCVData.permissionsChecked = true;
             baseCVData.permissionsDescription = this.permissions;
         };
-        if (this.regulations != undefined || this.regulations !== '') {
+        if (this.regulations != undefined && this.regulations !== '') {
             baseCVData.knownRegulationsChecked = true;
             baseCVData.knownRegulationsDescription = this.regulations;
         };
-        if (this.otherSkills != undefined || this.otherSkills !== '') {
+        if (this.otherSkills != undefined && this.otherSkills !== '') {
             baseCVData.otherSkillsChecked = true;
             baseCVData.otherSkillsDescription = this.otherSkills;
         };
@@ -250,19 +250,19 @@ export class CVDataService {
         //HOBBY
         baseCVData.hobby = this.hobbies;
 
-        // console.log(this.baseCVData);       
+        console.dir(baseCVData);       
 
-        // const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: this.baseCVData };
+        const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: baseCVData };
 
-        // console.log(baseCV);
+        console.log(baseCV);
 
-        // this.http
-        //     .put(BACKEND_URL + "/user/cv", baseCV)
-        //     .subscribe(()=>{
+        this.http
+            .put(BACKEND_URL + "/user/cv", baseCV)
+            .subscribe(()=>{
 
-        //     }, error => {
+            }, error => {
 
-        //     });
+            });
     }
 
 }

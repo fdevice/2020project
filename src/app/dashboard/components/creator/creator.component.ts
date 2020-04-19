@@ -864,8 +864,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     if (!education.controls[0].get('schoolName').valid) {
       this.formErrors.push('Nazwa szkoły/uczelni');
     };
-    if (this.advantagesError && (this.selectedAdvantagesValues == undefined)) {
-      this.formErrors.push('Wskaż od 1 do 7 swoich mocnych stron');
+    if (this.advantagesError || (this.selectedAdvantagesValues == undefined)) {
+      this.formErrors.push('Wskaż minimum 1, maksimum 7 swoich mocnych stron');
     };
     if (!hobby.valid) {
       this.formErrors.push('Zainteresowania');
