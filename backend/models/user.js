@@ -8,8 +8,10 @@ const userSchema = mongoose.Schema({
   surname: { type: String },
   contactEmail: { type: String },
   phone: { type: String },
-  hasBaseCV: { type: Boolean },
+  hasBaseCV: { type: Boolean, default: false },
   documentPath: { type: String },    //ścieżka do zapisanego CV w pliku pdf
+  registrationTime: { type: Date },
+  modificationTime: { type: Date },
   baseCVData: { 
     photoPath: { type: String },  //ścieżka do zapisanego zdjęcia 
     position: { type: String },
@@ -88,9 +90,11 @@ const userSchema = mongoose.Schema({
       }
     },
     advantages: [
-      { type: Boolean }
+      { type: String }
     ],
-    hobby: { type: String }
+    hobby: { type: String },
+    creationTime: { type: Date },
+    lastModified: { type: Date }
    }   
 });
 

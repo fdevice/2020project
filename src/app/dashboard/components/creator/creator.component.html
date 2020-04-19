@@ -1383,6 +1383,18 @@
                                 (blur)="clearHints()">Zapisz bazowe CV</button>
                       </div>
                     </div>
+                    <div class="col-xl-3">
+                      <div class="form-group">
+                        <button class="btn btn-info"
+                                id="populateCVFormButton"
+                                type="button"
+                                (click)="populateCVForm()"
+                                (mouseover)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (blur)="clearHints()">Pobierz dane!</button>
+                      </div>
+                    </div>
                   </div>
         </div>
       </div>

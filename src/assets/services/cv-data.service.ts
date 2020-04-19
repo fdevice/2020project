@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CVData } from '../models/cvData.model';
 import { BaseCV } from 'src/assets/models/baseCV.model';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 const BACKEND_URL = environment.apiUrl;
 
@@ -51,7 +52,10 @@ export class CVDataService {
     permissions: string;
     regulations: string;
     otherSkills: string;
-    hobbies: string;
+    hobbies: string; 
+    
+    private receivedCVData = new Subject<any>();
+    public receivedFormData = this.receivedCVData.asObservable();   // Zmienna pomocnicza przechowująca dane bazowego CV pobrane z bazy
 
     constructor(private http: HttpClient, private router: Router) {}
 
@@ -82,15 +86,14 @@ export class CVDataService {
             otherSkillsChecked: false,
             otherSkillsDescription: '',
             advantages: [],
-            hobby: ''
+            hobby: '',
+            creationTime: null
         };         
 
         console.dir(baseCVData);               
         
-        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika        
-
-        // const bCVData = new FormData();
-
+        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika       
+        
         console.log(loggedUserEmail);    
         console.log(this.drivingLicence);
         console.log(this.otherSkills);    
@@ -101,14 +104,7 @@ export class CVDataService {
         baseCVData.location = this.location;
         baseCVData.availability = this.availability;
         baseCVData.employment = this.employment;
-        baseCVData.salary = this.salary;
-
-        // bCVData.append("position", this.position);
-        // bCVData.append("disposition", this.disposition);
-        // bCVData.append("location", this.location);
-        // bCVData.append("availability", this.availability);
-        // // employment array
-        // bCVData.append("salary", this.salary);
+        baseCVData.salary = this.salary;        
 
         // DANE OSOBOWE + ZDJĘCIE
         baseCVData.name = this.name;
@@ -247,8 +243,11 @@ export class CVDataService {
         // MOCNE STRONY
         baseCVData.advantages = this.advantages;
 
-        //HOBBY
+        // HOBBY
         baseCVData.hobby = this.hobbies;
+
+        // DATA UTWORZENIA
+        baseCVData.creationTime = new Date();
 
         console.dir(baseCVData);       
 
@@ -258,11 +257,23 @@ export class CVDataService {
 
         this.http
             .put(BACKEND_URL + "/user/cv", baseCV)
-            .subscribe(()=>{
-
+            .subscribe((result)=>{
+                console.log(result);
             }, error => {
-
+                console.log(error);                
             });
-    }
+    };
+
+    getBaseCVData() {
+        let email = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika 
+        
+        this.http
+            .get(BACKEND_URL + "/user/cv/" + email)
+            .subscribe((result) => {                
+                this.receivedCVData.next(result);               
+            }, error => {
+                console.log(error);
+            });                  
+    };
 
 }

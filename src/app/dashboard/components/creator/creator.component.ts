@@ -1084,6 +1084,23 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   }
 
 
+  //********************  POBIERANIE BAZOWEGO CV  ********************************/
+
+  public populateCVForm() {
+    this.baseCV.getBaseCVData();
+    this.baseCV.receivedFormData.subscribe((baseCVData) => {
+      console.log(baseCVData);
+      this.cvForm.patchValue({
+        name: baseCVData.data.name,
+        surname: baseCVData.data.surname,
+        phone: baseCVData.data.phone,
+        email: baseCVData.data.contactEmail
+      });
+    },
+    (error) => {
+      console.log(error);
+    });
+  };
 
   //********************  GENEROWANIE CV DO PDF  ********************************/
 

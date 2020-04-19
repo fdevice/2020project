@@ -103,10 +103,7 @@ router.post("/signup", (req, res, next) => {
             return res.status(401).json({
               message: "Nie odnaleziono takiego użytkownika!"
             });          
-          }
-
-          console.log(req.body.cvData.experience);
-
+          }         
           // DANE OSOBOWE I KONTAKTOWE
           if (req.body.cvData.name) {
             user.name = req.body.cvData.name;
@@ -213,6 +210,7 @@ router.post("/signup", (req, res, next) => {
           if (req.body.cvData.hobby) {            
             user.baseCVData.hobby = req.body.cvData.hobby;
           }
+          user.baseCVData.creationTime = req.body.cvData.creationTime;
           user.save()
             .then(updatedUser => {
               res.status(200).json({
@@ -228,5 +226,23 @@ router.post("/signup", (req, res, next) => {
             })
         })
     });
+
+    // POBIERANIE ZAWARTOŚCI BAZOWEGO CV
+    router.get("/cv/:email", (req, res, next) => {
+      // console.log(req.body);
+      User.findOne({ email: req.params.email })
+        .then(user => {
+          if (!user) {
+            return res.status(401).json({
+              message: "Nie odnaleziono takiego użytkownika!"
+            });                  
+          }
+          res.status(200).json({
+            message: "Pobrano dane zalogowane użytkownika!",
+            data: user
+          });
+          console.log(user);  
+        });
+      });
 
   module.exports = router;
