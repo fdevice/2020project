@@ -104,6 +104,15 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   hideNextExpButton: boolean = false;
   hideNextEduButton: boolean = false;
   hideNextCourseButton: boolean = false;
+
+  drivingLicenceChecked: boolean = false;
+  knownProgramsChecked: boolean = false;
+  programmingSkillsChecked: boolean = false;
+  devicesUsageChecked: boolean = false;
+  permissionsChecked: boolean = false;
+  knownRegulationsChecked: boolean = false;
+  otherSkillsChecked: boolean = false;
+  
   isLoading: boolean = false;
 
   formValid: boolean = false;
@@ -159,7 +168,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     public dialogService: DialogService
     ) {
-      this.DatePickerConfig = Object.assign({}, {containerClass: 'theme-dark-blue', dateInputFormat: 'DD - MM - YYYY' }); //tworzymy zmienną z wybraną konfiguracją obiektu DatePicker
+      this.DatePickerConfig = Object.assign({}, {containerClass: 'theme-dark-blue', dateInputFormat: 'DD.MM.YYYY' }); //tworzymy zmienną z wybraną konfiguracją obiektu DatePicker
       this.DatePickerWithoutDays = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minMode, dateInputFormat: 'MMMM YYYY'});
     }
 
@@ -648,72 +657,80 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   };
 
-  public toggleDrivingLicenceDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public toggleDrivingLicenceDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('drivingLicenceDescription').enable();
+      this.drivingLicenceChecked = true;      
     } else {
       this.cvForm.get('drivingLicenceDescription').reset()
       this.cvForm.get('drivingLicenceDescription').disable();
+      this.drivingLicenceChecked = false;      
     }
   }
 
-  public toggleKnownProgramsDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public toggleKnownProgramsDescription(e: Event) {   
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('knownProgramsDescription').enable();
+      this.knownProgramsChecked = true; 
     } else {
       this.cvForm.get('knownProgramsDescription').reset()
       this.cvForm.get('knownProgramsDescription').disable();
+      this.knownProgramsChecked = false; 
     }
   }
 
-  public toggleProgrammingSkillsDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public toggleProgrammingSkillsDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('programmingSkillsDescription').enable();
+      this.programmingSkillsChecked = true; 
     } else {
       this.cvForm.get('programmingSkillsDescription').reset()
       this.cvForm.get('programmingSkillsDescription').disable();
+      this.programmingSkillsChecked = false; 
     }
   }
 
-  public toggleDevicesUsageDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public toggleDevicesUsageDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('devicesUsageDescription').enable();
+      this.devicesUsageChecked = true; 
     } else {
       this.cvForm.get('devicesUsageDescription').reset()
       this.cvForm.get('devicesUsageDescription').disable();
+      this.devicesUsageChecked = false; 
     }
   }
 
-  public togglePermissionsDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public togglePermissionsDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('permissionsDescription').enable();
+      this.permissionsChecked = true; 
     } else {
       this.cvForm.get('permissionsDescription').reset()
       this.cvForm.get('permissionsDescription').disable();
+      this.permissionsChecked = false; 
     }
   }
 
-  public toggleKnownRegulationsDescription(e: Event) {
-    console.log((<HTMLInputElement>(e.target)).checked);
+  public toggleKnownRegulationsDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('knownRegulationsDescription').enable();
+      this.knownRegulationsChecked = true; 
     } else {
       this.cvForm.get('knownRegulationsDescription').reset()
       this.cvForm.get('knownRegulationsDescription').disable();
+      this.knownRegulationsChecked = false; 
     }
   }
 
   public toggleOtherSkillsDescription(e: Event) {
     if ((<HTMLInputElement>(e.target)).checked) {
       this.cvForm.get('otherSkillsDescription').enable();
+      this.otherSkillsChecked = true; 
     } else {
       this.cvForm.get('otherSkillsDescription').reset()
       this.cvForm.get('otherSkillsDescription').disable();
+      this.otherSkillsChecked = true; 
     }
   }
 
@@ -930,7 +947,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     if (!this.selectAvailability) {
       this.baseCV.availability = this.cvForm.get('availability').value;
     } else {
-      this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
+      // this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
+      this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString());
     };
 
     if (this.cvForm.get('employment').value != '') {
@@ -1093,25 +1111,121 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   //********************  POBIERANIE BAZOWEGO CV  ********************************/
 
   public populateCVForm() {
+
     this.baseCV.getBaseCVData();
+
     let employmentFromDatabase = [];
+    let availabilityFromDatabase = '';
+    let languagesFromDatabase = [];
+
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
       employmentFromDatabase = CVData.data.baseCVData.employment;
       this.cvForm.get('employment').setValue(employmentFromDatabase);
-      console.log(employmentFromDatabase);
+      // console.log(employmentFromDatabase);
       this.cvForm.patchValue({
         name: CVData.data.name,
         surname: CVData.data.surname,
         phone: CVData.data.phone,
         email: CVData.data.contactEmail,
         position: CVData.data.baseCVData.position,
-        location: CVData.data.baseCVData.location,
-        availability: CVData.data.baseCVData.availability,
+        location: CVData.data.baseCVData.location,        
         disposition: CVData.data.baseCVData.disposition,
-        salary: CVData.data.baseCVData.salary              
+        salary: CVData.data.baseCVData.salary,
+        hobbies: CVData.data.baseCVData.hobby              
       });
 
+      availabilityFromDatabase = CVData.data.baseCVData.availability;
+      switch (availabilityFromDatabase) {
+        case 'Od zaraz':
+          this.cvForm.patchValue({ availability: availabilityFromDatabase });
+          break;
+        case '2 tygodnie okresu wypowiedzenia':
+            this.cvForm.patchValue({ availability: availabilityFromDatabase });
+            break;
+        case '1 miesiąc okresu wypowiedzenia':
+            this.cvForm.patchValue({ availability: availabilityFromDatabase });
+            break;
+        case '3 miesiące okresu wypowiedzenia':
+          this.cvForm.patchValue({ availability: availabilityFromDatabase });
+          break;
+        default: 
+        this.selectAvailability = true;
+        this.cvForm.patchValue({ 
+          availability: 'Wybierz datę...',
+          availabilityDate: availabilityFromDatabase
+        });        
+      };
+      
+      if (CVData.data.baseCVData.skills.drivingLicence.checked) {
+        this.drivingLicenceChecked = true;
+        this.cvForm.patchValue({ drivingLicenceDescription: CVData.data.baseCVData.skills.drivingLicence.description });     
+        this.cvForm.get("drivingLicenceDescription").enable();   
+      } else {
+        this.drivingLicenceChecked = false;
+        this.cvForm.get("drivingLicenceDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.knownPrograms.checked) {
+        this.knownProgramsChecked = true;
+        this.cvForm.patchValue({ knownProgramsDescription: CVData.data.baseCVData.skills.knownPrograms.description });     
+        this.cvForm.get("knownProgramsDescription").enable();   
+      } else {
+        this.knownProgramsChecked = false;
+        this.cvForm.get("knownProgramsDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.programmingSkills.checked) {
+        this.programmingSkillsChecked = true;
+        this.cvForm.patchValue({ programmingSkillsDescription: CVData.data.baseCVData.skills.programmingSkills.description });     
+        this.cvForm.get("programmingSkillsDescription").enable();   
+      } else {
+        this.programmingSkillsChecked = false;
+        this.cvForm.get("programmingSkillsDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.devicesUsage.checked) {
+        this.devicesUsageChecked = true;
+        this.cvForm.patchValue({ devicesUsageDescription: CVData.data.baseCVData.skills.devicesUsage.description });     
+        this.cvForm.get("devicesUsageDescription").enable();   
+      } else {
+        this.devicesUsageChecked = false;
+        this.cvForm.get("devicesUsageDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.permissions.checked) {
+        this.permissionsChecked = true;
+        this.cvForm.patchValue({ permissionsDescription: CVData.data.baseCVData.skills.permissions.description });     
+        this.cvForm.get("permissionsDescription").enable();   
+      } else {
+        this.permissionsChecked = false;
+        this.cvForm.get("permissionsDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.knownRegulations.checked) {
+        this.knownRegulationsChecked = true;
+        this.cvForm.patchValue({ knownRegulationsDescription: CVData.data.baseCVData.skills.knownRegulations.description });     
+        this.cvForm.get("knownRegulationsDescription").enable();   
+      } else {
+        this.knownRegulationsChecked = false;
+        this.cvForm.get("knownRegulationsDescription").disable();   
+      };
+
+      if (CVData.data.baseCVData.skills.otherSkills.checked) {
+        this.otherSkillsChecked = true;
+        this.cvForm.patchValue({ otherSkillsDescription: CVData.data.baseCVData.skills.otherSkills.description });     
+        this.cvForm.get("otherSkillsDescription").enable();   
+      } else {
+        this.otherSkillsChecked = false;
+        this.cvForm.get("otherSkillsDescription").disable();   
+      };
+
+      languagesFromDatabase = CVData.data.baseCVData.languages;
+      console.log(languagesFromDatabase);
+
+      for (let l = 0; l < languagesFromDatabase.length; l++) {
+        console.log(languagesFromDatabase[l]);
+      }
 
     },
     (error) => {

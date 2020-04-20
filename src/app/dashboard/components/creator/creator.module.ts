@@ -14,7 +14,7 @@ import { SideTooltipComponent } from 'src/assets/components/side-tooltip/side-to
 import { TopTooltipComponent } from 'src/assets/components/top-tooltip/top-tooltip.component';
 import { MatSelectModule, MatProgressSpinnerModule } from '@angular/material';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ElementFocusDirective } from 'src/assets/directives/element-focus.directive';
 
 
@@ -31,7 +31,7 @@ import { ElementFocusDirective } from 'src/assets/directives/element-focus.direc
     CreatorRoutingModule,
     MatSelectModule,
     BsDatepickerModule.forRoot(),
-    ReactiveFormsModule,
+    ReactiveFormsModule,    
     MatProgressSpinnerModule,
   ],
   declarations: [    

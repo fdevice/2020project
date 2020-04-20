@@ -11,6 +11,7 @@ import { QuickpanelModule } from '../../@vex/components/quickpanel/quickpanel.mo
 import { DashboardComponent } from './dashboard.component';
 import { HqComponent } from './components/hq/hq.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({  
@@ -23,7 +24,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
     ConfigPanelModule,
     SidebarModule,
     QuickpanelModule,
-    DashboardRoutingModule
+    DashboardRoutingModule    
   ],
   declarations: [
     DashboardComponent,
