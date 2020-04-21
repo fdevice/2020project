@@ -924,7 +924,8 @@
                                       (mouseover)="setHints(hoverMessages.jezykObcy)"
                                       (mouseout)="clearHints()"
                                       (focus)="setHints(hoverMessages.jezykObcy)"
-                                      (blur)="clearHints()">
+                                      (blur)="clearHints()"
+                                      [compareWith]="compareFnLang">
                                 <mat-option *ngFor="let lang of languagesList" [value]="lang.lang">{{lang.lang}}</mat-option>
                               </mat-select>
                               <div *ngIf="(this.otherLanguageSelected[l])" class="form-group row mt-2">

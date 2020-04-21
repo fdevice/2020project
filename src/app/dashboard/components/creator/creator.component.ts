@@ -62,6 +62,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   otherLanguageSelected: boolean[] = [];
   selectedAdvantagesValues: string[];
   selectedAdvantagesValuesToPrint: string;
+  selectedAdvantagesValuesToDatabase: boolean[];
   selectedLanguageDegree: any[];
   advantagesError: boolean;
   schoolTypePlaceholder: string = "Wybierz rodzaj szkoły...";
@@ -332,7 +333,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     })
   };
 
-  public addAdvantagesFormGroup(): FormGroup {
+  public addAdvantagesFormGroup(): FormGroup {   
     return this.fb.group({
       advantage: ['']
     });
@@ -375,7 +376,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.focusOnResp = true;    
   }
 
-  public addAdvantagesControls(): FormArray {
+  public addAdvantagesControls(): FormArray {   //tworzy i zapełnia tablicę cvForm.get("advantages")
     const advArr = this.advantagesList.map((element) => {
       return this.fb.control(false);
     });
@@ -578,7 +579,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public getSelectedAdvantagesValues() {
     this.selectedAdvantagesValues = [];
+    this.selectedAdvantagesValuesToDatabase = [];
     this.advantagesArray.controls.forEach((control, i) => { //sprawdza każdy z elementów tablicy advantagesArrray i jeżeli posiada wartość true (został zaznaczony checkbox), dodaje go do tablicy selectedAdvantagesValues
+      this.selectedAdvantagesValuesToDatabase[i] = control.value;
       if (control.value) {
         this.selectedAdvantagesValues.push(this.advantagesList[i]);
       }
@@ -607,9 +610,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
             this.polishAdvantageSuffix = "";
             break;
           }
-        }
+        }      
     });
 
+    console.log(this.selectedAdvantagesValuesToDatabase);
     console.log(this.selectedAdvantagesValues);
     this.advantagesError = ((this.selectedAdvantagesValues.length > 7) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
 
@@ -1061,7 +1065,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
            this.baseCV.languageName[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value);
          }
 
-         this.baseCV.languageLevel[l] = ('(' + (<FormArray>this.cvForm.get('languages')).controls[l].get('level').value + ')');
+         this.baseCV.languageLevel[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('level').value);
          this.baseCV.languageDescription[l] = this.selectedLanguageDegree[l];
 
        };
@@ -1093,6 +1097,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     // MOCNE STRONY
     this.baseCV.advantages = this.selectedAdvantagesValues;
+    this.baseCV.selectedAdvantagesIndex = this.selectedAdvantagesValuesToDatabase;
 
     // ZAINTERESOWANIA
     this.baseCV.hobbies = this.cvForm.get('hobbies').value;
@@ -1101,10 +1106,20 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     
   }
 
-  compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
+  compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue 
 
-  compareByValue(f1: any, f2: any) { 
+  compareFnLang: ((f1: any, f2: any) => boolean) | null = this.compareByLang 
+
+  compareByValue(f1: any, f2: any) {     
     return f1 && f2 && f1.value === f2.value; 
+  }
+
+  compareByLang(f1: any, f2:any) {
+    // console.log("f1: " + f1);
+    // console.log("f2: " + f2);    
+    // return f1 && f2 && f1.lang === f2.lang;
+
+    return f1 && f2 && f1 === f2;
   }
 
 
@@ -1117,6 +1132,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let employmentFromDatabase = [];
     let availabilityFromDatabase = '';
     let languagesFromDatabase = [];
+    let advantagesIndexFromDatabase = [];
 
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
@@ -1221,11 +1237,58 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       };
 
       languagesFromDatabase = CVData.data.baseCVData.languages;
-      console.log(languagesFromDatabase);
+      console.log(languagesFromDatabase);   
+      // console.log(languagesFromDatabase[0][0]);  
+      // console.log(languagesFromDatabase[0][0].languageName);             
 
-      for (let l = 0; l < languagesFromDatabase.length; l++) {
-        console.log(languagesFromDatabase[l]);
+      if (languagesFromDatabase.length > 0) {       
+        ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').patchValue(languagesFromDatabase[0][0].languageName));
+        ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').markAsDirty());
+
+        if ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').dirty) {
+          (<FormArray>this.cvForm.get('languages')).controls[0].get('level').enable();
+        } else {
+          (<FormArray>this.cvForm.get('languages')).controls[0].get('level').reset();
+          (<FormArray>this.cvForm.get('languages')).controls[0].get('level').disable();
+        } 
+
+        (<FormArray>this.cvForm.get('languages')).controls[0].get('level').patchValue(languagesFromDatabase[0][0].languageLevel);     
+        this.selectedLanguageDegree[0] = languagesFromDatabase[0][0].languageDescription;  
       }
+
+      for (let l = 1; l < languagesFromDatabase.length; l++) {  // Jeśli w bazowym CV jest więcej języków niż 1
+        this.addLanguagesButtonClick();
+
+        ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').patchValue(languagesFromDatabase[l][0].languageName));
+        ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').markAsDirty());
+
+        if ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').dirty) {
+          (<FormArray>this.cvForm.get('languages')).controls[l].get('level').enable();
+        } else {
+          (<FormArray>this.cvForm.get('languages')).controls[l].get('level').reset();
+          (<FormArray>this.cvForm.get('languages')).controls[l].get('level').disable();
+        } 
+
+        (<FormArray>this.cvForm.get('languages')).controls[l].get('level').patchValue(languagesFromDatabase[l][0].languageLevel);
+        this.selectedLanguageDegree[l] = languagesFromDatabase[l][0].languageDescription;  
+      };
+
+      advantagesIndexFromDatabase = CVData.data.baseCVData.selectedAdvantagesIndex;
+      console.log(advantagesIndexFromDatabase);
+
+      console.log(this.advantagesArray.controls);
+
+      advantagesIndexFromDatabase.forEach((advantage, i) => {
+        console.dir(advantage);
+        // this.advantagesArray.controls[i] = advantage[i];
+        console.log(this.advantagesArray.controls[i].patchValue(advantage));
+
+      })
+      // this.advantagesArray.controls.forEach((control, i) => {
+
+      // };
+      this.selectedAdvantagesValues = CVData.data.baseCVData.advantages;
+
 
     },
     (error) => {

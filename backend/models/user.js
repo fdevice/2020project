@@ -90,6 +90,7 @@ const userSchema = mongoose.Schema({
     advantages: [
       { type: String }
     ],
+    selectedAdvantagesIndex: [],
     hobby: { type: String },
     creationTime: { type: Date },
     lastModified: { type: Date }

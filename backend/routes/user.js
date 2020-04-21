@@ -205,6 +205,7 @@ router.post("/signup", (req, res, next) => {
           // MOCNE STRONY
           if (req.body.cvData.advantages) {            
             user.baseCVData.advantages = req.body.cvData.advantages;
+            user.baseCVData.selectedAdvantagesIndex = req.body.cvData.selectedAdvantagesIndex;
           }
           // ZAINTERESOWANIA / HOBBY
           if (req.body.cvData.hobby) {            

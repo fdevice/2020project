@@ -43,7 +43,8 @@ export class CVDataService {
     languageName: any = new Array();
     languageLevel: any = new Array();
     languageDescription: any = new Array();
-    advantages: any = new Array();    
+    advantages: any = new Array(); 
+    selectedAdvantagesIndex: any = new Array();   
     answers: any = new Array();
     drivingLicence: string;
     knownPrograms: string;
@@ -86,6 +87,7 @@ export class CVDataService {
             otherSkillsChecked: false,
             otherSkillsDescription: '',
             advantages: [],
+            selectedAdvantagesIndex: [],
             hobby: '',
             creationTime: null
         };         
@@ -242,6 +244,7 @@ export class CVDataService {
 
         // MOCNE STRONY
         baseCVData.advantages = this.advantages;
+        baseCVData.selectedAdvantagesIndex = this.selectedAdvantagesIndex;
 
         // HOBBY
         baseCVData.hobby = this.hobbies;

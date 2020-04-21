@@ -60,6 +60,7 @@ export interface CVData {
     otherSkillsChecked?: boolean;
     otherSkillsDescription?: string;
     advantages?: string[];
+    selectedAdvantagesIndex?: boolean[];
     hobby?: string;   
     creationTime?: Date;
     lastModified?: Date;                                               
