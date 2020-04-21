@@ -613,6 +613,24 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         }      
     });
 
+    if (this.advantagesLeft == 0) {
+
+      console.log(this.advantagesArray.controls);
+
+      this.advantagesArray.controls.forEach((checkbox, i) => {
+        if (checkbox.value == false) {
+          console.log("False!");
+          this.advantagesArray.controls[i].disable();
+        } else {
+        console.log("selected!");
+        }
+      });
+    } else {
+      this.advantagesArray.controls.forEach((checkbox, i) => {        
+          this.advantagesArray.controls[i].enable();        
+      });
+    }
+
     console.log(this.selectedAdvantagesValuesToDatabase);
     console.log(this.selectedAdvantagesValues);
     this.advantagesError = ((this.selectedAdvantagesValues.length > 7) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
@@ -1278,16 +1296,54 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       console.log(this.advantagesArray.controls);
 
-      advantagesIndexFromDatabase.forEach((advantage, i) => {
-        console.dir(advantage);
-        // this.advantagesArray.controls[i] = advantage[i];
-        console.log(this.advantagesArray.controls[i].patchValue(advantage));
+      advantagesIndexFromDatabase.forEach((advantage, i) => {        
+        
+        // console.log(this.advantagesArray.controls[i].patchValue(advantage));
+        this.advantagesArray.controls[i].patchValue(advantage);        
 
-      })
-      // this.advantagesArray.controls.forEach((control, i) => {
+      })      
 
-      // };
       this.selectedAdvantagesValues = CVData.data.baseCVData.advantages;
+      this.advantagesLeft = (7 - this.selectedAdvantagesValues.length);
+      if (this.advantagesLeft < 0) {
+        this.advantagesLeft = 0;
+      };
+      switch (this.advantagesLeft) {
+        case 4: {
+          this.polishAdvantageSuffix = "y";
+          break;
+        }
+        case 3: {
+          this.polishAdvantageSuffix = "y";
+          break;
+        }
+        case 2: {
+          this.polishAdvantageSuffix = "y";
+          break;
+        }
+        case 1: {
+          this.polishAdvantageSuffix = "ę";
+          break;
+        }
+        default: {
+            this.polishAdvantageSuffix = "";
+            break;
+          }
+        };  
+
+      if (this.advantagesLeft == 0) {
+
+        console.log(this.advantagesArray.controls);
+
+        this.advantagesArray.controls.forEach((selected, i) => {
+          if (selected.value == false) {
+            console.log("False!");
+            this.advantagesArray.controls[i].disable();
+          } else {
+          console.log("selected!");
+          }
+        });
+      }
 
 
     },
