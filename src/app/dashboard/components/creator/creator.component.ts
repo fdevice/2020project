@@ -88,6 +88,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   screenInnerWidth: any;  
 
+  experienceTillNowSelected: boolean[] = new Array(30);
+  workStartDateFormatted: any[] = new Array(30);
+  workFinishDateFormatted: any[] = new Array(30);
+
   advantagesLeft: number;
   polishAdvantageSuffix: string;
   focusOnResp: boolean;
@@ -758,7 +762,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public setExperienceTillNow(i: number) {
     if ((<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value) {
-      (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').setValue('Obecnie');
+      (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').setValue('obecnie');
     } else {
       (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').setValue('');
     }
@@ -766,7 +770,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public setEducationTillNow(i: number) {
     if ((<FormArray>this.cvForm.get('education')).controls[i].get('educationTillNow').value) {
-      (<FormArray>this.cvForm.get('education')).controls[i].get('educationPeriodNow').setValue('Obecnie');
+      (<FormArray>this.cvForm.get('education')).controls[i].get('educationPeriodNow').setValue('obecnie');
     } else {
       (<FormArray>this.cvForm.get('education')).controls[i].get('educationPeriodNow').setValue('');
     }
@@ -774,17 +778,25 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public setCourseTillNow(i: number) {
     if ((<FormArray>this.cvForm.get('courses')).controls[i].get('courseTillNow').value) {
-      (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('Obecnie');
+      (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('obecnie');
     } else {
       (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('');
     }
   };
 
   public checkWorkPeriodDate(i: number) {
+    const dateOptions = {
+      day: undefined,
+      month: 'long',
+      year: 'numeric'
+    };
     let today = new Date();
     let startDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
     let endDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
     let tillNow = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').value;
+
+    this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
+    this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
 
     if ((startDate > endDate) && endDate != '' && tillNow === '') {
       this.workPeriodEndDateIssue[i] = true;
@@ -1001,9 +1013,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         } else {
 
-          this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-          this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-
+          this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);          
+          this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);          
           };
 
           this.baseCV.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
@@ -1151,12 +1162,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let availabilityFromDatabase = '';
     let languagesFromDatabase = [];
     let advantagesIndexFromDatabase = [];
+    let experienceFromDatabase = [];
 
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
       employmentFromDatabase = CVData.data.baseCVData.employment;
       this.cvForm.get('employment').setValue(employmentFromDatabase);
-      // console.log(employmentFromDatabase);
+
+        // DANE OSOBOWE, WARUNKI ZATRUDNIENIA, ZAINTERESOWANIA
       this.cvForm.patchValue({
         name: CVData.data.name,
         surname: CVData.data.surname,
@@ -1169,6 +1182,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         hobbies: CVData.data.baseCVData.hobby              
       });
 
+        // DOSTĘPNOŚĆ
       availabilityFromDatabase = CVData.data.baseCVData.availability;
       switch (availabilityFromDatabase) {
         case 'Od zaraz':
@@ -1191,6 +1205,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         });        
       };
       
+        // UMIEJĘTNOŚCI
       if (CVData.data.baseCVData.skills.drivingLicence.checked) {
         this.drivingLicenceChecked = true;
         this.cvForm.patchValue({ drivingLicenceDescription: CVData.data.baseCVData.skills.drivingLicence.description });     
@@ -1254,11 +1269,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.cvForm.get("otherSkillsDescription").disable();   
       };
 
-      languagesFromDatabase = CVData.data.baseCVData.languages;
-      console.log(languagesFromDatabase);   
-      // console.log(languagesFromDatabase[0][0]);  
-      // console.log(languagesFromDatabase[0][0].languageName);             
 
+        // JĘZYKI
+      languagesFromDatabase = CVData.data.baseCVData.languages;
+      // console.log(languagesFromDatabase);                
       if (languagesFromDatabase.length > 0) {       
         ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').patchValue(languagesFromDatabase[0][0].languageName));
         ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').markAsDirty());
@@ -1291,17 +1305,15 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.selectedLanguageDegree[l] = languagesFromDatabase[l][0].languageDescription;  
       };
 
+
+        // MOCNE STRONY
       advantagesIndexFromDatabase = CVData.data.baseCVData.selectedAdvantagesIndex;
-      console.log(advantagesIndexFromDatabase);
-
-      console.log(this.advantagesArray.controls);
-
-      advantagesIndexFromDatabase.forEach((advantage, i) => {        
-        
+      // console.log(advantagesIndexFromDatabase);
+      // console.log(this.advantagesArray.controls);
+      advantagesIndexFromDatabase.forEach((advantage, i) => {              
         // console.log(this.advantagesArray.controls[i].patchValue(advantage));
         this.advantagesArray.controls[i].patchValue(advantage);        
-
-      })      
+      });      
 
       this.selectedAdvantagesValues = CVData.data.baseCVData.advantages;
       this.advantagesLeft = (7 - this.selectedAdvantagesValues.length);
@@ -1332,17 +1344,117 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         };  
 
       if (this.advantagesLeft == 0) {
-
-        console.log(this.advantagesArray.controls);
-
+        // console.log(this.advantagesArray.controls);
         this.advantagesArray.controls.forEach((selected, i) => {
           if (selected.value == false) {
-            console.log("False!");
+            console.log("Not selected!");
             this.advantagesArray.controls[i].disable();
           } else {
-          console.log("selected!");
+          console.log("Selected!");
           }
         });
+      };
+
+        // ZATRUDNIENIE
+      experienceFromDatabase = CVData.data.baseCVData.experience;
+      console.log(experienceFromDatabase);                
+      if (experienceFromDatabase.length > 0) { 
+
+        const dateOptions = {
+          day: undefined,
+          month: 'long',
+          year: 'numeric'
+        };
+        
+        let responsibilitiesFromDatabase: any[] = new Array();
+        let responsibilitiesArrayToFill: any[] = new Array();
+
+        responsibilitiesFromDatabase[0] = experienceFromDatabase[0][0].responsibilities;
+        console.log("responsibilitiesFromDatabase[0]: " + responsibilitiesFromDatabase[0]);
+        console.log("responsibilitiesFromDatabase[1]: " + responsibilitiesFromDatabase[1]);
+
+        responsibilitiesArrayToFill[0] = ((<FormArray>this.cvForm.get('experience')).controls[0].get('responsibilities') as FormArray);
+        
+        // console.log(responsibilitiesFromDatabase);
+        
+        ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').setValue(experienceFromDatabase[0][0].workStart));
+        // this.workStartDateFormatted[0] = new Date((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);    
+        this.workStartDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value;  
+
+        console.log("workStartDateFormatted[0]: " + this.workStartDateFormatted[0]);
+        console.log("workFinishDateFormatted[0] before assignment: " + this.workFinishDateFormatted[0]);
+
+        if (experienceFromDatabase[0][0].workFinish !== "obecnie") {
+          ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodEnd').setValue(experienceFromDatabase[0][0].workFinish));
+          this.workFinishDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodEnd').value;
+
+          console.log("workFinishDateFormatted[0]: " + this.workFinishDateFormatted[0]);
+
+        } else {
+          this.experienceTillNowSelected[0] = true;        
+        }
+
+        ((<FormArray>this.cvForm.get('experience')).controls[0].get('employerName').setValue(experienceFromDatabase[0][0].employerName));
+        ((<FormArray>this.cvForm.get('experience')).controls[0].get('trade').setValue(experienceFromDatabase[0][0].trade));
+        ((<FormArray>this.cvForm.get('experience')).controls[0].get('occupation').setValue(experienceFromDatabase[0][0].occupation));
+        
+        if (responsibilitiesFromDatabase[0].length > 0) {
+          responsibilitiesArrayToFill[0].controls[0].get('responsibility').setValue(responsibilitiesFromDatabase[0][0]);          
+          for (let r = 1; r < responsibilitiesFromDatabase[0].length; r++) {
+            this.addNewResponsibility(0);
+            responsibilitiesArrayToFill[0].controls[r].get('responsibility').setValue(responsibilitiesFromDatabase[0][r]);
+          };         
+        }
+
+        this.workPeriodEndDateIssue[0] = false;
+        this.workPeriodCurrentDateIssue[0] = false;
+        (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').markAsDirty();
+        // this.experienceCompleted[0] = true;
+
+        for (let e = 1; e < experienceFromDatabase.length; e++) {
+
+          (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
+
+          responsibilitiesFromDatabase[e] = experienceFromDatabase[0][e].responsibilities;
+          responsibilitiesArrayToFill[e] = ((<FormArray>this.cvForm.get('experience')).controls[e].get('responsibilities') as FormArray);
+
+          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').patchValue(experienceFromDatabase[0][e].workStart));
+          this.workStartDateFormatted[e] = (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').value; 
+
+        if (experienceFromDatabase[0][e].workFinish !== "obecnie") {
+          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodEnd').patchValue(experienceFromDatabase[0][e].workFinish));
+          this.workFinishDateFormatted[e] = (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodEnd').value; 
+        } else {
+          this.experienceTillNowSelected[e] = true;        
+        }
+
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('employerName').patchValue(experienceFromDatabase[0][e].employerName));
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('trade').patchValue(experienceFromDatabase[0][e].trade));
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('occupation').patchValue(experienceFromDatabase[0][e].occupation));
+
+        if (responsibilitiesFromDatabase[e].length > 0) {
+          responsibilitiesArrayToFill[e].controls[0].get('responsibility').patchValue(responsibilitiesFromDatabase[e][0]);          
+          for (let r = 1; r < responsibilitiesFromDatabase[e].length; r++) {
+            this.addNewResponsibility(e);
+            responsibilitiesArrayToFill[e].controls[r].get('responsibility').patchValue(responsibilitiesFromDatabase[e][r]);
+          };         
+        };
+
+        this.workPeriodEndDateIssue[e] = false;
+        this.workPeriodCurrentDateIssue[e] = false;
+
+        };
+
+
+        // ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').patchValue(languagesFromDatabase[0][0].languageName));
+        // ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').markAsDirty());
+
+        // if ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').dirty) {
+        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').enable();
+        // } else {
+        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').reset();
+        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').disable();
+        // } 
       }
 
 

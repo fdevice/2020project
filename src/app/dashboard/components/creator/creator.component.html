@@ -289,6 +289,7 @@
                                    (mouseout)="clearHints()"
                                    (focus)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
                                    (blur)="clearHints()"
+                                   [(ngModel)]="experienceTillNowSelected[i]"
                                    (ngModelChange)="setExperienceTillNow(i); checkWorkPeriodDate(i)">
                             <label class="form-check-label now-label"
                                    [attr.for]="'experienceTillNowCbox'+i"
@@ -420,12 +421,12 @@
                     <div id="experience-completed" *ngIf="(this.experienceCompleted[i] == true)" class="mb-4 ml-4">
                       <small *ngIf="getExperienceControls(i).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ (getExperienceControls(i).get('workPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                          {{ workStartDateFormatted[i] }} - obecnie
                       </small>
                       <ng-template #experienceCompletedDate>
                         <small class="text-muted">
                           <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ (getExperienceControls(i).get('workPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getExperienceControls(i).get('workPeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                          {{ workStartDateFormatted[i] }} - {{ workFinishDateFormatted[i] }}
                         </small>
                       </ng-template>
                       <p style="font-size: 16px; margin-bottom: 5px">
