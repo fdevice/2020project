@@ -91,6 +91,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   experienceTillNowSelected: boolean[] = new Array(30);
   workStartDateFormatted: any[] = new Array(30);
   workFinishDateFormatted: any[] = new Array(30);
+  workStartDateManuallyChanged: boolean[] = new Array(30);
+  workFinishDateManuallyChanged: boolean[] = new Array(30);
 
   advantagesLeft: number;
   polishAdvantageSuffix: string;
@@ -411,7 +413,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.calcPosition(event);
   }
 
-  public addExperienceButtonClick(i: number): void {
+  public addExperienceButtonClick(i: number): void {    
+
+    console.log("WSDF[0]: " + this.workStartDateFormatted[0]);
+    console.log("WFDF[0]: " +this.workFinishDateFormatted[0]);
+
     let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
     let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');
 
@@ -784,6 +790,35 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     }
   };
 
+  public setControlManuallyChanged (control: string, index: number, e: Event) {
+    if (e != null && e instanceof Object) {  // z serwera zwracany jest typ String, a po wybraniu z kalendarza typ Object
+      // console.log(control);
+      console.log("Kontrolka " + control + ": " + e);
+      // console.log(typeof e);      
+      if (control === 'workStart') {
+        this.workStartDateManuallyChanged[index] = true;
+        console.log("workStartDateManuallyChanged[" + index + "]: " + this.workStartDateManuallyChanged[index]);
+      };
+      if (control === 'workFinish') {
+        this.workFinishDateManuallyChanged[index] = true;
+        console.log("workFinishDateManuallyChanged[" + index + "]: " + this.workFinishDateManuallyChanged[index]);
+      };
+    };
+    
+
+    // switch (control) {
+    //   case 'workStart': {
+    //     this.workStartDateManuallyChanged[index] = true;
+    //     console.log(this.workStartDateManuallyChanged);
+    //     break;        
+    //   }
+    //   case 'workFinish': {
+    //     this.workFinishDateManuallyChanged[index] = true;
+    //     console.log(this.workFinishDateManuallyChanged);
+    //     break;
+    //   }    
+  };
+
   public checkWorkPeriodDate(i: number) {
     const dateOptions = {
       day: undefined,
@@ -795,8 +830,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let endDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
     let tillNow = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').value;
 
-    this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
-    this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
+    // this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
+    // this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
 
     if ((startDate > endDate) && endDate != '' && tillNow === '') {
       this.workPeriodEndDateIssue[i] = true;
@@ -1008,13 +1043,28 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value ) {
 
-          this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          if (this.workStartDateManuallyChanged[i] == true) {
+            this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+          };          
+          
           this.baseCV.finishWork[i] = 'obecnie';
 
         } else {
+          
+          if (this.workStartDateManuallyChanged[i] == true) {
+            this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+          } else {
+            this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+          };
+          
+          if (this.workFinishDateManuallyChanged[i] == true) {
+            this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.finishWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
+          };          
 
-          this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);          
-          this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);          
           };
 
           this.baseCV.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
@@ -1376,23 +1426,27 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         responsibilitiesArrayToFill[0] = ((<FormArray>this.cvForm.get('experience')).controls[0].get('responsibilities') as FormArray);
         
         // console.log(responsibilitiesFromDatabase);
-        
-        ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').setValue(experienceFromDatabase[0][0].workStart));
-        // this.workStartDateFormatted[0] = new Date((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);    
-        this.workStartDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value;  
 
-        console.log("workStartDateFormatted[0]: " + this.workStartDateFormatted[0]);
-        console.log("workFinishDateFormatted[0] before assignment: " + this.workFinishDateFormatted[0]);
+        console.log(experienceFromDatabase[0][0].workStart);
+        console.log(experienceFromDatabase[0][0].workFinish);
 
-        if (experienceFromDatabase[0][0].workFinish !== "obecnie") {
-          ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodEnd').setValue(experienceFromDatabase[0][0].workFinish));
-          this.workFinishDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodEnd').value;
+        if (experienceFromDatabase[0][0].workFinish != "obecnie") {
 
-          console.log("workFinishDateFormatted[0]: " + this.workFinishDateFormatted[0]);
+          console.log("*** PO WEJŚCIU W PĘTLĘ ***");
+          console.log(experienceFromDatabase[0][0].workStart);
+          console.log(experienceFromDatabase[0][0].workFinish);
+          console.log(this.workStartDateFormatted);
+          console.log("*** ********** ***");
 
+          ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').patchValue(experienceFromDatabase[0][0].workStart));
+          this.workStartDateFormatted[0] = experienceFromDatabase[0][0].workStart;  
+          ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodEnd').patchValue(experienceFromDatabase[0][0].workFinish));
+          this.workFinishDateFormatted[0] = experienceFromDatabase[0][0].workFinish;          
         } else {
-          this.experienceTillNowSelected[0] = true;        
-        }
+          ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').patchValue(experienceFromDatabase[0][0].workStart));
+          this.workStartDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value;  
+          this.experienceTillNowSelected[0] = true;           
+        };                                          
 
         ((<FormArray>this.cvForm.get('experience')).controls[0].get('employerName').setValue(experienceFromDatabase[0][0].employerName));
         ((<FormArray>this.cvForm.get('experience')).controls[0].get('trade').setValue(experienceFromDatabase[0][0].trade));
@@ -1408,10 +1462,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         this.workPeriodEndDateIssue[0] = false;
         this.workPeriodCurrentDateIssue[0] = false;
-        (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').markAsDirty();
-        // this.experienceCompleted[0] = true;
+        (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').markAsDirty();      
+        
+        // this.experienceCompleted[0] = true;        
 
         for (let e = 1; e < experienceFromDatabase.length; e++) {
+
+          console.log("jestem w drugiej pętli experience!");
+          console.log("workStartDateFormatted[1]: " + this.workStartDateFormatted[1]);
 
           (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
 

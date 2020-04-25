@@ -259,8 +259,8 @@
                                  (mouseover)="setHints(hoverMessages.okresZatrudnieniaOd)"
                                  (mouseout)="clearHints()"
                                  (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
-                                 (blur)="clearHints()"
-                                 (ngModelChange)="checkWorkPeriodDate(i)"
+                                 (blur)="clearHints()"                                 
+                                 (ngModelChange)="checkWorkPeriodDate(i); setControlManuallyChanged('workStart', i, $event)"
                                  autocomplete="off">
                       </div>
                         <div class="col-xl-2">
@@ -274,8 +274,8 @@
                               (mouseover)="setHints(hoverMessages.okresZatrudnieniaDo)"
                               (mouseout)="clearHints()"
                               (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
-                              (blur)="clearHints()"
-                              (ngModelChange)="checkWorkPeriodDate(i)"
+                              (blur)="clearHints()"                              
+                              (ngModelChange)="checkWorkPeriodDate(i); setControlManuallyChanged('workFinish', i, $event)"
                               autocomplete="off">
                           <input *ngIf="getExperienceControls(i).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i" formControlName="workPeriodNow" readonly>
                         </div>
