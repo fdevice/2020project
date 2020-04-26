@@ -260,7 +260,7 @@
                                  (mouseout)="clearHints()"
                                  (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
                                  (blur)="clearHints()"                                 
-                                 (ngModelChange)="checkWorkPeriodDate(i); setControlManuallyChanged('workStart', i, $event)"
+                                 (ngModelChange)="checkWorkPeriodDate(i, $event); setControlManuallyChanged('workStart', i, $event)"
                                  autocomplete="off">
                       </div>
                         <div class="col-xl-2">
@@ -275,7 +275,7 @@
                               (mouseout)="clearHints()"
                               (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
                               (blur)="clearHints()"                              
-                              (ngModelChange)="checkWorkPeriodDate(i); setControlManuallyChanged('workFinish', i, $event)"
+                              (ngModelChange)="checkWorkPeriodDate(i, $event); setControlManuallyChanged('workFinish', i, $event)"
                               autocomplete="off">
                           <input *ngIf="getExperienceControls(i).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i" formControlName="workPeriodNow" readonly>
                         </div>
@@ -471,7 +471,8 @@
                                   (mouseover)="setHints(hoverMessages.rodzajSzkoly)"
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.rodzajSzkoly)"
-                                  (blur)="clearHints()">
+                                  (blur)="clearHints()"
+                                  [compareWith]="compareFn">
                             <mat-option [value]="1">Wyższa</mat-option>
                             <mat-option [value]="2">Średnia</mat-option>
                           </mat-select>
@@ -497,7 +498,7 @@
                                 (focus)="setHints(hoverMessages.okresNaukiOd)"
                                 (blur)="clearHints()"
                                 autocomplete="off"
-                                (ngModelChange)="checkEducationDate(e)">
+                                (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)">
                      </div>
                      <div class="col-xl-2">
                         <input *ngIf="!(getEducationControls(e).get('educationTillNow').value)" type="text"
@@ -512,7 +513,7 @@
                                (focus)="setHints(hoverMessages.okresNaukiDo)"
                                (blur)="clearHints()"
                                autocomplete="off"
-                               (ngModelChange)="checkEducationDate(e)">
+                               (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)">
                          <input *ngIf="getEducationControls(e).get('educationTillNow').value" type="text" class="form-control education-date-input" [id]="'educationPeriodNow'+e" formControlName="educationPeriodNow" readonly>
                        </div>
                        <div class="col-xl-1">
@@ -588,7 +589,8 @@
                                         (mouseover)="setHints(hoverMessages.trybStudiow)"
                                         (mouseout)="clearHints()"
                                         (focus)="setHints(hoverMessages.trybStudiow)"
-                                        (blur)="clearHints()">
+                                        (blur)="clearHints()"
+                                        [compareWith]="compareFnEdu">
                                   <mat-option *ngFor="let mode of studiesMode" [value]="mode">{{ mode }}</mat-option>
                                 </mat-select>
                               </div>
@@ -613,7 +615,7 @@
                                         [bsConfig]="DatePickerWithoutDays"
                                         bsDatepicker
                                         autocomplete="off"
-                                        (ngModelChange)="checkEducationDate(e)"
+                                        (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)"
                                         (mouseover)="setHints(hoverMessages.okresNaukiOd)"
                                         (mouseout)="clearHints()"
                                         (focus)="setHints(hoverMessages.okresNaukiOd)"
@@ -628,7 +630,7 @@
                                   [bsConfig]="DatePickerWithoutDays"
                                   bsDatepicker
                                   autocomplete="off"
-                                  (ngModelChange)="checkEducationDate(e)"
+                                  (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)"
                                   (mouseover)="setHints(hoverMessages.okresNaukiDo)"
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.okresNaukiDo)"
@@ -721,12 +723,12 @@
                   <div id="education-completed" *ngIf="(this.educationCompleted[e] == true)" class="mb-4 ml-4">
                       <small *ngIf="(getEducationControls(e).get('educationTillNow')).value; else educationCompletedDate" class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ (getEducationControls(e).get('educationPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                          {{ educationStartDateFormatted[e] }} - obecnie
                       </small>
                       <ng-template #educationCompletedDate>
                         <small class="text-muted">
                           <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ (getEducationControls(e).get('educationPeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getEducationControls(e).get('educationPeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                          {{ educationStartDateFormatted[e] }} - {{ educationFinishDateFormatted[e]  }}
                         </small>
                       </ng-template>
                       <p *ngIf="this.schoolTypeSelected[e] == 1; else schoolSelected" style="font-size: 16px; margin-bottom: 5px">

@@ -94,6 +94,12 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   workStartDateManuallyChanged: boolean[] = new Array(30);
   workFinishDateManuallyChanged: boolean[] = new Array(30);
 
+  educationTillNowSelected: boolean[] = new Array(30);
+  educationStartDateFormatted: any[] = new Array(30);
+  educationFinishDateFormatted: any[] = new Array(30);
+  educationStartDateManuallyChanged: boolean[] = new Array(30);
+  educationFinishDateManuallyChanged: boolean[] = new Array(30);
+
   advantagesLeft: number;
   polishAdvantageSuffix: string;
   focusOnResp: boolean;
@@ -418,8 +424,23 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     console.log("WSDF[0]: " + this.workStartDateFormatted[0]);
     console.log("WFDF[0]: " +this.workFinishDateFormatted[0]);
 
+    const dateOptions = {
+      day: undefined,
+      month: 'long',
+      year: 'numeric'
+    };
+
+    let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
     let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
-    let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');
+    let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');    
+
+    if (this.workStartDateFormatted[i] == undefined) {
+      this.workStartDateFormatted[i] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
+    };
+
+    if (this.workFinishDateFormatted[i] == undefined) {
+      this.workFinishDateFormatted[i] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
+    };
 
     if ((!finishWork.value && !nowWork.value)) {
       (<FormArray>this.cvForm.get('experience')).controls[i].setErrors({'incorrect': true});
@@ -442,6 +463,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   }
 
   public finishExperienceEdition(i: number) {
+    // dopisać obsługę edycji daty
+    
     this.experienceCompleted[i] = true;
     this.experienceEditMode[i] = false;
     this.hideNextExpButton = false;
@@ -803,50 +826,52 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.workFinishDateManuallyChanged[index] = true;
         console.log("workFinishDateManuallyChanged[" + index + "]: " + this.workFinishDateManuallyChanged[index]);
       };
-    };
-    
-
-    // switch (control) {
-    //   case 'workStart': {
-    //     this.workStartDateManuallyChanged[index] = true;
-    //     console.log(this.workStartDateManuallyChanged);
-    //     break;        
-    //   }
-    //   case 'workFinish': {
-    //     this.workFinishDateManuallyChanged[index] = true;
-    //     console.log(this.workFinishDateManuallyChanged);
-    //     break;
-    //   }    
+      if (control === 'educationStart') {
+        this.educationStartDateManuallyChanged[index] = true;
+        console.log("educationStartDateManuallyChanged[" + index + "]: " + this.educationStartDateManuallyChanged[index]);
+      };
+      if (control === 'educationFinish') {
+        this.educationFinishDateManuallyChanged[index] = true;
+        console.log("educationFinishDateManuallyChanged[" + index + "]: " + this.educationFinishDateManuallyChanged[index]);
+      };
+    };   
+     
   };
 
-  public checkWorkPeriodDate(i: number) {
-    const dateOptions = {
-      day: undefined,
-      month: 'long',
-      year: 'numeric'
-    };
-    let today = new Date();
-    let startDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
-    let endDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
-    let tillNow = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').value;
+  public checkWorkPeriodDate(i: number, e: Event) {
 
-    // this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
-    // this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
+    if (e != null && e instanceof Object) {  // z serwera zwracany jest typ String, a po wybraniu z kalendarza typ Object
 
-    if ((startDate > endDate) && endDate != '' && tillNow === '') {
-      this.workPeriodEndDateIssue[i] = true;
-      this.workPeriodEndDateIssueMessage[i] = 'Data rozpoczęcia pracy nie może być nowsza od daty jej zakończenia!';
-    } else {
-      this.workPeriodEndDateIssue[i] = false;
-      this.workPeriodEndDateIssueMessage[i] = '';
-    };
+      const dateOptions = {
+        day: undefined,
+        month: 'long',
+        year: 'numeric'
+      };
+      let today = new Date();
+      let startDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+      let endDate = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
+      let tillNow = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow').value;
+  
+      // this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
+      // this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
+  
+      if ((startDate > endDate) && endDate != '' && tillNow === '') {
+        this.workPeriodEndDateIssue[i] = true;
+        this.workPeriodEndDateIssueMessage[i] = 'Data rozpoczęcia pracy nie może być nowsza od daty jej zakończenia!';
+      } else {
+        this.workPeriodEndDateIssue[i] = false;
+        this.workPeriodEndDateIssueMessage[i] = '';
+      };
+  
+      if (startDate > today) {
+        this.workPeriodCurrentDateIssue[i] = true;
+        this.workPeriodCurrentDateIssueMessage[i] = 'Data rozpoczęcia pracy nie może być nowsza od dzisiejszej!';
+      } else {
+        this.workPeriodCurrentDateIssue[i] = false;
+      };
 
-    if (startDate > today) {
-      this.workPeriodCurrentDateIssue[i] = true;
-      this.workPeriodCurrentDateIssueMessage[i] = 'Data rozpoczęcia pracy nie może być nowsza od dzisiejszej!';
-    } else {
-      this.workPeriodCurrentDateIssue[i] = false;
     };
+    
   };
 
   public checkEducationDate(e: number) {
@@ -1104,7 +1129,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           this.baseCV.schoolName[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').value;
 
           this.baseCV.schoolProfile[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('specialization').value || (<FormArray>this.cvForm.get('education')).controls[e].get('classProfile').value;
-          this.baseCV.schoolMode[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationMode').value || '';          
+          this.baseCV.schoolMode[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationMode').value || '';       
+          
+          if (this.schoolTypeSelected[e] == 1) {
+            this.baseCV.schoolTypeIndex[e] = 1;
+            this.baseCV.schoolType[e] = "Wyższa"; 
+          } else {
+            this.baseCV.schoolType[e] = "Średnia"; 
+            this.baseCV.schoolTypeIndex[e] = 2;
+          };
+          
 
       };
     };
@@ -1189,6 +1223,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   compareFnLang: ((f1: any, f2: any) => boolean) | null = this.compareByLang 
 
+  compareFnEdu: ((f1: any, f2: any) => boolean) | null = this.compareByEdu 
+
+  compareByEdu(f1: any, f2:any) {
+    // console.log("f1: " + f1);
+    // console.log("f2: " + f2);       
+    return f1 && f2 && f1 === f2;
+  }
+
   compareByValue(f1: any, f2: any) {     
     return f1 && f2 && f1.value === f2.value; 
   }
@@ -1213,6 +1255,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let languagesFromDatabase = [];
     let advantagesIndexFromDatabase = [];
     let experienceFromDatabase = [];
+    let educationFromDatabase = [];
 
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
@@ -1410,11 +1453,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       console.log(experienceFromDatabase);                
       if (experienceFromDatabase.length > 0) { 
 
-        const dateOptions = {
-          day: undefined,
-          month: 'long',
-          year: 'numeric'
-        };
+        // const dateOptions = {
+        //   day: undefined,
+        //   month: 'long',
+        //   year: 'numeric'
+        // };
         
         let responsibilitiesFromDatabase: any[] = new Array();
         let responsibilitiesArrayToFill: any[] = new Array();
@@ -1444,7 +1487,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           this.workFinishDateFormatted[0] = experienceFromDatabase[0][0].workFinish;          
         } else {
           ((<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').patchValue(experienceFromDatabase[0][0].workStart));
-          this.workStartDateFormatted[0] = (<FormArray>this.cvForm.get('experience')).controls[0].get('workPeriodStart').value;  
+          this.workStartDateFormatted[0] = experienceFromDatabase[0][0].workStart;   
           this.experienceTillNowSelected[0] = true;           
         };                                          
 
@@ -1468,27 +1511,33 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         for (let e = 1; e < experienceFromDatabase.length; e++) {
 
+          this.experienceCompleted[e-1] = true;
+
           console.log("jestem w drugiej pętli experience!");
           console.log("workStartDateFormatted[1]: " + this.workStartDateFormatted[1]);
 
           (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
 
-          responsibilitiesFromDatabase[e] = experienceFromDatabase[0][e].responsibilities;
+          responsibilitiesFromDatabase[e] = experienceFromDatabase[e][0].responsibilities;
           responsibilitiesArrayToFill[e] = ((<FormArray>this.cvForm.get('experience')).controls[e].get('responsibilities') as FormArray);
 
-          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').patchValue(experienceFromDatabase[0][e].workStart));
-          this.workStartDateFormatted[e] = (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').value; 
+          // ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').patchValue(experienceFromDatabase[0][e].workStart));
+          // this.workStartDateFormatted[e] = (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').value; 
 
-        if (experienceFromDatabase[0][e].workFinish !== "obecnie") {
-          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodEnd').patchValue(experienceFromDatabase[0][e].workFinish));
-          this.workFinishDateFormatted[e] = (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodEnd').value; 
+        if (experienceFromDatabase[e][0].workFinish !== "obecnie") {
+          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').patchValue(experienceFromDatabase[e][0].workStart));
+          this.workStartDateFormatted[e] = experienceFromDatabase[e][0].workStart;  
+          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodEnd').patchValue(experienceFromDatabase[e][0].workFinish));
+          this.workFinishDateFormatted[e] = experienceFromDatabase[e][0].workFinish;             
         } else {
+          ((<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').patchValue(experienceFromDatabase[e][0].workStart));
+          this.workStartDateFormatted[e] = experienceFromDatabase[e][0].workStart;  
           this.experienceTillNowSelected[e] = true;        
-        }
+        };
 
-        ((<FormArray>this.cvForm.get('experience')).controls[e].get('employerName').patchValue(experienceFromDatabase[0][e].employerName));
-        ((<FormArray>this.cvForm.get('experience')).controls[e].get('trade').patchValue(experienceFromDatabase[0][e].trade));
-        ((<FormArray>this.cvForm.get('experience')).controls[e].get('occupation').patchValue(experienceFromDatabase[0][e].occupation));
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('employerName').patchValue(experienceFromDatabase[e][0].employerName));
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('trade').patchValue(experienceFromDatabase[e][0].trade));
+        ((<FormArray>this.cvForm.get('experience')).controls[e].get('occupation').patchValue(experienceFromDatabase[e][0].occupation));
 
         if (responsibilitiesFromDatabase[e].length > 0) {
           responsibilitiesArrayToFill[e].controls[0].get('responsibility').patchValue(responsibilitiesFromDatabase[e][0]);          
@@ -1500,20 +1549,84 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         this.workPeriodEndDateIssue[e] = false;
         this.workPeriodCurrentDateIssue[e] = false;
+        (<FormArray>this.cvForm.get('experience')).controls[e].get('workPeriodStart').markAsDirty();  
 
-        };
+        };                     
+      }; // koniec doświadczenia zawodowego
 
+        // EDUKACJA
+        educationFromDatabase = CVData.data.baseCVData.education;
+        console.log(educationFromDatabase);                
+        if (educationFromDatabase.length > 0) { 
+        
+          if (educationFromDatabase[0][0].educationFinish != "obecnie") {
 
-        // ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').patchValue(languagesFromDatabase[0][0].languageName));
-        // ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').markAsDirty());
+            console.log("*** PO WEJŚCIU W PĘTLĘ ***");
+            console.log(educationFromDatabase[0][0].educationStart);
+            console.log(educationFromDatabase[0][0].educationFinish);
+            console.log(this.educationStartDateFormatted);
+            console.log("*** ********** ***");
+  
+            ((<FormArray>this.cvForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
+            this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;  
+            ((<FormArray>this.cvForm.get('education')).controls[0].get('educationPeriodEnd').patchValue(educationFromDatabase[0][0].educationFinish));
+            this.educationFinishDateFormatted[0] = educationFromDatabase[0][0].educationFinish;          
+          } else {
+            ((<FormArray>this.cvForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
+            this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;   
+            this.educationTillNowSelected[0] = true;           
+          };   
 
-        // if ((<FormArray>this.cvForm.get('languages')).controls[0].get('languageName').dirty) {
-        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').enable();
-        // } else {
-        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').reset();
-        //   (<FormArray>this.cvForm.get('languages')).controls[0].get('level').disable();
-        // } 
-      }
+          this.schoolTypeSelected[0] = educationFromDatabase[0][0].schoolTypeIndex;
+
+          ((<FormArray>this.cvForm.get('education')).controls[0].get('schoolType').patchValue(educationFromDatabase[0][0].schoolType));
+          ((<FormArray>this.cvForm.get('education')).controls[0].get('schoolName').patchValue(educationFromDatabase[0][0].schoolName));
+          ((<FormArray>this.cvForm.get('education')).controls[0].get('specialization').patchValue(educationFromDatabase[0][0].schoolProfile));
+          ((<FormArray>this.cvForm.get('education')).controls[0].get('classProfile').patchValue(educationFromDatabase[0][0].schoolProfile));
+          ((<FormArray>this.cvForm.get('education')).controls[0].get('educationMode').patchValue(educationFromDatabase[0][0].schoolMode));   
+          
+          this.educationEndDateIssue[0] = false;
+          this.educationCurrentDateIssue[0] = false;
+          (<FormArray>this.cvForm.get('education')).controls[0].get('educationPeriodStart').markAsDirty();  
+          
+          for (let e = 1; e < educationFromDatabase.length; e++) {
+
+            this.educationCompleted[e-1] = true;
+
+            console.log("jestem w drugiej pętli education!");
+            console.log("educationStartDateFormatted[1]: " + this.educationStartDateFormatted[1]);
+  
+            (<FormArray>this.cvForm.get('education')).push(this.addEducationFormGroup());                      
+  
+          if (educationFromDatabase[e][0].educationFinish !== "obecnie") {
+            ((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').patchValue(educationFromDatabase[e][0].educationStart));
+            this.educationStartDateFormatted[e] = educationFromDatabase[e][0].educationStart;  
+            ((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').patchValue(educationFromDatabase[e][0].educationFinish));
+            this.educationFinishDateFormatted[e] = educationFromDatabase[e][0].educationFinish;   
+          } else {
+            ((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').patchValue(educationFromDatabase[e][0].educationStart));
+            this.educationStartDateFormatted[e] = educationFromDatabase[e][0].educationStart;   
+            this.educationTillNowSelected[e] = true;         
+          };
+  
+          this.schoolTypeSelected[e] = educationFromDatabase[e][0].schoolTypeIndex;
+
+          ((<FormArray>this.cvForm.get('education')).controls[e].get('schoolType').patchValue(educationFromDatabase[e][0].schoolType));
+          ((<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').patchValue(educationFromDatabase[e][0].schoolName));
+          ((<FormArray>this.cvForm.get('education')).controls[e].get('specialization').patchValue(educationFromDatabase[e][0].schoolProfile));
+          ((<FormArray>this.cvForm.get('education')).controls[e].get('classProfile').patchValue(educationFromDatabase[e][0].schoolProfile));
+          ((<FormArray>this.cvForm.get('education')).controls[e].get('educationMode').patchValue(educationFromDatabase[e][0].schoolMode));   
+          
+          this.educationEndDateIssue[e] = false;
+          this.educationCurrentDateIssue[e] = false;
+          (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').markAsDirty(); 
+  
+          };
+        
+        }; // koniec edukacji
+
+          // KURSY
+
 
 
     },

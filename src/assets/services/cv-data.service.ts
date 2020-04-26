@@ -35,6 +35,8 @@ export class CVDataService {
     finishEducation: any = new Array();
     schoolName: any = new Array();
     schoolProfile: any = new Array();
+    schoolType: any = new Array();
+    schoolTypeIndex: any = new Array();
     schoolMode: any = new Array();
     startCourse: any = new Array();
     finishCourse: any = new Array();
@@ -158,6 +160,8 @@ export class CVDataService {
                     educationFinish: this.finishEducation[e],
                     schoolName: this.schoolName[e],
                     schoolProfile: this.schoolProfile[e],
+                    schoolType: this.schoolType[e],
+                    schoolTypeIndex: this.schoolTypeIndex[e],
                     schoolMode: this.schoolMode[e]
                 }
                 ];
@@ -243,8 +247,13 @@ export class CVDataService {
         };
 
         // MOCNE STRONY
-        baseCVData.advantages = this.advantages;
-        baseCVData.selectedAdvantagesIndex = this.selectedAdvantagesIndex;
+        if (this.advantages.length > 0) {
+            console.log(this.advantages.length);
+            baseCVData.advantages = this.advantages;
+            baseCVData.selectedAdvantagesIndex = this.selectedAdvantagesIndex;
+        };        
+        
+        // baseCVData.selectedAdvantagesIndex = this.selectedAdvantagesIndex;
 
         // HOBBY
         baseCVData.hobby = this.hobbies;
