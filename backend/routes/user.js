@@ -1,10 +1,33 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 
 const User = require("../models/user");
 
 const router = express.Router();
+
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg'
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type!");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "images");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const extension = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + extension);    // blueprint dla nazwy przechowywanych plików graficznych
+  }
+});
 
   
     // REJESTRACJA NOWEGO UŻYTKOWNIKA
@@ -95,7 +118,7 @@ router.post("/signup", (req, res, next) => {
 
 
       // ZAPISYWANIE BAZOWEGO CV
-    router.put("/cv", (req, res, next) => {
+    router.put("/cv", multer(storage).single("image") , (req, res, next) => {
       // console.log(req.body);
       User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {

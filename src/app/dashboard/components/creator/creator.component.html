@@ -156,8 +156,8 @@
                     <div class="photo-template">
                     </div>
                   </div>
-                  <div *ngIf="uploadedImage" class="user-photo">
-                      <img src="{{uploadedImage}}" alt="">
+                  <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" class="user-photo">
+                      <img [src]="uploadedImage" [alt]="cvForm.value.name">
                   </div>
             </div>
             <div class="col-lg-7 col-sm-12">
@@ -220,7 +220,8 @@
                                (focus)="setHints(hoverMessages.zdjecie)"
                                (blur)="clearHints()">
                         Dodaj zdjęcie
-                        <input type="file" name="file" accept="image/*" (change)="uploadImage($event)">
+                        <!-- <input type="file" name="file" accept="image/*" (change)="uploadImage($event)"> -->
+                        <input type="file" name="file" accept="image/*" (change)="onImagePicked($event)">
                     </div>
                     <div *ngIf="uploadedImage" class="upload-button file btn btn-info"
                                (mouseover)="setHints(hoverMessages.zmienZdjecie)"
@@ -228,7 +229,7 @@
                                (focus)="setHints(hoverMessages.zmienZdjecie)"
                                (blur)="clearHints()">
                         Zmień zdjęcie
-                        <input type="file" name="file" accept="image/*" (change)="uploadImage($event)">
+                        <input type="file" name="file" accept="image/*" (change)="onImagePicked($event)">
                     </div>
               </div>
           </div>
@@ -472,7 +473,7 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.rodzajSzkoly)"
                                   (blur)="clearHints()"
-                                  [compareWith]="compareFn">
+                                  [compareWith]="compareFn1">
                             <mat-option [value]="1">Wyższa</mat-option>
                             <mat-option [value]="2">Średnia</mat-option>
                           </mat-select>
@@ -773,7 +774,7 @@
                                        [bsConfig]="DatePickerWithoutDays"
                                        bsDatepicker
                                        autocomplete="off"
-                                       (ngModelChange)="checkCoursesDate(c)"
+                                       (ngModelChange)="checkCoursesDate(c); setControlManuallyChanged('courseStart', c, $event)"
                                        (mouseover)="setHints(hoverMessages.czasTrwaniaKursuOd)"
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.czasTrwaniaKursuOd)"
@@ -788,7 +789,7 @@
                                     [bsConfig]="DatePickerWithoutDays"
                                     bsDatepicker
                                     autocomplete="off"
-                                    (ngModelChange)="checkCoursesDate(c)"
+                                    (ngModelChange)="checkCoursesDate(c); setControlManuallyChanged('courseFinish', c, $event)"
                                     (mouseover)="setHints(hoverMessages.czasTrwaniaKursuDo)"
                                     (mouseout)="clearHints()"
                                     (focus)="setHints(hoverMessages.czasTrwaniaKursuDo)"
@@ -881,12 +882,12 @@
                 <div id="course-completed" *ngIf="this.coursesCompleted[c]" class="mb-4 ml-4">
                     <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted">
                       <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                        {{ (getCoursesControls(c).get('coursePeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - obecnie
+                        {{ courseStartDateFormatted[c] }} - obecnie
                     </small>
                     <ng-template #courseCompletedDate>
                       <small class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                        {{ (getCoursesControls(c).get('coursePeriodStart').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }} - {{ (getCoursesControls(c).get('coursePeriodEnd').value).toLocaleDateString('pl', {day: undefined, month: 'long', year: 'numeric'}) }}
+                        {{ courseStartDateFormatted[c] }} - {{ courseFinishDateFormatted[c] }}
                       </small>
                     </ng-template>
                     <p *ngIf="!(getCoursesControls(c).get('courseSubject').value === ''); else onlyCourseName" style="font-size: 16px; margin-bottom: 5px">
