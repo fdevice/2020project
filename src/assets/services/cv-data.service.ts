@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { CVData } from '../models/cvData.model';
 import { BaseCV } from 'src/assets/models/baseCV.model';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Subject, Observable, Observer } from 'rxjs';
+import { AbstractControl } from '@angular/forms';
 
 const BACKEND_URL = environment.apiUrl;
 
@@ -62,7 +63,7 @@ export class CVDataService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    sendBaseCVData() {        
+    sendBaseCVData(image: File) {        
 
         let baseCVData: CVData = {
             name: '',
@@ -96,7 +97,8 @@ export class CVDataService {
 
         console.dir(baseCVData);               
         
-        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika       
+        let loggedUserEmail = localStorage.getItem("loggedAsEmail");  // E-mail zalogowanego użytkownika 
+
         
         console.log(loggedUserEmail);    
         console.log(this.drivingLicence);
@@ -267,13 +269,30 @@ export class CVDataService {
 
         console.log(baseCV);
 
-        this.http
+        this.http                                       // Przesyłanie na serwer bazowego CV bez zdjęcia
             .put(BACKEND_URL + "/user/cv", baseCV)
             .subscribe((result)=>{
                 console.log(result);
             }, error => {
                 console.log(error);                
             });
+
+        const imageData = new FormData();
+
+        if (image != null && image != undefined) {      // Przesyłanie zdjęcia na serwer
+            console.log(typeof image);
+            imageData.append("loggedUserEmail", loggedUserEmail);
+            imageData.append("image", image, (this.name + " " + this.surname));
+            this.http
+                .post(BACKEND_URL + "/user/cv/photo", imageData)
+                .subscribe((result) => {
+                    console.log(result);
+                }, error => {
+                    console.log(error);
+                });
+        } else {
+            console.log("Brak lub niewłaściwy format zdjęcia!");
+        };
     };
 
     getBaseCVData() {
@@ -286,6 +305,5 @@ export class CVDataService {
             }, error => {
                 console.log(error);
             });                  
-    };
-
+    };   
 }

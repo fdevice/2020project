@@ -244,7 +244,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       surname: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
       phone: ['', Validators.required],
-      image: [null, { validators: [Validators.required], asyncValidators: [mimeType]} ],
+      image: [null, [Validators.required], [mimeType]],
       position: ['', Validators.required],
       salary: [''],
       employment: [''],
@@ -283,10 +283,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       requirements: this.fb.array([
         this.addRequirementsFormGroup()
       ]),
-      clause: [this.defaultClause, Validators.required]
+      clause: [this.defaultClause, Validators.required]        
     });
 
-  };
+  }; // koniec onInit()
 
   ngAfterViewInit() {
     for (let i = 1; i < 5; i++) {
@@ -830,11 +830,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     const file = (event.target as HTMLInputElement).files[0];
     const reader = new FileReader();
 
+    console.log("Zdjęcie jest typu: " + typeof file);
     this.cvForm.patchValue({image: file});
-    this.cvForm.get("image").updateValueAndValidity();
+    this.cvForm.get("image").updateValueAndValidity();    
+    console.log("Typ value kontrolki zdjęcia " + typeof this.cvForm.get('image').value);
 
     reader.onload = () => {  // wczytywanie jest procesem asynchronicznym
       this.uploadedImage = reader.result;
+      console.log("uploadedimage jest typu: " + typeof this.uploadedImage);
     };
     reader.readAsDataURL(file); // uruchamianie readera
   };  
@@ -1250,13 +1253,33 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         if ( (<FormArray>this.cvForm.get('education')).controls[e].get('educationTillNow').value ) {
 
-          this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          if (this.educationStartDateManuallyChanged[e] == true) {
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value;
+          };                    
+
           this.baseCV.finishEducation[e] = 'obecnie';
+
+          // this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishEducation[e] = 'obecnie';
 
         } else {
 
-          this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-          this.baseCV.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          if (this.educationStartDateManuallyChanged[e] == true) {
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value;
+          };  
+
+          if (this.educationFinishDateManuallyChanged[e] == true) {
+            this.baseCV.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.finishEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value;
+          }; 
+
+          // this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
 
           };
 
@@ -1271,9 +1294,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           } else {
             this.baseCV.schoolType[e] = "Średnia"; 
             this.baseCV.schoolTypeIndex[e] = 2;
-          };
-          
-
+          };         
       };
     };
 
@@ -1285,11 +1306,33 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       if ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value !== '') {
 
         if ( (<FormArray>this.cvForm.get('courses')).controls[c].get('courseTillNow').value ) {
-          this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+
+          if (this.courseStartDateManuallyChanged[c] == true) {
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value;
+          };                    
+
           this.baseCV.finishCourse[c] = 'obecnie';
+
+          // this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishCourse[c] = 'obecnie';
         } else {
-          this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-          this.baseCV.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+
+          if (this.courseStartDateManuallyChanged[c] == true) {
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value;
+          };   
+
+          if (this.courseFinishDateManuallyChanged[c] == true) {
+            this.baseCV.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.finishCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+          }; 
+
+          // this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
         };
 
         this.baseCV.courseName[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value;
@@ -1350,7 +1393,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     // ZAINTERESOWANIA
     this.baseCV.hobbies = this.cvForm.get('hobbies').value;
 
-    this.baseCV.sendBaseCVData();
+    this.baseCV.sendBaseCVData(this.cvForm.get("image").value);
     
   }
 
@@ -1409,13 +1452,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         name: CVData.data.name,
         surname: CVData.data.surname,
         phone: CVData.data.phone,
-        email: CVData.data.contactEmail,
+        email: CVData.data.contactEmail,       
         position: CVData.data.baseCVData.position,
         location: CVData.data.baseCVData.location,        
         disposition: CVData.data.baseCVData.disposition,
         salary: CVData.data.baseCVData.salary,
         hobbies: CVData.data.baseCVData.hobby              
       });
+
+      this.uploadedImage = CVData.data.baseCVData.photoPath;
+      console.log("Fotka po pobraniu danych: " + this.uploadedImage);
 
         // DOSTĘPNOŚĆ
       availabilityFromDatabase = CVData.data.baseCVData.availability;

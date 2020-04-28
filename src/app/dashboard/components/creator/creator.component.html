@@ -156,7 +156,7 @@
                     <div class="photo-template">
                     </div>
                   </div>
-                  <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" class="user-photo">
+                  <div *ngIf="uploadedImage !== '' && uploadedImage && cvForm.get('image').valid" class="user-photo">
                       <img [src]="uploadedImage" [alt]="cvForm.value.name">
                   </div>
             </div>

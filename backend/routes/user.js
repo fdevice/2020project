@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "images");
+    cb(error, "./backend/images");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -118,7 +118,7 @@ router.post("/signup", (req, res, next) => {
 
 
       // ZAPISYWANIE BAZOWEGO CV
-    router.put("/cv", multer(storage).single("image") , (req, res, next) => {
+    router.put("/cv", (req, res, next) => {
       // console.log(req.body);
       User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
@@ -139,7 +139,7 @@ router.post("/signup", (req, res, next) => {
           }
           if (req.body.cvData.phone) {
             user.phone = req.body.cvData.phone;
-          }
+          }          
           // PREFEROWANE WARUNKI ZATRUDNIENIA
           if (req.body.cvData.position) {
             user.baseCVData.position = req.body.cvData.position;
@@ -250,6 +250,30 @@ router.post("/signup", (req, res, next) => {
             })
         })
     });
+
+    // ZAPISYWANIE ZDJĘCIA
+    router.post("/cv/photo", multer({storage: storage}).single("image"), (req, res, next) => {
+      // console.log(req.body.image);
+      const url = req.protocol + '://' + req.get("host");
+      User.findOne({ email: req.body.loggedUserEmail })
+        .then(user => {
+          if (!user) {
+            return res.status(401).json({
+              message: "Nie odnaleziono takiego użytkownika!"
+            });          
+          }
+          console.log("Ścieżka do zdjęcia: " + (url + "/images/" + req.file.filename));
+          user.baseCVData.photoPath = url + "/images/" + req.file.filename;
+          user.save()
+            .then(updatedUser => {
+              res.status(201).json({
+                message: "Zapisano zdjęcie użytkownika!",
+                photoPath: updatedUser.baseCVData.photoPath
+              });
+              console.log(updatedUser); 
+            }) 
+        })
+    })
 
     // POBIERANIE ZAWARTOŚCI BAZOWEGO CV
     router.get("/cv/:email", (req, res, next) => {
