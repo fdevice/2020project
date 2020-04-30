@@ -71,7 +71,7 @@ export const HOVER_MESSAGE =
     mocneStrony: "Jeśli masz dylemat, które ze swoich kompetencji wybrać, zastanów się, które wykorzystasz w przyszłej pracy. Nie zasypuj pracodawcy za dużą liczbą informacji. Możesz wybrać od 1 do 7 kompetencji.",
     zainteresowania: "Wypełnienie zainteresowań jest dużo ważniejsze niż się wydaje. Niektóre zainteresowania mogą wykorzystywać umiejętności, które przydają się w pracy. Poza tym pracodawcy chętnie podejmują ten temat na rozmowie rekrutacyjnej.",
     zdjecie: "Zadbaj o dobre zdjęcie! Pomyśl, jak powinien prezentować się pracownik na stanowisku, na które chcesz aplikować. Pamiętaj o stroju, odpowiednim tle i jakości zdjęcia. Nie używaj robionych „z ręki“, z imprez czy skanowanych z dowodu. \nKliknij, żeby dodać zdjęcie z dysku.",
-    zmienZdjecie: "Kliknij, żeby zmienić zdjęcie",
+    zmienZdjecie: "Kliknij, żeby zmienić zdjęcie. Zadbaj o dobre zdjęcie! Pomyśl, jak powinien prezentować się pracownik na stanowisku, na które chcesz aplikować. Pamiętaj o stroju, odpowiednim tle i jakości zdjęcia. Nie używaj robionych „z ręki“, z imprez czy skanowanych z dowodu. \nKliknij, żeby dodać zdjęcie z dysku.",
     wymaganiaPracodawcy: "Odniesienie się do wymagań pracodawcy to bardzo ważna część Twojego CV. Dzięki niej Twoje CV nigdy nie zostanie pochopnie odrzucone",
     wymaganie: "Podaj zawarte w ofercie zatrudnienia wymaganie pracodawcy, a następnie odpowiedz, w jakim zakresie je spełniasz",
     wymaganieDodaj: "Kliknij, żeby dodać kolejne wymaganie do listy",

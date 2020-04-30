@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { CVData } from '../models/cvData.model';
 import { BaseCV } from 'src/assets/models/baseCV.model';
 import { environment } from 'src/environments/environment';
-import { Subject, Observable, Observer } from 'rxjs';
-import { AbstractControl } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 const BACKEND_URL = environment.apiUrl;
 
@@ -281,6 +280,7 @@ export class CVDataService {
 
         if (image != null && image != undefined) {      // Przesyłanie zdjęcia na serwer
             console.log(typeof image);
+            if (typeof(image) === 'object') {
             imageData.append("loggedUserEmail", loggedUserEmail);
             imageData.append("image", image, (this.name + " " + this.surname));
             this.http
@@ -290,6 +290,20 @@ export class CVDataService {
                 }, error => {
                     console.log(error);
                 });
+            } else {                
+                let imageStringData = {
+                    "loggedUserEmail": loggedUserEmail,
+                    "imagePath": image
+                };
+                this.http
+                .post(BACKEND_URL + "/user/cv/photo", imageStringData)
+                .subscribe((result) => {
+                    console.log(result);
+                }, error => {
+                    console.log(error);
+                });
+            };
+            
         } else {
             console.log("Brak lub niewłaściwy format zdjęcia!");
         };

@@ -15,6 +15,7 @@ import { WarningDialogComponent } from '../../../../assets/components/warning-di
 import { DialogService } from '../../../../assets/services/dialog.service';
 import { CVDataService } from 'src/assets/services/cv-data.service';
 import { mimeType } from 'src/assets/validators/mime-type.validator';
+import { HttpClient } from '@angular/common/http';
 
 defineLocale('pl', plLocale);
 
@@ -49,7 +50,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   DatePickerConfig: Partial<BsDatepickerConfig>;  //Partial nie ma obowiązku dziedziczyć wszystkich atrybutów obiektu
   DatePickerWithoutDays: Partial<BsDatepickerConfig>;
 
-  uploadedImage: any;
+  uploadedImage: any;  
   cvForm: FormGroup;
   employment: any[];
   availability: string[];
@@ -186,19 +187,24 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     private hoverHints: HintMessageService,
     private cdRef: ChangeDetectorRef,
     public dialog: MatDialog,
-    public dialogService: DialogService
+    public dialogService: DialogService    
     ) {
       this.DatePickerConfig = Object.assign({}, {containerClass: 'theme-dark-blue', dateInputFormat: 'DD.MM.YYYY' }); //tworzymy zmienną z wybraną konfiguracją obiektu DatePicker
       this.DatePickerWithoutDays = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minMode, dateInputFormat: 'MMMM YYYY'});
     }
 
-  ngOnInit() {
+  ngOnInit() {    
+
+    // this.uploadedImage = "http://localhost:3000/images/katarzyna-kant-kocix-wysocka-1588079356952.png";
+    // console.log(this.uploadedImage);
+
+    // this.userPhotoOnInit();
 
     this.screenInnerWidth = window.innerWidth;  //początkowa szerokość ekranu po załadowaniu strony    
 
     this.languagesList = this.sharedLists.getLanguageList();
     this.advantagesList = this.sharedLists.getAdvantagesList();
-    this.hoverMessages = this.hoverHints.setHintMessage();
+    this.hoverMessages = this.hoverHints.setHintMessage();    
 
     this.localeService.use('pl');
     this.defaultClause = "Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu tej oraz przyszłych rekrutacji (zgodnie z ustawą z dnia 10 maja 2018 roku o ochronie danych osobowych (Dz. U. z 2018, poz. 1000) oraz zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (RODO)."
@@ -824,10 +830,12 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public onLanguageLevelChange(level: any, index: number) {
     this.selectedLanguageDegree[index] = level.description;
-  }
+  }    
 
   public onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
+    console.log("info o file: ");
+    console.dir(file);
     const reader = new FileReader();
 
     console.log("Zdjęcie jest typu: " + typeof file);
@@ -837,10 +845,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     reader.onload = () => {  // wczytywanie jest procesem asynchronicznym
       this.uploadedImage = reader.result;
+      console.log("Załadowane zdjęcie: " + this.uploadedImage);
       console.log("uploadedimage jest typu: " + typeof this.uploadedImage);
     };
     reader.readAsDataURL(file); // uruchamianie readera
-  };  
+  };    
 
   public toggleDrivingLicenceDescription(e: Event) {    
     if ((<HTMLInputElement>(e.target)).checked) {
@@ -1188,12 +1197,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.baseCV.employment = [];
     };    
 
-    // DANE OSOBOWE + ZDJĘCIE
+    // DANE OSOBOWE
     this.baseCV.name = this.cvForm.get('name').value.charAt(0).toUpperCase() + this.cvForm.get('name').value.slice(1);
     this.baseCV.surname = this.cvForm.get('surname').value.charAt(0).toUpperCase() + this.cvForm.get('surname').value.slice(1);
     this.baseCV.email = this.cvForm.get('email').value;
-    this.baseCV.phone = this.cvForm.get('phone').value;
-      // !! dodać obsługę zdjęcia
+    this.baseCV.phone = this.cvForm.get('phone').value;   
     
 
     // DOŚWIADCZENIE ZAWODOWE
@@ -1391,8 +1399,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.baseCV.selectedAdvantagesIndex = this.selectedAdvantagesValuesToDatabase;
 
     // ZAINTERESOWANIA
-    this.baseCV.hobbies = this.cvForm.get('hobbies').value;
+    this.baseCV.hobbies = this.cvForm.get('hobbies').value;    
 
+    // ZDJĘCIE
     this.baseCV.sendBaseCVData(this.cvForm.get("image").value);
     
   }
@@ -1460,7 +1469,17 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         hobbies: CVData.data.baseCVData.hobby              
       });
 
-      this.uploadedImage = CVData.data.baseCVData.photoPath;
+      if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {        
+        this.cvForm.patchValue({ image: CVData.data.baseCVData.photoPath });
+        this.cvForm.get("image").updateValueAndValidity();    
+        console.log(this.cvForm.get("image").value);
+        this.uploadedImage = CVData.data.baseCVData.photoPath;
+        // this.cdRef.detectChanges();
+        // this.getBase64ImageFromUrl(CVData.data.baseCVData.photoPath)
+        // .then(result => this.uploadedImage = result)
+        // .catch(err => console.error(err));
+      };      
+
       console.log("Fotka po pobraniu danych: " + this.uploadedImage);
 
         // DOSTĘPNOŚĆ

@@ -253,9 +253,9 @@ router.post("/signup", (req, res, next) => {
 
     // ZAPISYWANIE ZDJĘCIA
     router.post("/cv/photo", multer({storage: storage}).single("image"), (req, res, next) => {
-      // console.log(req.body.image);
-      const url = req.protocol + '://' + req.get("host");
-      User.findOne({ email: req.body.loggedUserEmail })
+      if (req.file) {
+        const url = req.protocol + '://' + req.get("host");
+        User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
           if (!user) {
             return res.status(401).json({
@@ -273,7 +273,27 @@ router.post("/signup", (req, res, next) => {
               console.log(updatedUser); 
             }) 
         })
-    })
+      } else {
+        let imagePath = req.body.imagePath;
+        User.findOne({ email: req.body.loggedUserEmail })
+        .then(user => {
+          if (!user) {
+            return res.status(401).json({
+              message: "Nie odnaleziono takiego użytkownika!"
+            });          
+          }          
+          user.baseCVData.photoPath = imagePath;
+          user.save()
+            .then(updatedUser => {
+              res.status(201).json({
+                message: "Zapisano zdjęcie użytkownika!",
+                photoPath: updatedUser.baseCVData.photoPath
+              });
+              console.log(updatedUser); 
+            }); 
+        });
+      };      
+    });
 
     // POBIERANIE ZAWARTOŚCI BAZOWEGO CV
     router.get("/cv/:email", (req, res, next) => {

@@ -153,10 +153,11 @@
           <div class="row mb-2">
             <div class="col-lg-5 col-xs-3" #photoContainer>
                 <div *ngIf="!uploadedImage">
-                    <div class="photo-template">
-                    </div>
+                    <!-- <div class="photo-template">
+                      <img src="http://localhost:3000/images/katarzyna-kant-kocix-wysocka-1588079356952.png">
+                    </div> -->
                   </div>
-                  <div *ngIf="uploadedImage !== '' && uploadedImage && cvForm.get('image').valid" class="user-photo">
+                  <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" class="user-photo">
                       <img [src]="uploadedImage" [alt]="cvForm.value.name">
                   </div>
             </div>
