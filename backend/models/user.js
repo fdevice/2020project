@@ -20,43 +20,10 @@ const userSchema = mongoose.Schema({
     disposition: { type: String },
     employment: [],
     salary: { type: String },
-    experience: [
-      // {
-      //   workPeriodStart: { type: String },
-      //   workPeriodEnd: { type: String },
-      //   employerName: { type: String },
-      //   trade: { type: String },
-      //   occupation: { type: String },
-      //   responsibilities: [
-      //     { type: String }
-      //   ]
-      // }
-    ],
-    education: [
-      // {
-      //   schoolType: { type: String },
-      //   educationPeriodStart: { type: String },
-      //   educationPeriodEnd: { type: String },
-      //   schoolName: { type: String },
-      //   specialization: { type: String },
-      //   educationMode: { type: String },
-      //   classProfile: { type: String }
-      // }
-    ],
-    courses: [
-      // {
-      //   coursePeriodStart: { type: String },
-      //   coursePeriodEnd: { type: String },
-      //   courseName: { type: String },
-      //   courseSubject: { type: String }
-      // }
-    ],
-    languages: [
-      // {
-      //   languageName: { type: String },
-      //   level: { type: String }
-      // }
-    ],
+    experience: [],
+    education: [],
+    courses: [],
+    languages: [],
     skills: {
       drivingLicence: {
         checked: { type: Boolean },

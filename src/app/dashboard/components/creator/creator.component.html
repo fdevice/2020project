@@ -152,10 +152,7 @@
             </div>
           <div class="row mb-2">
             <div class="col-lg-5 col-xs-3" #photoContainer>
-                <div *ngIf="!uploadedImage">
-                    <!-- <div class="photo-template">
-                      <img src="http://localhost:3000/images/katarzyna-kant-kocix-wysocka-1588079356952.png">
-                    </div> -->
+                <div *ngIf="!uploadedImage">                    
                   </div>
                   <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" class="user-photo">
                       <img [src]="uploadedImage" [alt]="cvForm.value.name">
@@ -245,73 +242,12 @@
                 <div formArrayName="experience" *ngFor="let exp of experienceArray.controls; let i = index">
                   <div [formGroupName]="i">
                     <div *ngIf="!this.experienceCompleted[i]">
-                    <div class="form-group row section-row">
-                      <label *ngIf="(screenInnerWidth > 768)"
-                             [attr.for]="'workPeriodStart'+i" class="col-md-1 col-form-label"
-                             (mouseover)="setHints(hoverMessages.okresZatrudnienia)"
-                             (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
-                      <div class="col-xl-2 mb-2">
-                          <input type="text"
-                                 class="form-control experience-date-input"
-                                 [id]="'workPeriodStart'+i"
-                                 placeholder="Od..."
-                                 formControlName="workPeriodStart"
-                                 [bsConfig]="DatePickerWithoutDays"
-                                 bsDatepicker
-                                 (mouseover)="setHints(hoverMessages.okresZatrudnieniaOd)"
-                                 (mouseout)="clearHints()"
-                                 (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
-                                 (blur)="clearHints()"                                 
-                                 (ngModelChange)="checkWorkPeriodDate(i, $event); setControlManuallyChanged('workStart', i, $event)"
-                                 autocomplete="off">
-                      </div>
-                        <div class="col-xl-2">
-                          <input *ngIf="!(getExperienceControls(i).get('experienceTillNow').value)" type="text"
-                              class="form-control experience-date-input"
-                              [id]="'workPeriodEnd'+i"
-                              placeholder="Do..."
-                              formControlName="workPeriodEnd"
-                              [bsConfig]="DatePickerWithoutDays"
-                              bsDatepicker
-                              (mouseover)="setHints(hoverMessages.okresZatrudnieniaDo)"
-                              (mouseout)="clearHints()"
-                              (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
-                              (blur)="clearHints()"                              
-                              (ngModelChange)="checkWorkPeriodDate(i, $event); setControlManuallyChanged('workFinish', i, $event)"
-                              autocomplete="off">
-                          <input *ngIf="getExperienceControls(i).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i" formControlName="workPeriodNow" readonly>
-                        </div>
-                        <div class="col-xl-1">
-                          <div class="form-check now-checkbox">
-                            <input type="checkbox"
-                                   [id]="'experienceTillNowCbox'+i"
-                                   class="form-check-input"
-                                   formControlName="experienceTillNow"
-                                   (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
-                                   (mouseout)="clearHints()"
-                                   (focus)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
-                                   (blur)="clearHints()"
-                                   [(ngModel)]="experienceTillNowSelected[i]"
-                                   (ngModelChange)="setExperienceTillNow(i); checkWorkPeriodDate(i)">
-                            <label class="form-check-label now-label"
-                                   [attr.for]="'experienceTillNowCbox'+i"
-                                   (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
-                                   (mouseout)="clearHints()">Obecnie</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div *ngIf="this.workPeriodEndDateIssue[i]" class="row">
-                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodEndDateIssueMessage[i]}}</strong></p>
-                      </div>
-                      <div *ngIf="this.workPeriodCurrentDateIssue[i]" class="row">
-                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodCurrentDateIssueMessage[i]}}</strong></p>
-                      </div>
-                    <div class="form-group row section-row">
+                      <div class="form-group row section-row">
                         <!-- <label [attr.for]="'employerName'+i"
                                class="col-xl-1 col-form-label"
                                (mouseover)="setHints(hoverMessages.nazwaFirmy)"
                                (mouseout)="clearHints()">Nazwa firmy:</label> -->
-                        <div class="col-xl-4">
+                        <div class="col-xl-5">
                             <input type="text"
                                    class="form-control employer-name-input"
                                    style="font-size: 1.5em; font-weight: 700;"
@@ -324,7 +260,7 @@
                                    (focus)="setHints(hoverMessages.nazwaFirmy)"
                                    (blur)="clearHints()">
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-xl-5">
                             <input type="text"
                                   class="form-control trade-input"
                                   [id]="'trade'+i"
@@ -335,78 +271,137 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.branza)"
                                   (blur)="clearHints()">
-                      </div>
+                        </div>
                         <!-- <label [attr.for]="'occupation'+i"
                                class="col-xl-1 col-form-label"
                                (mouseover)="setHints(hoverMessages.stanowisko)"
-                               (mouseout)="clearHints()">Stanowisko:</label> -->
-                        <div class="col-xl-4">
-                            <input type="text"
-                                   class="form-control"
-                                   [id]="'occupation'+i"
-                                   placeholder="Stanowisko"
-                                   formControlName="occupation"
-                                   autocomplete="off"
-                                   (mouseover)="setHints(hoverMessages.stanowisko)"
-                                   (mouseout)="clearHints()"
-                                   (focus)="setHints(hoverMessages.stanowisko)"
-                                   (blur)="clearHints()">
-                        </div>
-                    </div>
-                    <div class="form-group row section-row">
-                        <!-- <label [attr.for]="'responsibilities'+i"
-                               class="col-xl-1 col-form-label"
-                               (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
-                               (mouseout)="clearHints()">Zakres obowiązków:</label> -->
-                        <div class="col-xl-5">
-                          <div #resp *ngFor="let resp of getResponsibilitiesControls(i).controls; let x = index" formArrayName="responsibilities">
-                            <div [formGroupName]="x">
+                               (mouseout)="clearHints()">Stanowisko:</label> -->                        
+                      </div>
+                      <div formArrayName="occupationArray" *ngFor="let occ of getOccupation(i).controls; let o = index">
+                        <div [formGroupName]="o">
+                          <div class="form-group row section-row">
+                            <div class="col-xl-5">
                               <input type="text"
-                                     class="form-control mb-3"
-                                     [id]="'responsibilities'+x"
-                                     placeholder="Zakres obowiązków"
-                                     formControlName="responsibility"
+                                     class="form-control"
+                                     [id]="'occupation'+i+'_'+o"
+                                     placeholder="Stanowisko"
+                                     formControlName="occupation"
                                      autocomplete="off"
-                                     respFocus
-                                     [shouldFocus]="focusOnResp"
-                                     (keydown.enter)="addNewResponsibility(i)"
-                                     (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
+                                     (mouseover)="setHints(hoverMessages.stanowisko)"
                                      (mouseout)="clearHints()"
-                                     (focus)="setHints(hoverMessages.zakresObowiazkow)"
+                                     (focus)="setHints(hoverMessages.stanowisko)"
                                      (blur)="clearHints()">
                             </div>
+                            <label *ngIf="(screenInnerWidth > 768)"
+                                 [attr.for]="'workPeriodStart'+i+'_'+o" class="col-md-1 col-form-label"
+                                 (mouseover)="setHints(hoverMessages.okresZatrudnienia)"
+                                 (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                            <div class="col-xl-2 mb-2">
+                              <input type="text"
+                                     class="form-control experience-date-input"
+                                     [id]="'workPeriodStart'+i+'_'+o"
+                                     placeholder="Od..."
+                                     formControlName="workPeriodStart"
+                                     [bsConfig]="DatePickerWithoutDays"
+                                     bsDatepicker
+                                     (mouseover)="setHints(hoverMessages.okresZatrudnieniaOd)"
+                                     (mouseout)="clearHints()"
+                                     (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
+                                     (blur)="clearHints()"                                 
+                                     (ngModelChange)="checkWorkPeriodDate(i, o, $event); setControlManuallyChanged('workStart', i, o, $event)"
+                                     autocomplete="off">
+                            </div>
+                            <div class="col-xl-2">
+                              <input *ngIf="!(getOccupationControls(i, o).get('experienceTillNow').value)" type="text"
+                                  class="form-control experience-date-input"
+                                  [id]="'workPeriodEnd'+i+'_'+o"
+                                  placeholder="Do..."
+                                  formControlName="workPeriodEnd"
+                                  [bsConfig]="DatePickerWithoutDays"
+                                  bsDatepicker
+                                  (mouseover)="setHints(hoverMessages.okresZatrudnieniaDo)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
+                                  (blur)="clearHints()"                              
+                                  (ngModelChange)="checkWorkPeriodDate(i, o, $event); setControlManuallyChanged('workFinish', i, o, $event)"
+                                  autocomplete="off">
+                              <input *ngIf="getOccupationControls(i, o).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i+'_'+o" formControlName="workPeriodNow" readonly>
+                            </div>
+                            <div class="col-xl-1">
+                              <div class="form-check now-checkbox">
+                                <input type="checkbox"
+                                       [id]="'experienceTillNowCbox'+i+'_'+o"
+                                       class="form-check-input"
+                                       formControlName="experienceTillNow"
+                                       (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                       (blur)="clearHints()"
+                                       [(ngModel)]="experienceTillNowSelected[i][o]"
+                                       (ngModelChange)="setExperienceTillNow(i, o); checkWorkPeriodDate(i, o)">
+                                <label class="form-check-label now-label"
+                                       [attr.for]="'experienceTillNowCbox'+i+'_'+o"
+                                       (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
+                                       (mouseout)="clearHints()">Obecnie</label>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div class="col-xl-5">
-                          <button class="btn btn-info"
-                                  type="button"
-                                  id="addRespButton"
-                                  (click)="addNewResponsibility(i)"
-                                  (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
-                                  (mouseout)="clearHints()"
-                                  (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
-                                  (blur)="clearHints()">Dodaj obowiązek
-                          </button>
-                          <button *ngIf="(getResponsibilitiesControls(i).length) > 1"
-                                  class="btn btn-danger"
-                                  type="button"
-                                  id="removeRespButton"
-                                  (click)="removeResponsibility(i)"
-                                  (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
-                                  (mouseout)="clearHints()"
-                                  (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
-                                  (blur)="clearHints()">Usuń obowiązek
-                          </button>
-                        </div>
-                      </div>
-                      <div *ngIf="experienceCompletionError" class="row">
-                        <div class="col-xl-4 mt-2 mb-2">
-                          <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
-                        </div>
-                      </div>
-                      <div class="form-group row section-row">
-                          <div class="col-xl-6">
-                              <button *ngIf="(getExperienceControls(i).get('workPeriodStart').dirty) && !hideNextExpButton"
+                          <div class="form-group row section-row">                        
+                            <div class="col-xl-5">
+                              <div #resp *ngFor="let resp of getResponsibilitiesControls(i, o).controls; let x = index" formArrayName="responsibilities">
+                                <div [formGroupName]="x">
+                                  <input type="text"
+                                         class="form-control mb-3"
+                                         [id]="'responsibilities'+x"
+                                         placeholder="Zakres obowiązków"
+                                         formControlName="responsibility"
+                                         autocomplete="off"
+                                         respFocus
+                                         [shouldFocus]="focusOnResp"
+                                         (keydown.enter)="addNewResponsibility(i, o)"
+                                         (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
+                                         (mouseout)="clearHints()"
+                                         (focus)="setHints(hoverMessages.zakresObowiazkow)"
+                                         (blur)="clearHints()">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-5">
+                              <button class="btn btn-info"
+                                      type="button"
+                                      id="addRespButton"
+                                      (click)="addNewResponsibility(i, o)"
+                                      (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                      (blur)="clearHints()">Dodaj obowiązek
+                              </button>
+                              <button *ngIf="(getResponsibilitiesControls(i, o).length) > 1"
+                                      class="btn btn-danger"
+                                      type="button"
+                                      id="removeRespButton"
+                                      (click)="removeResponsibility(i, o)"
+                                      (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                      (blur)="clearHints()">Usuń obowiązek
+                              </button>
+                            </div>
+                          </div>
+                          <div class="form-group row section-row">
+                            <div class="col-xl-3">
+                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && !hideNextExpButton"
+                              class="btn btn-info"
+                              type="button"
+                              id="addOccupationButton"
+                              (click)="addOccupationButtonClick(i)"
+                              (mouseover)="setHints(hoverMessages.stanowiskoDodaj)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.stanowiskoDodaj)"
+                              (blur)="clearHints()">Dodaj stanowisko</button>
+                            </div>
+                            <div class="col-xl-6">
+                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && !hideNextExpButton"
                               class="btn btn-info"
                               type="button"
                               id="addExperienceButton"
@@ -414,9 +409,24 @@
                               (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
                               (mouseout)="clearHints()"
                               (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
-                              (blur)="clearHints()">Dodaj kolejne miejsce pracy</button>
+                              (blur)="clearHints()">Dodaj inne miejsce pracy</button>
+                            </div>
                           </div>
                         </div>
+                      </div>
+                      
+                      <!-- <div *ngIf="this.workPeriodEndDateIssue[i][o]" class="row">
+                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodEndDateIssueMessage[i]}}</strong></p>
+                      </div> -->
+                      <!-- <div *ngIf="this.workPeriodCurrentDateIssue[i][o]" class="row">
+                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodCurrentDateIssueMessage[i]}}</strong></p>
+                      </div>                     -->
+                      
+                      <div *ngIf="experienceCompletionError" class="row">
+                        <div class="col-xl-4 mt-2 mb-2">
+                          <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
+                        </div>
+                      </div>                      
                     <button *ngIf="experienceEditMode[i]" class="btn btn-success" type="button" (click)="finishExperienceEdition(i)">Zakończ edycję</button>
                   </div>
 

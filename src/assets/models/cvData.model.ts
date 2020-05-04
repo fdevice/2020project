@@ -1,12 +1,3 @@
-// export interface Experience {
-//     workPeriodStart?: string;
-//     workPeriodEnd?: string;
-//     employerName?: string;
-//     trade?: string;
-//     occupation?: string;
-//     responsibilities?: string[];
-// }
-
 export interface CVData {    
     name?: string;
     surname?: string;
@@ -19,7 +10,7 @@ export interface CVData {
     disposition?: string;
     employment?: any[];
     salary?: string;
-    experience?: any[];  // experience[0], experience[1]...
+    experience?: any[];
     education?: any[
         // {
         //     schoolType?: string;
