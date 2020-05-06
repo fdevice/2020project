@@ -75,10 +75,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   hoverMessages: any;
   currentHintPosition: number;
   minMode: BsDatepickerViewMode = 'month';
-  workPeriodEndDateIssue: boolean[];
-  workPeriodEndDateIssueMessage: string[];
-  workPeriodCurrentDateIssue: boolean[];
-  workPeriodCurrentDateIssueMessage: string[];
+  workPeriodEndDateIssue: any[];
+  workPeriodEndDateIssueMessage: any[];
+  workPeriodCurrentDateIssue: any[];
+  workPeriodCurrentDateIssueMessage: any[];
   educationEndDateIssue: boolean[];
   educationEndDateIssueMessage: string[];
   educationCurrentDateIssue: boolean[];
@@ -91,10 +91,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   screenInnerWidth: any;  
 
   experienceTillNowSelected: any[];
-  workStartDateFormatted: any[] = new Array(30);
-  workFinishDateFormatted: any[] = new Array(30);
-  workStartDateManuallyChanged: boolean[] = new Array(30);
-  workFinishDateManuallyChanged: boolean[] = new Array(30);
+  workStartDateFormatted: any[];
+  workFinishDateFormatted: any[];
+  workStartDateManuallyChanged: any[];
+  workFinishDateManuallyChanged: any[];
 
   educationTillNowSelected: boolean[] = new Array(30);
   educationStartDateFormatted: any[] = new Array(30);
@@ -205,6 +205,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let Array2D = (r,c) => [...Array(r)].map(x=>Array(c).fill(0));   // matrix dwuwymariowej tablicy
 
     this.experienceTillNowSelected = Array2D(30,30);
+    this.workPeriodEndDateIssue = Array2D(30,30);
+    this.workPeriodEndDateIssueMessage = Array2D(30,30);
+    this.workPeriodCurrentDateIssue = Array2D(30,30);
+    this.workPeriodCurrentDateIssueMessage = Array2D(30,30);
+    this.workStartDateManuallyChanged = Array2D(30,30);
+    this.workFinishDateManuallyChanged = Array2D(30,30);
+    this.workStartDateFormatted= Array2D(30,30);
+    this.workFinishDateFormatted= Array2D(30,30);
 
     this.languagesList = this.sharedLists.getLanguageList();
     this.advantagesList = this.sharedLists.getAdvantagesList();
@@ -225,10 +233,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.polishAdvantageSuffix = '';
     // this.requirementsListLength = (<FormArray>this.cvForm.get('requirements')).length;
 
-    this.workPeriodEndDateIssue = [];
-    this.workPeriodEndDateIssueMessage = [];
-    this.workPeriodCurrentDateIssue = [];
-    this.workPeriodCurrentDateIssueMessage = [];
+    
     this.educationEndDateIssue = [];
     this.educationEndDateIssueMessage = [];
     this.educationCurrentDateIssue = [];
@@ -471,21 +476,50 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       year: 'numeric'
     };
 
-    let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
-    let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
-    let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');    
+    for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length; o++) {
 
-    if (this.workStartDateFormatted[i] == undefined) {
-      this.workStartDateFormatted[i] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
-    };
+      let startWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
+      let finishWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
+      let nowWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
 
-    if (this.workFinishDateFormatted[i] == undefined) {
-      this.workFinishDateFormatted[i] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
-    };
+      if (this.workStartDateFormatted[i][o] == undefined) {
+        this.workStartDateFormatted[i][o] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
+      };
 
-    if ((!finishWork.value && !nowWork.value)) {
-      (<FormArray>this.cvForm.get('experience')).controls[i].setErrors({'incorrect': true});
-    };
+      if (this.workFinishDateFormatted[i][o] == undefined) {
+        this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
+      };
+
+      if ((!finishWork.value && !nowWork.value)) {
+        (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].setErrors({'incorrect': true});
+      };
+
+      if ((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].invalid) {
+        this.experienceCompletionError = true;
+      } else {
+        (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].setErrors(null);
+        this.experienceCompletionError = false;
+        this.experienceCompleted[i] = true;
+        (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
+      }; 
+
+    }
+
+    // let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
+    // let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
+    // let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');    
+
+    // if (this.workStartDateFormatted[i] == undefined) {
+    //   this.workStartDateFormatted[i] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
+    // };
+
+    // if (this.workFinishDateFormatted[i] == undefined) {
+    //   this.workFinishDateFormatted[i] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
+    // };
+
+    // if ((!finishWork.value && !nowWork.value)) {
+    //   (<FormArray>this.cvForm.get('experience')).controls[i].setErrors({'incorrect': true});
+    // };
 
     if ((<FormArray>this.cvForm.get('experience')).controls[i].invalid) {
       this.experienceCompletionError = true;
@@ -496,6 +530,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
     };    
   }
+
+  public addOccupationButtonClick(i: number) {
+    (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).push(this.addOccupationFormArray());
+  };
 
   public toggleExperienceEdit(i: number) {
     this.experienceCompleted[i] = false;
@@ -1029,9 +1067,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         year: 'numeric'
       };
       let today = new Date();
-      let startDate = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupation')).controls[o].get('workPeriodStart').value;
-      let endDate = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupation')).controls[o].get('workPeriodEnd').value;
-      let tillNow = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupation')).controls[o].get('workPeriodNow').value;
+      let startDate = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+      let endDate = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
+      let tillNow = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow').value;
   
       // this.workStartDateFormatted[i] = new Date(startDate).toLocaleDateString('pl', dateOptions);
       // this.workFinishDateFormatted[i] = new Date(endDate).toLocaleDateString('pl', dateOptions);
