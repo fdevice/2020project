@@ -399,18 +399,20 @@
                               (mouseout)="clearHints()"
                               (focus)="setHints(hoverMessages.stanowiskoDodaj)"
                               (blur)="clearHints()">Dodaj stanowisko</button>
-                            </div>    
+                            </div>                                                                                 
+                          </div>
+                          <div class="form-group row section-row">
                             <div class="col-xl-3">
                               <button *ngIf="(getOccupation(i, o).length) > 1 && (hideNextOccupButton[i][o] === false)"
                                 class="btn btn-danger"
                                 type="button"
                                 [id]="'removeOccuButton'+'_'+i+'_'+o"
                                 (click)="removeOccupation(i, o)"
-                                (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                (mouseover)="setHints(hoverMessages.stanowiskoUsun)"
                                 (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                (focus)="setHints(hoverMessages.stanowiskoUsun)"
                                 (blur)="clearHints()">Usuń stanowisko</button>
-                            </div>                         
+                            </div>  
                           </div>
                           <br>                         
                         </div>

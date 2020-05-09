@@ -22,6 +22,8 @@ export const HOVER_MESSAGE =
     usunZakresObowiazkow: "Kliknij, żeby usunąć obowiązek",
     doswiadczenieZawodoweDodaj: "Kliknij, żeby dodać kolejne miejsce zatrudnienia",
     doswiadczenieZawodoweUsun: "Kliknij, żeby usunąć miejsce zatrudnienia",
+    stanowiskoDodaj: "Kliknij, żeby dodać kolejne stanowisko u tego samego pracodawcy",
+    stanowiskoUsun: "Kliknij, żeby usunąć ostatnie stanowisko u tego pracodawcy",
     rodzajSzkoly: "Wybierz rodzaj szkoły - wyższą lub średnią. Jeśli masz przynajmniej wykształcenie średnie, nie ma potrzeby wpisywania szkoły podstawowej czy gimnazjum",
     nazwaUczelni: "Podaj nazwę uczelni, na której studiowałeś/łaś",
     nazwaSzkoly: "Podaj nazwę szkoły, w której się uczyłeś/łaś",

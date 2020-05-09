@@ -444,8 +444,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public removeOccupation(i: number, o: number): void {
     let newOccupation = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray'));
-    newOccupation.removeAt(newOccupation.length - 1);       
-  }
+    newOccupation.removeAt(newOccupation.length - 1);    
+    this.hideNextOccupButton[i][o-1] = false;   
+  };
 
   public addAdvantagesControls(): FormArray {   //tworzy i zapełnia tablicę cvForm.get("advantages")
     const advArr = this.advantagesList.map((element) => {
