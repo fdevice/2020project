@@ -94,7 +94,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   workStartDateFormatted: any[];
   workFinishDateFormatted: any[];
   workStartDateManuallyChanged: any[];
-  workFinishDateManuallyChanged: any[];
+  workFinishDateManuallyChanged: any[];  
 
   educationTillNowSelected: boolean[] = new Array(30);
   educationStartDateFormatted: any[] = new Array(30);
@@ -113,6 +113,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   focusOnResp: boolean;
   experienceCompleted: boolean[];
   experienceEditMode: boolean[] = new Array(30);
+  occupationCompleted: any[];
+  occupationEditMode: any[];
   educationCompleted: boolean[];
   educationEditMode: boolean[] = new Array(30);
   coursesCompleted: boolean[];
@@ -123,6 +125,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   educationCompletionError: boolean = false;
   coursesCompletionError: boolean = false;
   hideNextExpButton: boolean = false;
+  hideNextOccupButton: any[];
   hideNextEduButton: boolean = false;
   hideNextCourseButton: boolean = false;
 
@@ -213,6 +216,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.workFinishDateManuallyChanged = Array2D(30,30);
     this.workStartDateFormatted= Array2D(30,30);
     this.workFinishDateFormatted= Array2D(30,30);
+    this.occupationCompleted = Array2D(30,30);
+    this.occupationEditMode = Array2D(30,30);
+    this.hideNextOccupButton = Array2D(30,30);
+
+    this.hideNextOccupButton[0][0] = false;
 
     this.languagesList = this.sharedLists.getLanguageList();
     this.advantagesList = this.sharedLists.getAdvantagesList();
@@ -345,7 +353,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     });
   };
 
-  public addOccupationFormArray(): FormGroup {
+  public addOccupationFormArray(): FormGroup {    
     return this.fb.group({
       occupation: ['', Validators.required],
       workPeriodStart: ['', Validators.required],
@@ -355,7 +363,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       responsibilities: this.fb.array([
         this.addResponsibilitiesFormArray()
       ])
-    })
+    })    
   }
 
   public addResponsibilitiesFormArray(): FormGroup {
@@ -434,6 +442,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.focusOnResp = true;    
   }
 
+  public removeOccupation(i: number, o: number): void {
+    let newOccupation = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray'));
+    newOccupation.removeAt(newOccupation.length - 1);       
+  }
+
   public addAdvantagesControls(): FormArray {   //tworzy i zapełnia tablicę cvForm.get("advantages")
     const advArr = this.advantagesList.map((element) => {
       return this.fb.control(false);
@@ -482,11 +495,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       let finishWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
       let nowWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
 
-      if (this.workStartDateFormatted[i][o] == undefined) {
+      console.log(startWork.value);
+      console.log(finishWork.value);
+      // console.log(this.workStartDateFormatted[i][o]);
+      // console.log(this.workFinishDateFormatted[i][o]);
+
+      if (this.workStartDateFormatted[i][o] == undefined || this.workStartDateFormatted[i][o] == 0) {
         this.workStartDateFormatted[i][o] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
       };
 
-      if (this.workFinishDateFormatted[i][o] == undefined) {
+      if (this.workFinishDateFormatted[i][o] == undefined || this.workFinishDateFormatted[i][o] == 0) {
         this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
       };
 
@@ -500,26 +518,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].setErrors(null);
         this.experienceCompletionError = false;
         this.experienceCompleted[i] = true;
-        (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
+        // (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
       }; 
-
-    }
-
-    // let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
-    // let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
-    // let nowWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodNow');    
-
-    // if (this.workStartDateFormatted[i] == undefined) {
-    //   this.workStartDateFormatted[i] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
-    // };
-
-    // if (this.workFinishDateFormatted[i] == undefined) {
-    //   this.workFinishDateFormatted[i] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
-    // };
-
-    // if ((!finishWork.value && !nowWork.value)) {
-    //   (<FormArray>this.cvForm.get('experience')).controls[i].setErrors({'incorrect': true});
-    // };
+    };    
 
     if ((<FormArray>this.cvForm.get('experience')).controls[i].invalid) {
       this.experienceCompletionError = true;
@@ -529,10 +530,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.experienceCompleted[i] = true;
       (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
     };    
-  }
+  };
 
-  public addOccupationButtonClick(i: number) {
+  public addOccupationButtonClick(i: number, o: number) {
+    this.hideNextOccupButton[i][o] = true;
+    console.log("HideNextOccButt " + "[" + i + "][" + o + "]: " + this.hideNextOccupButton[i][o]);
+    console.log("Dirty?: " + (this.getOccupationControls(i, o).get('workPeriodStart').dirty));
     (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).push(this.addOccupationFormArray());
+    this.hideNextOccupButton[i][o+1] = false;
   };
 
   public toggleExperienceEdit(i: number) {
@@ -540,12 +545,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.experienceEditMode[i] = true;
     this.hideNextExpButton = true;
 
-    let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
-    let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');
+    for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length; o++) {
 
-    console.log("Start work on edit button click: " + startWork.value + " / " + typeof startWork.value);
-    console.log("Finish work on edit button click: " + finishWork.value + " / " + typeof finishWork.value);
+      let startWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
+      let finishWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
+      let nowWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
 
+      console.log("Start work on edit button click: " + startWork.value + " / " + typeof startWork.value);
+      console.log("Finish work on edit button click: " + finishWork.value + " / " + typeof finishWork.value);
+
+    };    
   }
 
   public finishExperienceEdition(i: number) {   
@@ -556,28 +565,32 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       year: 'numeric'
     };
 
-    let startWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart');
-    let finishWork = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd');      
+    for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length; o++) {
 
-    console.log("Start work on close edit button click: " + startWork.value + " / " + typeof startWork.value);
-    console.log("Finish work on close edit button click: " + finishWork.value + " / " + typeof finishWork.value);
+      let startWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
+      let finishWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
+      let nowWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
 
-    if (startWork.value instanceof Object) {
-      this.workStartDateFormatted[i] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
-    } else {
-      this.workStartDateFormatted[i] = startWork.value;
-    };
+      console.log("Start work on close edit button click: " + startWork.value + " / " + typeof startWork.value);
+      console.log("Finish work on close edit button click: " + finishWork.value + " / " + typeof finishWork.value);
 
-    if (finishWork.value instanceof Object) {
-      this.workFinishDateFormatted[i] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
-    } else {
-      this.workFinishDateFormatted[i] = finishWork.value;
-    };
+      if (startWork.value instanceof Object) {
+        this.workStartDateFormatted[i][o] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
+      } else {
+        this.workStartDateFormatted[i][o] = startWork.value;
+      };
+
+      if (finishWork.value instanceof Object) {
+        this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
+      } else {
+        this.workFinishDateFormatted[i][o] = finishWork.value;
+      };
+    };           
     
     this.experienceCompleted[i] = true;
     this.experienceEditMode[i] = false;
     this.hideNextExpButton = false;
-  }
+  };
 
   public removeChosenExperience(i: number) {
     (<FormArray>this.cvForm.get('experience')).removeAt(i);

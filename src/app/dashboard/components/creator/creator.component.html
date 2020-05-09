@@ -238,7 +238,7 @@
                     <h5 class="section-header mb-4 mt-3 experience-header"><span class="cv-icon"><i class="fas fa-briefcase mr-3" #headerIcon3></i></span><strong>DOŚWIADCZENIE ZAWODOWE</strong></h5>
                   </div>
                 </div>
-                <hr style="opacity: 0.5;">
+                <hr style="opacity: 0.5;" class="mb-3">
                 <div formArrayName="experience" *ngFor="let exp of experienceArray.controls; let i = index">
                   <div [formGroupName]="i">
                     <div *ngIf="!this.experienceCompleted[i]">
@@ -352,7 +352,7 @@
                                 <div [formGroupName]="x">
                                   <input type="text"
                                          class="form-control mb-3"
-                                         [id]="'responsibilities'+x"
+                                         [id]="'responsibilities'+'_'+i+'_'+o+'_'+x"
                                          placeholder="Zakres obowiązków"
                                          formControlName="responsibility"
                                          autocomplete="off"
@@ -369,7 +369,7 @@
                             <div class="col-xl-5">
                               <button class="btn btn-info"
                                       type="button"
-                                      id="addRespButton"
+                                      [id]="'addRespButton'+'_'+i+'_'+o"
                                       (click)="addNewResponsibility(i, o)"
                                       (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
                                       (mouseout)="clearHints()"
@@ -379,7 +379,7 @@
                               <button *ngIf="(getResponsibilitiesControls(i, o).length) > 1"
                                       class="btn btn-danger"
                                       type="button"
-                                      id="removeRespButton"
+                                      id="'removeRespButton'+'_'+i+'_'+o"
                                       (click)="removeResponsibility(i, o)"
                                       (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
                                       (mouseout)="clearHints()"
@@ -390,30 +390,31 @@
                           </div>
                           <div class="form-group row section-row">
                             <div class="col-xl-3">
-                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && !hideNextExpButton"
+                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && (hideNextOccupButton[i][o] === false)" 
                               class="btn btn-info"
                               type="button"
-                              id="addOccupationButton"
-                              (click)="addOccupationButtonClick(i)"
+                              [id]="'addOccupationButton'+'_'+i+'_'+o"
+                              (click)="addOccupationButtonClick(i, o)"
                               (mouseover)="setHints(hoverMessages.stanowiskoDodaj)"
                               (mouseout)="clearHints()"
                               (focus)="setHints(hoverMessages.stanowiskoDodaj)"
                               (blur)="clearHints()">Dodaj stanowisko</button>
-                            </div>
-                            <div class="col-xl-6">
-                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && !hideNextExpButton"
-                              class="btn btn-info"
-                              type="button"
-                              id="addExperienceButton"
-                              (click)="addExperienceButtonClick(i)"
-                              (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
-                              (mouseout)="clearHints()"
-                              (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
-                              (blur)="clearHints()">Dodaj inne miejsce pracy</button>
-                            </div>
+                            </div>    
+                            <div class="col-xl-3">
+                              <button *ngIf="(getOccupation(i, o).length) > 1 && (hideNextOccupButton[i][o] === false)"
+                                class="btn btn-danger"
+                                type="button"
+                                [id]="'removeOccuButton'+'_'+i+'_'+o"
+                                (click)="removeOccupation(i, o)"
+                                (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                (blur)="clearHints()">Usuń stanowisko</button>
+                            </div>                         
                           </div>
+                          <br>                         
                         </div>
-                      </div>
+                      </div>  <!-- Koniec OccupationArray -->
                       
                       <!-- <div *ngIf="this.workPeriodEndDateIssue[i][o]" class="row">
                         <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodEndDateIssueMessage[i]}}</strong></p>
@@ -426,29 +427,47 @@
                         <div class="col-xl-4 mt-2 mb-2">
                           <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
                         </div>
-                      </div>                      
-                    <button *ngIf="experienceEditMode[i]" class="btn btn-success" type="button" (click)="finishExperienceEdition(i)">Zakończ edycję</button>
+                      </div> 
+                      <div class="form-group row section-row">
+                        <div class="col-xl-3">                      
+                          <button *ngIf="(getExperienceControls(i).get('employerName').dirty) && !hideNextExpButton"
+                          class="btn btn-info"
+                          type="button"
+                          id="addExperienceButton"
+                          (click)="addExperienceButtonClick(i)"
+                          (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                          (mouseout)="clearHints()"
+                          (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                          (blur)="clearHints()">Dodaj inne miejsce pracy</button>                                        
+                          <button *ngIf="experienceEditMode[i]" class="btn btn-success" type="button" (click)="finishExperienceEdition(i)">Zakończ edycję</button>
+                        </div> 
+                      </div>
                   </div>
 
                     <div id="experience-completed" *ngIf="(this.experienceCompleted[i] == true)" class="mb-4 ml-4">
-                      <small *ngIf="getExperienceControls(i).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
-                        <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ workStartDateFormatted[i] }} - obecnie
-                      </small>
-                      <ng-template #experienceCompletedDate>
-                        <small class="text-muted">
-                          <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ workStartDateFormatted[i] }} - {{ workFinishDateFormatted[i] }}
-                        </small>
-                      </ng-template>
                       <p style="font-size: 16px; margin-bottom: 5px">
-                       <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }} / {{ getExperienceControls(i).get('occupation').value }}
+                        <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }}
                       </p>
-                      <ul *ngIf="getResponsibilitiesControls(i).length != null" style="margin-top: 5px;">
-                        <li *ngFor="let chosenResp of getResponsibilitiesControls(i).controls; let x = index">
-                            {{ getResponsibilitiesControls(i).controls[x].get('responsibility').value }}
-                        </li>
-                      </ul>
+                      <div *ngFor="let occ of getOccupation(i).controls; let o = index">
+                        <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
+                          <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                            {{ workStartDateFormatted[i][o] }} - obecnie
+                        </small>
+                        <ng-template #experienceCompletedDate>
+                          <small class="text-muted">
+                            <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                            {{ workStartDateFormatted[i][o] }} - {{ workFinishDateFormatted[i][o] }}
+                          </small>
+                        </ng-template>
+                        <p style="font-size: 16px; margin-bottom: 5px">
+                          <strong> {{ getOccupationControls(i,o).get('occupation').value }} </strong>
+                        </p>
+                        <ul *ngIf="getResponsibilitiesControls(i,o).length != null" style="margin-top: 5px;">
+                          <li *ngFor="let chosenResp of getResponsibilitiesControls(i,o).controls; let x = index">
+                              {{ getResponsibilitiesControls(i,o).controls[x].get('responsibility').value }}
+                          </li>
+                        </ul>
+                      </div>       <!-- Koniec pętli occupation -->                                                                      
                       <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
                       <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>
                     </div>
