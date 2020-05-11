@@ -530,7 +530,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.experienceCompletionError = false;
       this.experienceCompleted[i] = true;
       (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
-    };    
+    };   
+    
+    this.hideNextOccupButton[i+1][0] = false;
+    
   };
 
   public addOccupationButtonClick(i: number, o: number) {
@@ -1263,7 +1266,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       day: undefined,
       month: 'long',
       year: 'numeric'
-    };
+    };   
+    
+    // let occupationArray: any[] = new Array();
 
     // WARUNKI ZATRUDNIENIA
     this.baseCV.position = this.cvForm.get('position').value;
@@ -1294,47 +1299,121 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     // DOŚWIADCZENIE ZAWODOWE
     this.baseCV.totalExperienceLength = (<FormArray>this.cvForm.get('experience')).length;
 
+    let startWork = new Array();
+    let finishWork = new Array()
+    let occupation = new Array();
+    let responsibilities = new Array();
+
     for (let i = 0; i < (<FormArray>this.cvForm.get('experience')).length; i++) {
+
+      let occupationArray: any[] = new Array();
 
       if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value !== '' ) {
 
-        if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value ) {
+        this.baseCV.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
+        this.baseCV.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
 
-          if (this.workStartDateManuallyChanged[i] == true) {
-            this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
-          };          
-          
-          this.baseCV.finishWork[i] = 'obecnie';
+        for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
 
-        } else {
-          
-          if (this.workStartDateManuallyChanged[i] == true) {
-            this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+          if ( (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
+
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+
+              startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+                            
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+            };          
+            
+            finishWork[o] = 'obecnie';
+  
           } else {
-            this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+            
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+              startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+            };
+            
+            if (this.workFinishDateManuallyChanged[i][o] == true) {
+              finishWork[o]  = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            } else {
+              finishWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
+            };          
           };
-          
-          if (this.workFinishDateManuallyChanged[i] == true) {
-            this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.finishWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
-          };          
 
-          };
+          occupation[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('occupation').value;
 
-          this.baseCV.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
-          this.baseCV.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
-          this.baseCV.occupation[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('occupation').value;
-
-          let responsibilitiesArray = ((<FormArray>this.cvForm.get('experience')).controls[i].get('responsibilities') as FormArray);
+          let responsibilitiesArray = ((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
           let chosenResponsibilities = [];
 
           for (let j = 0; j < responsibilitiesArray.length; j++) {
             chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
-            this.baseCV.responsibilities[i] = chosenResponsibilities;
-          };
+            responsibilities[o] = chosenResponsibilities;
+          };      
+          
+          let occupationData: any[] = [
+            {
+              workStart: startWork[o],
+              workFinish: finishWork[o],
+              occupation: occupation[o],
+              responsibilities: responsibilities[o]
+            }
+          ]; 
+
+          occupationArray.push(occupationData);          
+
+        };  // Koniec pętli occupation
+
+          // console.log(startWork);
+          // console.log(finishWork);
+          // console.log(occupation);
+          // console.log(responsibilities);
+          // console.log(occupationArray);
+
+          this.baseCV.occupationData[i] = occupationArray;
+
+          console.log(this.baseCV.occupationData);
+          
+
+        // if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value ) {
+
+        //   if (this.workStartDateManuallyChanged[i] == true) {
+        //     this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+        //   } else {
+        //     this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+        //   };          
+          
+        //   this.baseCV.finishWork[i] = 'obecnie';
+
+        // } else {
+          
+        //   if (this.workStartDateManuallyChanged[i] == true) {
+        //     this.baseCV.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+        //   } else {
+        //     this.baseCV.startWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value;
+        //   };
+          
+        //   if (this.workFinishDateManuallyChanged[i] == true) {
+        //     this.baseCV.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+        //   } else {
+        //     this.baseCV.finishWork[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value;
+        //   };          
+
+        //   };
+
+          
+          // this.baseCV.occupation[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('occupation').value;
+
+          // let responsibilitiesArray = ((<FormArray>this.cvForm.get('experience')).controls[i].get('responsibilities') as FormArray);
+          // let chosenResponsibilities = [];
+
+          // for (let j = 0; j < responsibilitiesArray.length; j++) {
+          //   chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
+          //   this.baseCV.responsibilities[i] = chosenResponsibilities;
+          // };
+
+        console.log(this.baseCV)
 
       };
     };
@@ -1489,7 +1568,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.baseCV.hobbies = this.cvForm.get('hobbies').value;    
 
     // ZDJĘCIE
-    this.baseCV.sendBaseCVData(this.cvForm.get("image").value);
+    // this.baseCV.sendBaseCVData(this.cvForm.get("image").value);
     
   }
 

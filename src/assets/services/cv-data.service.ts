@@ -25,12 +25,12 @@ export class CVDataService {
     totalEducationLength: number;
     totalCoursesLength: number;
     totalLanguagesLength: number;
-    startWork: any = new Array();
-    finishWork: any = new Array();
+    // startWork: any = new Array();
+    // finishWork: any = new Array();
     employer: any = new Array();
     trade: any = new Array();
-    occupation: any = new Array();
-    responsibilities: any = new Array();
+    occupationData: any = new Array();
+    // responsibilities: any = new Array();
     startEducation: any = new Array();
     finishEducation: any = new Array();
     schoolName: any = new Array();
@@ -132,16 +132,18 @@ export class CVDataService {
 
                 let experienceData: any[] = [
                 {
-                   workStart: this.startWork[i],
-                   workFinish: this.finishWork[i],
+                //    workStart: this.startWork[i],
+                //    workFinish: this.finishWork[i],
                    employerName: this.employer[i],
                    trade: this.trade[i],
-                   occupation: this.occupation[i],
-                   responsibilities: this.responsibilities[i]
+                   occupationData: this.occupationData[i]
+                //    responsibilities: this.responsibilities[i]
                 }
                 ];
 
-                baseCVData.experience.push(experienceData);                                                                                                              
+                baseCVData.experience.push(experienceData); 
+                
+                console.log(baseCVData.experience);                                                                                                             
               
             } 
             else {
