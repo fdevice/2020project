@@ -308,7 +308,7 @@
                                      (mouseout)="clearHints()"
                                      (focus)="setHints(hoverMessages.okresZatrudnieniaOd)"
                                      (blur)="clearHints()"                                 
-                                     (ngModelChange)="checkWorkPeriodDate(i, o, $event); setControlManuallyChanged('workStart', i, o, $event)"
+                                     (ngModelChange)="checkWorkPeriodDate(i, o, $event); setExperienceControlManuallyChanged('workStart', i, o, $event)"
                                      autocomplete="off">
                             </div>
                             <div class="col-xl-2">
@@ -323,7 +323,7 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.okresZatrudnieniaDo)"
                                   (blur)="clearHints()"                              
-                                  (ngModelChange)="checkWorkPeriodDate(i, o, $event); setControlManuallyChanged('workFinish', i, o, $event)"
+                                  (ngModelChange)="checkWorkPeriodDate(i, o, $event); setExperienceControlManuallyChanged('workFinish', i, o, $event)"
                                   autocomplete="off">
                               <input *ngIf="getOccupationControls(i, o).get('experienceTillNow').value" type="text" class="form-control experience-date-input" [id]="'workPeriodNow'+i+'_'+o" formControlName="workPeriodNow" readonly>
                             </div>
@@ -367,7 +367,7 @@
                               </div>
                             </div>
                             <div class="col-xl-5">
-                              <button class="btn btn-info"
+                              <button class="btn btn-info mr-2"
                                       type="button"
                                       [id]="'addRespButton'+'_'+i+'_'+o"
                                       (click)="addNewResponsibility(i, o)"
@@ -379,7 +379,7 @@
                               <button *ngIf="(getResponsibilitiesControls(i, o).length) > 1"
                                       class="btn btn-danger"
                                       type="button"
-                                      id="'removeRespButton'+'_'+i+'_'+o"
+                                      [id]="'removeRespButton'+'_'+i+'_'+o"
                                       (click)="removeResponsibility(i, o)"
                                       (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
                                       (mouseout)="clearHints()"
@@ -447,28 +447,29 @@
                   </div>
 
                     <div id="experience-completed" *ngIf="(this.experienceCompleted[i] == true)" class="mb-4 ml-4">
-                      <p style="font-size: 16px; margin-bottom: 5px">
+                      <p style="font-size: 18px; margin-bottom: 8px">
                         <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }}
                       </p>
                       <div *ngFor="let occ of getOccupation(i).controls; let o = index">
                         <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
-                          <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                          <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
                             {{ workStartDateFormatted[i][o] }} - obecnie
                         </small>
                         <ng-template #experienceCompletedDate>
                           <small class="text-muted">
-                            <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
+                            <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
                             {{ workStartDateFormatted[i][o] }} - {{ workFinishDateFormatted[i][o] }}
                           </small>
                         </ng-template>
-                        <p style="font-size: 16px; margin-bottom: 5px">
+                        <p style="font-size: 14px; margin-bottom: 5px" class="ml-3">
                           <strong> {{ getOccupationControls(i,o).get('occupation').value }} </strong>
                         </p>
-                        <ul *ngIf="getResponsibilitiesControls(i,o).length != null" style="margin-top: 5px;">
+                        <ul *ngIf="getResponsibilitiesControls(i,o).length != null" style="margin-top: 5px;" class="ml-4">
                           <li *ngFor="let chosenResp of getResponsibilitiesControls(i,o).controls; let x = index">
                               {{ getResponsibilitiesControls(i,o).controls[x].get('responsibility').value }}
                           </li>
                         </ul>
+                        <br>
                       </div>       <!-- Koniec pętli occupation -->                                                                      
                       <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
                       <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>

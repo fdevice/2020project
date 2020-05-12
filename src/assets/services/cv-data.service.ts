@@ -118,33 +118,27 @@ export class CVDataService {
         baseCVData.phone = this.phone;
 
         console.log("Obiekt baseCVData z niektórymi wartościami: " + baseCVData.name);    
+
+        console.log("Total experience lenght: " + this.totalExperienceLength);
         
         // DOŚWIADCZENIE ZAWODOWE
-        for (let i = 0; i < this.totalExperienceLength; i++) {            
+        for (let i = 0; i < this.totalExperienceLength; i++) {     
+            
+            console.log("Total experience lenght: " + this.totalExperienceLength);
 
-            if (this.employer[i] != undefined) {                
-
-                // for (let j = 0; j < this.responsibilities[i].length; j++) {                    
-                //     console.log(this.responsibilities[i]);                    
-                // };     
+            if (this.employer[i] != undefined) {          
                 
-                // console.log(this.responsibilities[i]);
+                console.log("Employer: " + this.employer[i]);
 
                 let experienceData: any[] = [
-                {
-                //    workStart: this.startWork[i],
-                //    workFinish: this.finishWork[i],
+                  {                
                    employerName: this.employer[i],
                    trade: this.trade[i],
-                   occupationData: this.occupationData[i]
-                //    responsibilities: this.responsibilities[i]
-                }
+                   occupationData: this.occupationData[i]                
+                  }
                 ];
 
-                baseCVData.experience.push(experienceData); 
-                
-                console.log(baseCVData.experience);                                                                                                             
-              
+                baseCVData.experience.push(experienceData);                                                                                                                                    
             } 
             else {
                 console.log("Doświadczenie zawodowe puste!")
