@@ -31,6 +31,7 @@ export class CreatePdfService {
   phone: string;
   availabilityDate: string;
   totalExperienceLength: number;
+  totalOccupationArrayLength: number[] = new Array();
   totalEducationLength: number;
   totalCoursesLength: number;
   totalLanguagesLength: number;
@@ -38,6 +39,7 @@ export class CreatePdfService {
   finishWork: any = new Array();
   employer: any = new Array();
   trade: any = new Array();
+  occupationArray: any = new Array();
   occupation: any = new Array();
   responsibilities: any = new Array();
   startEducation: any = new Array();
@@ -209,36 +211,75 @@ export class CreatePdfService {
     this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
     this.fromTop += 9;
 
+
+    console.log(this.occupationArray);
+
     // DOŚWIADCZENIE ZAWODOWE
     if (this.employer[0]) {
       this.document.addImage(this.experienceHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
       this.document.setTextColor(black);
       this.document.setFontSize(this.headerFont + 3);
       this.document.text(this.deepMargin + 2, this.fromTop + 2, 'DOŚWIADCZENIE ZAWODOWE');
-      this.fromTop += 7;
+      this.fromTop += 10;
 
       for (let i = 0; i < this.totalExperienceLength; i++) {
 
         if (this.employer[i] != undefined) {
 
-          this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
-          this.document.setFontSize(8);
-          this.document.setTextColor(gray);
-          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startWork[i] + ' - ' + this.finishWork[i]);
-          this.document.setFontSize(10);
+          this.document.setFontSize(14);
           this.document.setTextColor(black);
-          this.document.text(this.deepMargin + 8, this.fromTop + 8, this.employer[i] + '  /  ' + this.trade[i] + '  /  ' + this.occupation[i]);
-          this.document.setFontSize(9);
-          this.fromTop += 12;
+          this.document.circle(this.deepMargin, this.fromTop, 1, 'F');
+          this.document.text(this.deepMargin + 5, this.fromTop + 1.5, this.employer[i] + '  /  ' + this.trade[i]);
+          this.fromTop += 5;
 
-          for (let j = 0; j < this.responsibilities[i].length; j++) {
-            console.log(this.responsibilities[i][j]);
-            this.document.circle(this.deepMargin + 9, this.fromTop, 0.5, 'F');
-            this.document.text(this.deepMargin + 12, this.fromTop + 1, this.responsibilities[i][j]);
+          console.log("OccupationArray[" + i + "]: ");
+          console.dir(this.occupationArray[i]);
+
+          for (let o = 0; o < this.totalOccupationArrayLength[i]; o++) {
+
+            console.log(this.occupationArray[i][o][0]);
+            this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 10, this.fromTop - 0.5, 3, 4);
+            this.document.setFontSize(7);
+            this.document.setTextColor(gray);
+            this.document.text(this.deepMargin + 16, this.fromTop + 3, this.occupationArray[i][o][0].workStart + ' - ' + this.occupationArray[i][o][0].workFinish);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin + 16, this.fromTop + 7, this.occupationArray[i][o][0].occupation);
+            this.document.setFontSize(6);
+            this.fromTop += 10;
+
+            for (let j = 0; j < this.occupationArray[i][o][0].responsibilities.length; j++) {            
+            this.document.circle(this.deepMargin + 20, this.fromTop, 0.5, 'F');
+            this.document.text(this.deepMargin + 24, this.fromTop + 0.75, this.occupationArray[i][o][0].responsibilities[j]);
             this.fromTop += 4;
 
             this.shouldAddNewPage();
         };
+            this.fromTop += 1;
+      };
+
+    //       this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
+    //       this.document.setFontSize(8);
+    //       this.document.setTextColor(gray);
+    //       this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startWork[i] + ' - ' + this.finishWork[i]);
+
+
+    //       this.document.setFontSize(10);
+    //       this.document.setTextColor(black);
+    //       this.document.text(this.deepMargin + 8, this.fromTop + 8, this.employer[i] + '  /  ' + this.trade[i] + '  /  ' + this.occupation[i]);
+
+
+    //       this.document.setFontSize(9);
+    //       this.fromTop += 12;
+
+    //       for (let j = 0; j < this.responsibilities[i].length; j++) {
+    //         console.log(this.responsibilities[i][j]);
+    //         this.document.circle(this.deepMargin + 9, this.fromTop, 0.5, 'F');
+    //         this.document.text(this.deepMargin + 12, this.fromTop + 1, this.responsibilities[i][j]);
+    //         this.fromTop += 4;
+
+    //         this.shouldAddNewPage();
+    //     };
 
           this.fromTop += 4;
 

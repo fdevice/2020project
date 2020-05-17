@@ -2112,7 +2112,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         userPhotoWidth = userPhotoWidth * 1.0; 
       } 
       
-      const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight});
+      const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight, cachebust: true});
       const headerIcon1 = await domtoimage.toPng(icon1, {width: icon1.clientWidth, height: icon1.clientHeight});
       const headerIcon2 = await domtoimage.toPng(icon2, {width: icon2.clientWidth, height: icon2.clientHeight});
       const headerIcon3 = await domtoimage.toPng(icon3, {width: icon3.clientWidth, height: icon3.clientHeight});
@@ -2158,7 +2158,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.PDF.disposition = this.cvForm.get('disposition').value;
 
       if (this.cvForm.get('employment').value != '') {
-        this.PDF.employment = (this.cvForm.get('employment').value).join(', ');
+        console.dir(this.cvForm.get('employment').value);              
+        this.PDF.employment = (this.cvForm.get('employment').value).map(emp => {
+          return emp.value;
+        }).join(', ');        
       } else {
         this.PDF.employment = '';
       };
@@ -2171,39 +2174,119 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.PDF.email = this.cvForm.get('email').value;
       this.PDF.phone = this.cvForm.get('phone').value;
 
+      // // DOŚWIADCZENIE ZAWODOWE
+      // this.PDF.totalExperienceLength = (<FormArray>this.cvForm.get('experience')).length;
+
+      // for (let i = 0; i < (<FormArray>this.cvForm.get('experience')).length; i++) {
+
+      //   if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value !== '' ) {
+
+      //     if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value ) {
+
+      //       this.PDF.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+      //       this.PDF.finishWork[i] = 'obecnie';
+
+      //     } else {
+
+      //       this.PDF.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+      //       this.PDF.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+
+      //       };
+
+      //       this.PDF.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
+      //       this.PDF.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
+      //       this.PDF.occupation[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('occupation').value;
+
+      //       let responsibilitiesArray = ((<FormArray>this.cvForm.get('experience')).controls[i].get('responsibilities') as FormArray);
+      //       let chosenResponsibilities = [];
+
+      //       for (let j = 0; j < responsibilitiesArray.length; j++) {
+      //         chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
+      //         this.PDF.responsibilities[i] = chosenResponsibilities;
+      //       };
+
+      //   };
+      // };
+
+
       // DOŚWIADCZENIE ZAWODOWE
-      this.PDF.totalExperienceLength = (<FormArray>this.cvForm.get('experience')).length;
+    this.PDF.totalExperienceLength = (<FormArray>this.cvForm.get('experience')).length;
 
-      for (let i = 0; i < (<FormArray>this.cvForm.get('experience')).length; i++) {
+    let startWork = new Array();
+    let finishWork = new Array()
+    let occupation = new Array();
+    let responsibilities = new Array();
 
-        if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value !== '' ) {
+    for (let i = 0; i < (<FormArray>this.cvForm.get('experience')).length; i++) {
 
-          if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('experienceTillNow').value ) {
+      let occupationArray: any[] = new Array();
 
-            this.PDF.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-            this.PDF.finishWork[i] = 'obecnie';
+      if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value !== '' ) {
 
+        this.PDF.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
+        this.PDF.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
+
+        for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
+
+          if ( (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
+
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+
+              startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+                            
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+            };          
+            
+            finishWork[o] = 'obecnie';
+  
           } else {
-
-            this.PDF.startWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-            this.PDF.finishWork[i] = new Date((<FormArray>this.cvForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-
+            
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+              startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
             };
+            
+            if (this.workFinishDateManuallyChanged[i][o] == true) {
+              finishWork[o]  = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            } else {
+              finishWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
+            };          
+          };
 
-            this.PDF.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
-            this.PDF.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
-            this.PDF.occupation[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('occupation').value;
+          occupation[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('occupation').value;
 
-            let responsibilitiesArray = ((<FormArray>this.cvForm.get('experience')).controls[i].get('responsibilities') as FormArray);
-            let chosenResponsibilities = [];
+          let responsibilitiesArray = ((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
+          let chosenResponsibilities = [];
 
-            for (let j = 0; j < responsibilitiesArray.length; j++) {
-              chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
-              this.PDF.responsibilities[i] = chosenResponsibilities;
-            };
+          for (let j = 0; j < responsibilitiesArray.length; j++) {
+            chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
+            responsibilities[o] = chosenResponsibilities;
+          };      
+          
+          let occupationData: any[] = [
+            {
+              workStart: startWork[o],
+              workFinish: finishWork[o],
+              occupation: occupation[o],
+              responsibilities: responsibilities[o]
+            }
+          ]; 
 
-        };
+          occupationArray.push(occupationData);          
+
+        };  // Koniec pętli occupation          
+
+          this.PDF.occupationArray[i] = occupationArray;                                     
+
       };
+
+      this.PDF.totalOccupationArrayLength[i] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).length;
+
+    };
+
+
 
       // EDUKACJA
       this.PDF.totalEducationLength = (<FormArray>this.cvForm.get('education')).length;
