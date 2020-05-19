@@ -15,6 +15,7 @@ export class AuthService {
   private tokenTimer: any;
   // private userId: string;
   private loggedAs: string;
+  private hasBaseCV: boolean;
   private authStatusListener = new Subject<boolean>();
   
 
@@ -59,6 +60,8 @@ export class AuthService {
         authData
       )
       .subscribe(response => {
+        // console.log("if has base cv: " + response.hasBaseCV);
+        // this.hasBaseCV = response.hasBaseCV;
         const token = response.token;
         this.token = token;
         if (token) {
@@ -118,6 +121,7 @@ export class AuthService {
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("loggedAsEmail", email);
+    // localStorage.setItem("hasBaseCV", baseCV.toString());
     // localStorage.setItem("userId", userId);
   }
 
@@ -125,6 +129,7 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
     localStorage.removeItem("loggedAsEmail");
+    // localStorage.removeItem("baseCV");
     // localStorage.removeItem("userId");
   }
 

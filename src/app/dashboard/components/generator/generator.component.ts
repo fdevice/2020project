@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, HostListener, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CreatePdfService } from '../../../../assets/services/create-pdf.service';
-import { FormGroup, Validators, FormArray, FormBuilder, Form } from '@angular/forms';
+import { FormGroup, Validators, FormArray, FormBuilder, NG_ASYNC_VALIDATORS, Form } from '@angular/forms';
 import { BsLocaleService, BsDatepickerViewMode } from 'ngx-bootstrap/datepicker';
 import { plLocale } from 'ngx-bootstrap/locale';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -25,13 +25,13 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'gorilla-creator',
-  templateUrl: './creator.component.html',
-  styleUrls: ['./creator.component.scss'],
+  selector: 'gorilla-generator',
+  templateUrl: './generator.component.html',
+  styleUrls: ['./generator.component.scss'],
   animations: [fadeInTop()]
 })
 
-export class CreatorComponent implements OnInit, AfterViewInit {
+export class GeneratorComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])   // nasłuchuje zmian wielkości ekranu i reaguje na nie
   onResize(event) {
@@ -138,7 +138,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   knownRegulationsChecked: boolean = false;
   otherSkillsChecked: boolean = false;
   
-  isLoading: boolean = false;  
+  isLoading: boolean = false;
   hasBaseCV: boolean;
   loggedUser: any;
 
@@ -200,7 +200,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.DatePickerWithoutDays = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minMode, dateInputFormat: 'MMMM YYYY'});
     }
 
-  ngOnInit() {          
+  ngOnInit() {        
 
     this.screenInnerWidth = window.innerWidth;  //początkowa szerokość ekranu po załadowaniu strony    
 
@@ -317,7 +317,6 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       };    
     });
 
-
   }; // koniec onInit()
 
   ngAfterViewInit() {
@@ -336,7 +335,21 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.cdRef.detectChanges();
     }
   }
-  
+
+  // public addExperienceFormGroup(): FormGroup {
+  //   return this.fb.group({
+  //           workPeriodStart: ['', Validators.required],
+  //           workPeriodEnd: [''],
+  //           workPeriodNow: [''],
+  //           employerName: ['', Validators.required],
+  //           trade: ['', Validators.required],
+  //           occupation: ['', Validators.required],
+  //           experienceTillNow: [''],
+  //           responsibilities: this.fb.array([
+  //             this.addResponsibilitiesFormArray()
+  //           ])
+  //   });
+  // };
 
   public addExperienceFormGroup(): FormGroup {
     return this.fb.group({            
@@ -2394,6 +2407,6 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.openErrorsDialog();
     }
 
-  } 
+  }  
 
 }

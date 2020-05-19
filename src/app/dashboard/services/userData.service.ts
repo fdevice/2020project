@@ -18,6 +18,9 @@ export class UserDataService {
   private hasBaseCV: boolean;
   private authStatusListener = new Subject<boolean>();
 
+  private receivedCVStatus = new Subject<any>();
+  public hasBaseCVUpdate = this.receivedCVStatus.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getLoggedAs() {
@@ -25,14 +28,14 @@ export class UserDataService {
     return this.loggedAs;
   } 
 
-  retrieveCV(email: string): boolean {
+  retrieveCV(email: string) {
     this.http.get<{ hasBaseCV: boolean }>(BACKEND_URL + "/user/" + email)
       .subscribe(result => {
         this.hasBaseCV = result.hasBaseCV;
-        console.log(this.hasBaseCV);        
-      });
-      return this.hasBaseCV;
-  }
+        console.log("Czy ma base CV? " + this.hasBaseCV); 
+        this.receivedCVStatus.next(this.hasBaseCV);       
+      });      
+  }  
 
 //   getToken() {
 //     return this.token;

@@ -18,9 +18,13 @@ const childrenRoutes: VexRoutes = [
     loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
   },
   {
-    path: "kreator",
+    path: "bazowe-cv",
     loadChildren: () => import('./dashboard/components/creator/creator.module').then(mod => mod.CreatorModule)
-  } 
+  },
+  {
+    path: "kreator-cv",
+    loadChildren: () => import('./dashboard/components/generator/generator.module').then(mod => mod.GeneratorModule)
+  }
 ];
 
 const routes: Routes = [

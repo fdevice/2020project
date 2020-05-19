@@ -8,8 +8,8 @@ import { ConfigPanelModule } from '../../../../@vex/components/config-panel/conf
 import { SidebarModule } from '../../../../@vex/components/sidebar/sidebar.module';
 import { QuickpanelModule } from '../../../../@vex/components/quickpanel/quickpanel.module';
 
-import { CreatorRoutingModule } from './creator-routing.module'
-import { CreatorComponent } from './creator.component';
+import { GeneratorRoutingModule } from './generator-routing.module'
+import { GeneratorComponent } from './generator.component';
 import { SideTooltipComponent } from 'src/assets/components/side-tooltip/side-tooltip.component';
 import { TopTooltipComponent } from 'src/assets/components/top-tooltip/top-tooltip.component';
 import { MatSelectModule, MatProgressSpinnerModule } from '@angular/material';
@@ -29,7 +29,7 @@ import { SharedModule } from 'src/app/shared.module';
     ConfigPanelModule,
     SidebarModule,
     QuickpanelModule,
-    CreatorRoutingModule,
+    GeneratorRoutingModule,
     MatSelectModule,
     BsDatepickerModule.forRoot(),
     ReactiveFormsModule,    
@@ -37,14 +37,14 @@ import { SharedModule } from 'src/app/shared.module';
     SharedModule
   ],
   declarations: [    
-    CreatorComponent,
+    GeneratorComponent,
     // SideTooltipComponent,
     // TopTooltipComponent,  
     // ElementFocusDirective    
   ],
   exports: [
-    CreatorComponent 
+    GeneratorComponent 
   ] 
 })
-export class CreatorModule {
+export class GeneratorModule {
 }

@@ -108,10 +108,16 @@ export class AppComponent implements OnInit {
       },
       {
         type: 'link',
-        label: 'Kreator',
-        route: '/kreator',
+        label: 'Bazowe CV',
+        route: '/bazowe-cv',
         icon: icLayers
       },
+      {
+        type: 'link',
+        label: 'Kreator CV',
+        route: '/kreator-cv',
+        icon: icLayers
+      }
     ];
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { UserDataService } from '../../services/userData.service';
 
 @Component({
@@ -17,7 +17,10 @@ export class HqComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser = this.userDataService.getLoggedAs();      
-    this.hasBaseCV = this.userDataService.retrieveCV(this.loggedUser);
-  }
-
+    this.userDataService.retrieveCV(this.loggedUser);
+    this.userDataService.hasBaseCVUpdate.subscribe((result) => {
+      this.hasBaseCV = result;
+      // localStorage.setItem("baseCV", this.hasBaseCV.toString());
+    });
+  }   
 }

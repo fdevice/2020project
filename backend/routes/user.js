@@ -82,6 +82,7 @@ router.post("/signup", (req, res, next) => {
           token: token,
           expiresIn: 3600,
           userId: fetchedUser._id
+          // hasBaseCV: fetchedUser.hasBaseCV
         });
       })
       .catch(err => {
