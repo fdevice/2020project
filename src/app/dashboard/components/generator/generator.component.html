@@ -1023,14 +1023,14 @@
                           (focus)="setHints(hoverMessages.jezykObcyDodaj)"
                           (blur)="clearHints()">Dodaj kolejny język</button>
                 <button *ngIf="languagesArray.controls.length > 1"
-                        class="btn btn-danger"
+                        class="btn btn-danger mb-2"
                         type="button"
                         id="removeLanguagesButton"
                         (click)="removeLanguagesButtonClick()"
                         (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
                         (mouseout)="clearHints()"
                         (focus)="setHints(hoverMessages.jezykObcyUsun)"
-                        (blur)="clearHints()">Usuń pozycję</button>
+                        (blur)="clearHints()">Usuń ostatnią pozycję</button>
               </div>
               <hr class="mt-2 mb-3">
                 <div id="skills">
@@ -1385,7 +1385,7 @@
                             (focus)="setHints(hoverMessages.wymaganieDodaj)"
                             (blur)="clearHints()">Dodaj wymaganie</button>
                     <button *ngIf="requirementsArray.length > 1"
-                            class="btn btn-danger"
+                            class="btn btn-danger mb-2"
                             type="button"
                             (click)="removeRequirement(requirementsListLength-1)"
                             (mouseover)="setHints(hoverMessages.wymaganieUsun)"
@@ -1442,7 +1442,7 @@
                                   (blur)="clearHints()">Zapisz jako PDF</button>
                         </div>
                       </div>
-                      <div class="col-xl-3">
+                      <!-- <div class="col-xl-3">
                         <div class="form-group">
                           <button class="btn btn-info"
                                   id="baseCVButton"
@@ -1453,8 +1453,8 @@
                                   (focus)="setHints(hoverMessages.zapiszBazoweCV)"
                                   (blur)="clearHints()">Zapisz bazowe CV</button>
                         </div>
-                      </div>
-                      <div class="col-xl-3">
+                      </div> -->
+                      <!-- <div class="col-xl-3">
                         <div class="form-group">
                           <button class="btn btn-info"
                                   id="populateCVFormButton"
@@ -1465,7 +1465,7 @@
                                   (focus)="setHints(hoverMessages.zapiszBazoweCV)"
                                   (blur)="clearHints()">Pobierz dane!</button>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
           </div>
         </div>
