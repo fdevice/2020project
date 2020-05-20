@@ -55,7 +55,7 @@ export class CVDataService {
     permissions: string;
     regulations: string;
     otherSkills: string;
-    hobbies: string; 
+    hobbies: string;     
     
     private receivedCVData = new Subject<any>();
     public receivedFormData = this.receivedCVData.asObservable();   // Zmienna pomocnicza przechowująca dane bazowego CV pobrane z bazy
@@ -91,7 +91,7 @@ export class CVDataService {
             advantages: [],
             selectedAdvantagesIndex: [],
             hobby: '',
-            creationTime: null
+            creationTime: null             
         };         
 
         console.dir(baseCVData);               
@@ -256,11 +256,11 @@ export class CVDataService {
         baseCVData.hobby = this.hobbies;
 
         // DATA UTWORZENIA
-        baseCVData.creationTime = new Date();
+        baseCVData.creationTime = new Date();        
 
         console.dir(baseCVData);       
 
-        const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: baseCVData };
+        const baseCV: BaseCV = { loggedUserEmail: loggedUserEmail, cvData: baseCVData, hasBaseCV: true };
 
         console.log(baseCV);
 

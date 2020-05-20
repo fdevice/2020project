@@ -236,6 +236,7 @@ router.post("/signup", (req, res, next) => {
             user.baseCVData.hobby = req.body.cvData.hobby;
           }
           user.baseCVData.creationTime = req.body.cvData.creationTime;
+          user.hasBaseCV = true;
           user.save()
             .then(updatedUser => {
               res.status(200).json({

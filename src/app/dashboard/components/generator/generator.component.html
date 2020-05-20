@@ -1,4 +1,9 @@
-
+<div *ngIf="!hasBaseCV" class="card overflow-hidden w-full max-w-md" style="margin: 6% auto">               
+  <div class="text-center my-4 mx-3">
+    <h2 class="title mb-2">Wygląda na to, że jeszcze nie posiadasz własnego Bazowego CV, dzięki któremu stworzenie CV na potrzeby rekrutacji zajmie Ci zdecydowanie mniej czasu.</h2>    
+    <h4 class="m-0">Jeżeli chcesz, możesz je w tej chwili stworzyć w <a routerLink="/bazowe-cv" style="color: #455ABA;">kreatorze Bazowego CV</a>.</h4>             
+  </div>                            
+</div>
   <div id="content" class="container-fluid" #creatorContainer>
     <div class="row" #bannerContainer>
       <div *ngIf="((screenInnerWidth <= 768) && !(currentTopHint === ''))" class="col-sm-12">
