@@ -340,7 +340,7 @@
                                        (focus)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
                                        (blur)="clearHints()"
                                        [(ngModel)]="experienceTillNowSelected[i][o]"
-                                       (ngModelChange)="setExperienceTillNow(i, o); checkWorkPeriodDate(i, o)">
+                                       (ngModelChange)="setExperienceTillNow(i,o); checkWorkPeriodDate(i, o, $event)">
                                 <label class="form-check-label now-label"
                                        [attr.for]="'experienceTillNowCbox'+i+'_'+o"
                                        (mouseover)="setHints(hoverMessages.okresZatrudnieniaObecnie)"
@@ -406,7 +406,7 @@
                           </div>
                           <div class="form-group row section-row">
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupation(i, o).length) > 1 && (hideNextOccupButton[i][o] === false)"
+                              <button *ngIf="(getOccupation(i).length) > 1 && (hideNextOccupButton[i][o] === false)"
                                 class="btn btn-danger"
                                 type="button"
                                 [id]="'removeOccuButton'+'_'+i+'_'+o"
@@ -997,9 +997,9 @@
                                        formControlName="level"
                                        [value]="llevel.degree"
                                        (change)="onLanguageLevelChange(llevel, l)"
-                                       (mouseover)="setHints(llevel.description, 30)"
+                                       (mouseover)="setHints(llevel.description)"
                                        (mouseout)="clearHints()"
-                                       (focus)="setHints(llevel.description, 30)"
+                                       (focus)="setHints(llevel.description)"
                                        (blur)="clearHints()">
                                 <label class="form-check-label col-lg-12"
                                        [attr.for]="'language'+l+'_degree'+li"
@@ -1442,7 +1442,7 @@
                                 (blur)="clearHints()">Zapisz jako PDF</button>
                       </div>
                     </div> -->
-                    <div class="col-xl-3">
+                    <div *ngIf="!hasBaseCV" class="col-xl-3">
                       <div class="form-group">
                         <button class="btn btn-info"
                                 id="baseCVButton"
@@ -1451,7 +1451,19 @@
                                 (mouseover)="setHints(hoverMessages.zapiszBazoweCV)"
                                 (mouseout)="clearHints()"
                                 (focus)="setHints(hoverMessages.zapiszBazoweCV)"
-                                (blur)="clearHints()">Zapisz bazowe CV</button>
+                                (blur)="clearHints()">Stwórz Bazowe CV</button>
+                      </div>
+                    </div>
+                    <div *ngIf="hasBaseCV" class="col-xl-3">
+                      <div class="form-group">
+                        <button class="btn btn-info"
+                                id="baseCVButton"
+                                type="button"
+                                (click)="saveBaseCV()"
+                                (mouseover)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (mouseout)="clearHints()"
+                                (focus)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (blur)="clearHints()">Zaktualizuj Bazowe CV</button>
                       </div>
                     </div>
                     <!-- <div class="col-xl-3">

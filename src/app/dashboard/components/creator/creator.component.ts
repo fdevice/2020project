@@ -1,5 +1,4 @@
 import { Component, OnInit, ElementRef, HostListener, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { CreatePdfService } from '../../../../assets/services/create-pdf.service';
 import { FormGroup, Validators, FormArray, FormBuilder, Form } from '@angular/forms';
 import { BsLocaleService, BsDatepickerViewMode } from 'ngx-bootstrap/datepicker';
 import { plLocale } from 'ngx-bootstrap/locale';
@@ -8,15 +7,14 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { HintMessageService } from '../../../../assets/services/hint-message.service';
 import { fadeInTop } from '../../../../assets/animations/animations';
 import { ListsViewerService } from '../../../../assets/services/list-viewer.service';
-import domtoimage from 'dom-to-image';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../../../../assets/components/warning-dialog/warning-dialog.component';
 import { DialogService } from '../../../../assets/services/dialog.service';
 import { CVDataService } from 'src/assets/services/cv-data.service';
 import { mimeType } from 'src/assets/validators/mime-type.validator';
-import { HttpClient } from '@angular/common/http';
 import { UserDataService } from '../../services/userData.service';
+import { Router } from '@angular/router';
 
 defineLocale('pl', plLocale);
 
@@ -184,10 +182,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor(
-    private PDF: CreatePdfService,
+  constructor(    
     private baseCV: CVDataService,
     private userDataService: UserDataService,
+    private router: Router,
     private localeService: BsLocaleService,
     private fb: FormBuilder,
     private sharedLists: ListsViewerService,
@@ -1524,8 +1522,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     // ZDJĘCIE
     this.baseCV.sendBaseCVData(this.baseCVForm.get("image").value);
+
+    this.router.navigate(["/kokpit"]);
     
-  }
+  };
 
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue 
 

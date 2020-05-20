@@ -15,8 +15,8 @@ import { WarningDialogComponent } from '../../../../assets/components/warning-di
 import { DialogService } from '../../../../assets/services/dialog.service';
 import { CVDataService } from 'src/assets/services/cv-data.service';
 import { mimeType } from 'src/assets/validators/mime-type.validator';
-import { HttpClient } from '@angular/common/http';
 import { UserDataService } from '../../services/userData.service';
+import { Router } from '@angular/router';
 
 defineLocale('pl', plLocale);
 
@@ -188,6 +188,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     private PDF: CreatePdfService,
     private baseCV: CVDataService,
     private userDataService: UserDataService,
+    private router: Router,
     private localeService: BsLocaleService,
     private fb: FormBuilder,
     private sharedLists: ListsViewerService,
@@ -2395,6 +2396,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
       setTimeout(() => this.PDF.generatePDF(), 300);
       this.isLoading = false;
+      this.router.navigate(["/kokpit"]);
     } else {
       this.openErrorsDialog();
     }
