@@ -45,11 +45,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   @ViewChild('creatorContainer', {static: false}) creatorContainer: ElementRef;
   @ViewChild('warunkiZatrudnienia', {static: false}) warunkiZatrudnienia: HTMLElement;
   @ViewChild('photoContainer', {static: false}) photoContainer: HTMLElement;
+  @ViewChild('userImage', { static: false }) userImage: HTMLImageElement;
 
   DatePickerConfig: Partial<BsDatepickerConfig>;  //Partial nie ma obowiązku dziedziczyć wszystkich atrybutów obiektu
   DatePickerWithoutDays: Partial<BsDatepickerConfig>;
 
   uploadedImage: any;  
+  imageClass: string = 'portrait';
   baseCVForm: FormGroup;
   employment: any[];
   availability: string[];
@@ -200,7 +202,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {          
 
-    this.screenInnerWidth = window.innerWidth;  //początkowa szerokość ekranu po załadowaniu strony    
+    this.screenInnerWidth = window.innerWidth;  //początkowa szerokość ekranu po załadowaniu strony        
 
     let Array2D = (r,c) => [...Array(r)].map(x=>Array(c).fill(0));   // matrix dwuwymariowej tablicy
 
@@ -596,7 +598,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     console.log('Długość tablicy experience: ' + (<FormArray>this.baseCVForm.get('experience')).length);
   }
 
-  public addEducationButtonClick(e: number): void {  // tutej!
+  public addEducationButtonClick(e: number): void { 
     
     const dateOptions = {
       day: undefined,
@@ -927,9 +929,29 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     console.log("Typ value kontrolki zdjęcia " + typeof this.baseCVForm.get('image').value);
 
     reader.onload = () => {  // wczytywanie jest procesem asynchronicznym
-      this.uploadedImage = reader.result;
+      var img = new Image;
+      img.onload = () => {
+        console.log(img.width);
+        console.log(img.height);  
+        
+        if (img.height > img.width) {
+          this.imageClass = 'portrait';
+        } else if (img.height < img.width) {
+          this.imageClass = 'landscape';
+        } else if (img.height == img.width) {
+          this.imageClass = 'square';
+        };
+
+      }    
+      img.src = reader.result as string;
+      console.log(img.src);        
+      
+      this.uploadedImage = img.src; 
+      // this.uploadedImage = reader.result;      
       console.log("Załadowane zdjęcie: " + this.uploadedImage);
-      console.log("uploadedimage jest typu: " + typeof this.uploadedImage);
+      console.log("uploadedimage jest typu: " + typeof this.uploadedImage);           
+      
+      
     };
     reader.readAsDataURL(file); // uruchamianie readera
   };    
@@ -1291,8 +1313,12 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     };    
 
     // DANE OSOBOWE
-    this.baseCV.name = this.baseCVForm.get('name').value.charAt(0).toUpperCase() + this.baseCVForm.get('name').value.slice(1);
-    this.baseCV.surname = this.baseCVForm.get('surname').value.charAt(0).toUpperCase() + this.baseCVForm.get('surname').value.slice(1);
+    if (this.baseCVForm.get('name').value != undefined) {
+      this.baseCV.name = this.baseCVForm.get('name').value.charAt(0).toUpperCase() + this.baseCVForm.get('name').value.slice(1);
+    };
+    if (this.baseCVForm.get('surname').value != undefined) {
+      this.baseCV.surname = this.baseCVForm.get('surname').value.charAt(0).toUpperCase() + this.baseCVForm.get('surname').value.slice(1);
+    };          
     this.baseCV.email = this.baseCVForm.get('email').value;
     this.baseCV.phone = this.baseCVForm.get('phone').value;   
     

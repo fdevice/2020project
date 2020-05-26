@@ -194,7 +194,7 @@
       width: 160px !important;
     }
   
-    .user-photo {
+    .photo-portrait {
       position: relative;
       width: 160px !important;
       height: 160px !important;
@@ -204,8 +204,40 @@
       margin-top: 20px;
       margin-left: 30px !important;
     }
+
+    .photo-landscape {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid green;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+
+    .photo-square {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
   
-    .user-photo img {
+    .photo-portrait img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-landscape img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-square img {
       width: 100%;
       height: auto;
     }
@@ -368,7 +400,7 @@
       width: 160px !important;
     }
   
-    .user-photo {
+    .photo-portrait {
       position: relative;
       width: 160px !important;
       height: 160px !important;
@@ -379,7 +411,39 @@
       margin-left: 30px !important;
     }
   
-    .user-photo img {
+    .photo-landscape {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid green;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+
+    .photo-square {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .photo-portrait img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-landscape img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-square img {
       width: 100%;
       height: auto;
     }
@@ -541,7 +605,7 @@
       width: 160px !important;
     }
   
-    .user-photo {
+    .photo-portrait {
       position: relative;
       width: 160px !important;
       height: 160px !important;
@@ -552,7 +616,39 @@
       margin-left: 30px !important;
     }
   
-    .user-photo img {
+    .photo-landscape {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid green;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+
+    .photo-square {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .photo-portrait img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-landscape img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-square img {
       width: 100%;
       height: auto;
     }
@@ -727,7 +823,7 @@
       width: 160px !important;
     }
   
-    .user-photo {
+    .photo-portrait {
       position: relative;
       width: 160px !important;
       height: 160px !important;
@@ -738,7 +834,39 @@
       margin-left: 30px !important;
     }
   
-    .user-photo img {
+    .photo-landscape {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid green;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+
+    .photo-square {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .photo-portrait img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-landscape img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-square img {
       width: 100%;
       height: auto;
     }
@@ -933,7 +1061,7 @@
       width: 150px !important;
     }
   
-    .user-photo {
+    .photo-portrait {
       position: relative;
       width: 150px !important;
       height: 150px !important;
@@ -944,7 +1072,39 @@
       margin-left: 20px !important;
     }
   
-    .user-photo img {
+    .photo-landscape {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid green;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+
+    .photo-square {
+      position: relative;
+      width: 160px !important;
+      height: 160px !important;
+      overflow: hidden;
+      border: 2px solid red;
+      border-radius: 50%;
+      margin-top: 20px;
+      margin-left: 30px !important;
+    }
+  
+    .photo-portrait img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-landscape img {
+      width: 100%;
+      height: auto;
+    }
+
+    .photo-square img {
       width: 100%;
       height: auto;
     }
@@ -1048,7 +1208,7 @@
     width: 250px;
   }
   
-  .user-photo {
+  .photo-portrait {
     position: relative;
     width: 250px;
     height: 250px;
@@ -1059,7 +1219,39 @@
     margin-left: 20px;
   }
   
-  .user-photo img {
+  .photo-landscape {
+    position: relative;
+    width: 160px !important;
+    height: 160px !important;
+    overflow: hidden;
+    border: 2px solid green;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-left: 30px !important;
+  }
+
+  .photo-square {
+    position: relative;
+    width: 160px !important;
+    height: 160px !important;
+    overflow: hidden;
+    border: 2px solid red;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-left: 30px !important;
+  }
+
+  .photo-portrait img {
+    width: 100%;
+    height: auto;
+  }
+
+  .photo-landscape img {
+    width: 100%;
+    height: auto;
+  }
+
+  .photo-square img {
     width: 100%;
     height: auto;
   }

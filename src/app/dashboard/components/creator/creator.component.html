@@ -154,9 +154,16 @@
             <div class="col-lg-5 col-xs-3" #photoContainer>
                 <div *ngIf="!uploadedImage">                    
                   </div>
-                  <div *ngIf="uploadedImage && uploadedImage !== '' && baseCVForm.get('image').valid" class="user-photo">
-                      <img [src]="uploadedImage" [alt]="baseCVForm.value.name">
+                  <div *ngIf="uploadedImage && uploadedImage !== '' && baseCVForm.get('image').valid" [ngClass]="{
+                    'photo-portrait': imageClass === 'portrait',
+                    'photo-landscape': imageClass === 'landscape',
+                    'photo-square': imageClass === 'square'
+                  }">
+                      <img [src]="uploadedImage" [alt]="baseCVForm.value.name" #userImage>
                   </div>
+                  <!-- <div *ngIf="uploadedImage && uploadedImage !== '' && baseCVForm.get('image').valid" class="photo-portrait">
+                      <img [src]="uploadedImage" [alt]="baseCVForm.value.name" #userImage>
+                  </div> -->
             </div>
             <div class="col-lg-7 col-sm-12">
                 <div class="form-group mb-4 mt-2">
