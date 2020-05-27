@@ -4,6 +4,7 @@ export interface CVData {
     contactEmail?: string;
     phone?: string;       
     photoPath?: string;  //ścieżka do zapisanego zdjęcia 
+    photoClass?: string,
     position?: string;
     location?: string;
     availability?: string;

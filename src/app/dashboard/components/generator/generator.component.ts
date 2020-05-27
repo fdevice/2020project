@@ -51,7 +51,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   DatePickerConfig: Partial<BsDatepickerConfig>;  //Partial nie ma obowiązku dziedziczyć wszystkich atrybutów obiektu
   DatePickerWithoutDays: Partial<BsDatepickerConfig>;
 
-  uploadedImage: any;  
+  uploadedImage: any; 
+  imageClass: string = 'portrait'; 
   cvForm: FormGroup;
   employment: any[];
   availability: string[];
@@ -266,7 +267,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
-      phone: ['', Validators.required],
+      phone: ['', Validators.compose([Validators.pattern('^[0-9 ()+-]+$'), Validators.required])],
       image: [null, [Validators.required], [mimeType]],
       position: ['', Validators.required],
       salary: [''],
@@ -946,7 +947,25 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     console.log("Typ value kontrolki zdjęcia " + typeof this.cvForm.get('image').value);
 
     reader.onload = () => {  // wczytywanie jest procesem asynchronicznym
-      this.uploadedImage = reader.result;
+      var img = new Image;
+      img.onload = () => {
+        console.log(img.width);
+        console.log(img.height);  
+        
+        if (img.height > img.width) {
+          this.imageClass = 'portrait';
+        } else if (img.height < img.width) {
+          this.imageClass = 'landscape';
+        } else if (img.height == img.width) {
+          this.imageClass = 'square';
+        };
+
+      } 
+      img.src = reader.result as string;
+      console.log(img.src);        
+      
+      this.uploadedImage = img.src; 
+      // this.uploadedImage = reader.result;
       console.log("Załadowane zdjęcie: " + this.uploadedImage);
       console.log("uploadedimage jest typu: " + typeof this.uploadedImage);
     };
@@ -1607,7 +1626,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         hobbies: CVData.data.baseCVData.hobby              
       });
 
-      if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {        
+      if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {    
+        this.imageClass = CVData.data.baseCVData.photoClass;    
         this.cvForm.patchValue({ image: CVData.data.baseCVData.photoPath });
         this.cvForm.get("image").updateValueAndValidity();    
         console.log(this.cvForm.get("image").value);

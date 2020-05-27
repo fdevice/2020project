@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
   modificationTime: { type: Date },
   baseCVData: { 
     photoPath: { type: String },  //ścieżka do zapisanego zdjęcia 
+    photoClass: { type: String },
     position: { type: String },
     location: { type: String },
     availability: { type: String },

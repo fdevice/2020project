@@ -159,7 +159,11 @@
               <div class="col-lg-5 col-xs-3" #photoContainer>
                   <div *ngIf="!uploadedImage">                    
                     </div>
-                    <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" class="user-photo">
+                    <div *ngIf="uploadedImage && uploadedImage !== '' && cvForm.get('image').valid" [ngClass]="{
+                      'photo-portrait': imageClass === 'portrait',
+                      'photo-landscape': imageClass === 'landscape',
+                      'photo-square': imageClass === 'square'
+                    }">
                         <img [src]="uploadedImage" [alt]="cvForm.value.name">
                     </div>
               </div>
@@ -215,6 +219,7 @@
                                  (mouseout)="clearHints()"
                                  (focus)="setHints(hoverMessages.numerTelefonu)"
                                  (blur)="clearHints()">
+                                 <span *ngIf="!cvForm.get('phone').valid && cvForm.get('phone').touched" class="help-block">Proszę wpisać wyłącznie cyfry oraz znaki "+", "-", "()"</span>
                         </div>
                       </div>
                       <div *ngIf="!uploadedImage" class="upload-button file btn btn-info"

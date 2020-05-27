@@ -217,6 +217,7 @@
                                (mouseout)="clearHints()"
                                (focus)="setHints(hoverMessages.numerTelefonu)"
                                (blur)="clearHints()">
+                               <span *ngIf="!baseCVForm.get('phone').valid && baseCVForm.get('phone').touched" class="help-block">Proszę wpisać wyłącznie cyfry oraz znaki "+", "-", "()"</span>
                       </div>
                     </div>
                     <div *ngIf="!uploadedImage" class="upload-button file btn btn-info"

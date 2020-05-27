@@ -258,6 +258,7 @@ router.post("/signup", (req, res, next) => {
     router.post("/cv/photo", multer({storage: storage}).single("image"), (req, res, next) => {
       if (req.file) {
         const url = req.protocol + '://' + req.get("host");
+        let photoClass = req.body.photoClass;
         User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
           if (!user) {
@@ -267,6 +268,7 @@ router.post("/signup", (req, res, next) => {
           }
           console.log("Ścieżka do zdjęcia: " + (url + "/images/" + req.file.filename));
           user.baseCVData.photoPath = url + "/images/" + req.file.filename;
+          user.baseCVData.photoClass = photoClass;
           user.save()
             .then(updatedUser => {
               res.status(201).json({
@@ -278,6 +280,7 @@ router.post("/signup", (req, res, next) => {
         })
       } else {
         let imagePath = req.body.imagePath;
+        let photoClass = req.body.photoClass;
         User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
           if (!user) {
@@ -286,6 +289,7 @@ router.post("/signup", (req, res, next) => {
             });          
           }          
           user.baseCVData.photoPath = imagePath;
+          user.baseCVData.photoClass = photoClass;
           user.save()
             .then(updatedUser => {
               res.status(201).json({

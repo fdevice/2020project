@@ -18,17 +18,7 @@
     }      
   }
 
-@media only screen and (max-width: 1600px) and (min-width: 1280px) {
-
-  // input[type="text"].trade-input::-webkit-input-placeholder {
-  //   color: #B8B8B8;
-  //   font-size: 0.8em !important;
-  // }
-
-  // input[type="text"].trade-input::-moz-input-placeholder {
-  //   color: #B8B8B8;
-  //   font-size: 0.8em !important;
-  // }
+@media only screen and (max-width: 1600px) and (min-width: 1280px) {  
 
   #location::-webkit-input-placeholder {
     color: #B8B8B8;
@@ -46,9 +36,6 @@
   }
 
 }
-  
-
-
 
   @media only screen and (max-width: 1199px) {
 
@@ -56,7 +43,7 @@
         float: left !important;
       }
     
-    }
+  }
   
     // Urządzenia inne niż telefony
   @media only screen and (min-width: 415px) {
@@ -210,18 +197,18 @@
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid green;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
     }
-
+  
     .photo-square {
       position: relative;
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid red;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
@@ -231,15 +218,15 @@
       width: 100%;
       height: auto;
     }
-
+  
     .photo-landscape img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 100%;
     }
-
+  
     .photo-square img {
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   
     .skills-label {
@@ -416,18 +403,18 @@
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid green;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
     }
-
+  
     .photo-square {
       position: relative;
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid red;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
@@ -437,15 +424,15 @@
       width: 100%;
       height: auto;
     }
-
+  
     .photo-landscape img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 100%;
     }
-
+  
     .photo-square img {
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   
     .skills-label {
@@ -621,18 +608,18 @@
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid green;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
     }
-
+  
     .photo-square {
       position: relative;
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid red;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
@@ -642,15 +629,15 @@
       width: 100%;
       height: auto;
     }
-
+  
     .photo-landscape img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 100%;
     }
-
+  
     .photo-square img {
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   
     .skills-label {
@@ -839,18 +826,18 @@
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid green;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
     }
-
+  
     .photo-square {
       position: relative;
       width: 160px !important;
       height: 160px !important;
       overflow: hidden;
-      border: 2px solid red;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
@@ -860,15 +847,15 @@
       width: 100%;
       height: auto;
     }
-
+  
     .photo-landscape img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 100%;
     }
-
+  
     .photo-square img {
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   
     .skills-label {
@@ -1074,21 +1061,21 @@
   
     .photo-landscape {
       position: relative;
-      width: 160px !important;
-      height: 160px !important;
+      width: 150px !important;
+      height: 150px !important;
       overflow: hidden;
-      border: 2px solid green;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
     }
-
+  
     .photo-square {
       position: relative;
-      width: 160px !important;
-      height: 160px !important;
+      width: 150px !important;
+      height: 150px !important;
       overflow: hidden;
-      border: 2px solid red;
+      border: 2px solid rgba(128, 128, 128, 0.5);
       border-radius: 50%;
       margin-top: 20px;
       margin-left: 30px !important;
@@ -1098,15 +1085,15 @@
       width: 100%;
       height: auto;
     }
-
+  
     .photo-landscape img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 100%;
     }
-
+  
     .photo-square img {
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   
     .skills-label {
@@ -1221,24 +1208,24 @@
   
   .photo-landscape {
     position: relative;
-    width: 160px !important;
-    height: 160px !important;
+    width: 250px;
+    height: 250px;
     overflow: hidden;
-    border: 2px solid green;
+    border: 2px solid rgba(128, 128, 128, 0.5);
     border-radius: 50%;
     margin-top: 20px;
-    margin-left: 30px !important;
+    margin-left: 20px !important;
   }
 
   .photo-square {
     position: relative;
-    width: 160px !important;
-    height: 160px !important;
+    width: 250px;
+    height: 250px;
     overflow: hidden;
-    border: 2px solid red;
+    border: 2px solid rgba(128, 128, 128, 0.5);
     border-radius: 50%;
     margin-top: 20px;
-    margin-left: 30px !important;
+    margin-left: 20px !important;
   }
 
   .photo-portrait img {
@@ -1247,13 +1234,13 @@
   }
 
   .photo-landscape img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
   }
 
   .photo-square img {
     width: 100%;
-    height: auto;
+    height: 100%;
   }
   
   .upload-button {

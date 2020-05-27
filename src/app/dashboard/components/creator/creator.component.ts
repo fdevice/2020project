@@ -265,7 +265,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
-      phone: ['', Validators.required],
+      phone: ['', Validators.compose([Validators.pattern('^[0-9 ()+-]+$'), Validators.required])],
       image: [null, [Validators.required], [mimeType]],
       position: ['', Validators.required],
       salary: [''],
@@ -929,7 +929,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     console.log("Typ value kontrolki zdjęcia " + typeof this.baseCVForm.get('image').value);
 
     reader.onload = () => {  // wczytywanie jest procesem asynchronicznym
-      var img = new Image;
+      var img = new Image;          // na potrzeby obliczenia wymiarów zdjęcia tworzymy na czas wczytywania jego instancję
       img.onload = () => {
         console.log(img.width);
         console.log(img.height);  
@@ -1547,7 +1547,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.baseCV.hobbies = this.baseCVForm.get('hobbies').value;    
 
     // ZDJĘCIE
-    this.baseCV.sendBaseCVData(this.baseCVForm.get("image").value);
+    this.baseCV.photoClass = this.imageClass;
+    this.baseCV.sendBaseCVData(this.baseCVForm.get("image").value);    
 
     this.router.navigate(["/kokpit"]);
     
@@ -1616,18 +1617,15 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         hobbies: CVData.data.baseCVData.hobby              
       });
 
-      if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {        
+      if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {    
+        this.imageClass = CVData.data.baseCVData.photoClass;    
         this.baseCVForm.patchValue({ image: CVData.data.baseCVData.photoPath });
         this.baseCVForm.get("image").updateValueAndValidity();    
         console.log(this.baseCVForm.get("image").value);
-        this.uploadedImage = CVData.data.baseCVData.photoPath;
-        // this.cdRef.detectChanges();
-        // this.getBase64ImageFromUrl(CVData.data.baseCVData.photoPath)
-        // .then(result => this.uploadedImage = result)
-        // .catch(err => console.error(err));
+        this.uploadedImage = CVData.data.baseCVData.photoPath;             
       };      
 
-      console.log("Fotka po pobraniu danych: " + this.uploadedImage);
+      console.log("Fotka po pobraniu danych: " + this.uploadedImage);      
 
         // DOSTĘPNOŚĆ
       availabilityFromDatabase = CVData.data.baseCVData.availability;

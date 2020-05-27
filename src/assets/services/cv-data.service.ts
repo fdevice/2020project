@@ -15,6 +15,7 @@ export class CVDataService {
     surname: string;
     email: string;
     phone: string;
+    photoClass: string;
     position: string;
     location: string;
     availability: string;
@@ -70,6 +71,7 @@ export class CVDataService {
             contactEmail: '',
             phone: '',      
             photoPath: '',
+            photoClass: '',
             experience: [],
             education: [],
             courses: [],
@@ -279,6 +281,7 @@ export class CVDataService {
             if (typeof(image) === 'object') {
             imageData.append("loggedUserEmail", loggedUserEmail);
             imageData.append("image", image, (this.name + " " + this.surname));
+            imageData.append("photoClass", this.photoClass);
             this.http
                 .post(BACKEND_URL + "/user/cv/photo", imageData)
                 .subscribe((result) => {
@@ -289,7 +292,8 @@ export class CVDataService {
             } else {                
                 let imageStringData = {
                     "loggedUserEmail": loggedUserEmail,
-                    "imagePath": image
+                    "imagePath": image,
+                    "photoClass": this.photoClass
                 };
                 this.http
                 .post(BACKEND_URL + "/user/cv/photo", imageStringData)
