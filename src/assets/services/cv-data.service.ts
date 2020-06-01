@@ -118,6 +118,7 @@ export class CVDataService {
         baseCVData.surname = this.surname;
         baseCVData.contactEmail = this.email;
         baseCVData.phone = this.phone;
+        baseCVData.photoClass = this.photoClass;
 
         console.log("Obiekt baseCVData z niektórymi wartościami: " + baseCVData.name);    
 
@@ -277,11 +278,12 @@ export class CVDataService {
         const imageData = new FormData();
 
         if (image != null && image != undefined) {      // Przesyłanie zdjęcia na serwer
-            console.log(typeof image);
+            console.log(typeof image);            
             if (typeof(image) === 'object') {
             imageData.append("loggedUserEmail", loggedUserEmail);
-            imageData.append("image", image, (this.name + " " + this.surname));
-            imageData.append("photoClass", this.photoClass);
+            imageData.append("image", image, (this.name + " " + this.surname));            
+            console.log("Obiekt imageData:");
+            console.dir(imageData);
             this.http
                 .post(BACKEND_URL + "/user/cv/photo", imageData)
                 .subscribe((result) => {
@@ -292,8 +294,7 @@ export class CVDataService {
             } else {                
                 let imageStringData = {
                     "loggedUserEmail": loggedUserEmail,
-                    "imagePath": image,
-                    "photoClass": this.photoClass
+                    "imagePath": image                   
                 };
                 this.http
                 .post(BACKEND_URL + "/user/cv/photo", imageStringData)

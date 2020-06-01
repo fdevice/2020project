@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    // cb(error, "./backend/images");
-    cb(error, "images");
+    // cb(error, "./backend/images");  // podczas pracy na developerce
+    cb(error, "images");   // na produkcji
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -141,7 +141,10 @@ router.post("/signup", (req, res, next) => {
           }
           if (req.body.cvData.phone) {
             user.phone = req.body.cvData.phone;
-          }          
+          }   
+          if (req.body.cvData.photoClass) {
+            user.baseCVData.photoClass = req.body.cvData.photoClass;
+          }        
           // PREFEROWANE WARUNKI ZATRUDNIENIA
           if (req.body.cvData.position) {
             user.baseCVData.position = req.body.cvData.position;
@@ -257,8 +260,7 @@ router.post("/signup", (req, res, next) => {
     // ZAPISYWANIE ZDJĘCIA
     router.post("/cv/photo", multer({storage: storage}).single("image"), (req, res, next) => {
       if (req.file) {
-        const url = req.protocol + '://' + req.get("host");
-        let photoClass = req.body.photoClass;
+        const url = req.protocol + '://' + req.get("host");        
         User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
           if (!user) {
@@ -267,8 +269,7 @@ router.post("/signup", (req, res, next) => {
             });          
           }
           console.log("Ścieżka do zdjęcia: " + (url + "/images/" + req.file.filename));
-          user.baseCVData.photoPath = url + "/images/" + req.file.filename;
-          user.baseCVData.photoClass = photoClass;
+          user.baseCVData.photoPath = url + "/images/" + req.file.filename;          
           user.save()
             .then(updatedUser => {
               res.status(201).json({
@@ -279,8 +280,7 @@ router.post("/signup", (req, res, next) => {
             }) 
         })
       } else {
-        let imagePath = req.body.imagePath;
-        let photoClass = req.body.photoClass;
+        let imagePath = req.body.imagePath;        
         User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
           if (!user) {
@@ -288,8 +288,7 @@ router.post("/signup", (req, res, next) => {
               message: "Nie odnaleziono takiego użytkownika!"
             });          
           }          
-          user.baseCVData.photoPath = imagePath;
-          user.baseCVData.photoClass = photoClass;
+          user.baseCVData.photoPath = imagePath;          
           user.save()
             .then(updatedUser => {
               res.status(201).json({

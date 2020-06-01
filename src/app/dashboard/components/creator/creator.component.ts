@@ -1336,9 +1336,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       let occupationArray: any[] = new Array();
 
       if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {
-
+        
         this.baseCV.employer[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value;
-        this.baseCV.trade[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value;
+        this.baseCV.trade[i] = ((<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value);
 
         for (let o = 0; o < (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
 
@@ -1548,6 +1548,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     // ZDJĘCIE
     this.baseCV.photoClass = this.imageClass;
+
     this.baseCV.sendBaseCVData(this.baseCVForm.get("image").value);    
 
     this.router.navigate(["/kokpit"]);
@@ -1588,7 +1589,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   //********************  POBIERANIE BAZOWEGO CV  ********************************/
 
   public populatebaseCVForm() {
-
+    
     this.baseCV.getBaseCVData();
 
     let employmentFromDatabase = [];
@@ -1601,6 +1602,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
+      this.imageClass = CVData.data.baseCVData.photoClass; 
       employmentFromDatabase = CVData.data.baseCVData.employment;
       this.baseCVForm.get('employment').setValue(employmentFromDatabase);
 
@@ -1618,11 +1620,12 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       });
 
       if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {    
-        this.imageClass = CVData.data.baseCVData.photoClass;    
+        // this.imageClass = CVData.data.baseCVData.photoClass;            
         this.baseCVForm.patchValue({ image: CVData.data.baseCVData.photoPath });
         this.baseCVForm.get("image").updateValueAndValidity();    
         console.log(this.baseCVForm.get("image").value);
-        this.uploadedImage = CVData.data.baseCVData.photoPath;             
+        this.uploadedImage = CVData.data.baseCVData.photoPath;  
+        console.log("Klasa zdjęcia po pobraniu z bazy: " + this.imageClass);           
       };      
 
       console.log("Fotka po pobraniu danych: " + this.uploadedImage);      
@@ -2065,6 +2068,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           
           }; // koniec kursów
 
+          console.log("Formularz bazowego CV po pobraniu danych: ");
+          console.dir(this.baseCVForm);
 
     },
     (error) => {

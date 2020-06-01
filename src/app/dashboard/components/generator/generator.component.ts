@@ -1610,6 +1610,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
     this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
+      this.imageClass = CVData.data.baseCVData.photoClass; 
       employmentFromDatabase = CVData.data.baseCVData.employment;
       this.cvForm.get('employment').setValue(employmentFromDatabase);
 
@@ -1627,7 +1628,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       });
 
       if (CVData.data.baseCVData.photoPath && CVData.data.baseCVData.photoPath !== '') {    
-        this.imageClass = CVData.data.baseCVData.photoClass;    
+        // this.imageClass = CVData.data.baseCVData.photoClass;    
         this.cvForm.patchValue({ image: CVData.data.baseCVData.photoPath });
         this.cvForm.get("image").updateValueAndValidity();    
         console.log(this.cvForm.get("image").value);
@@ -1638,7 +1639,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         // .catch(err => console.error(err));
       };      
 
-      console.log("Fotka po pobraniu danych: " + this.uploadedImage);
+      console.log("Fotka po pobraniu danych: " + this.uploadedImage);      
 
         // DOSTĘPNOŚĆ
       availabilityFromDatabase = CVData.data.baseCVData.availability;

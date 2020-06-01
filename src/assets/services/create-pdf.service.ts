@@ -613,7 +613,7 @@ export class CreatePdfService {
 
     // window.open(this.document.output('bloburl'), '_blank');
 
-    this.document.save((this.name).toLowerCase() + '_' + (this.surname).toLowerCase() + '_CV' + '.pdf');
+    this.document.save(this.name + '_' + this.surname + '_CV' + '.pdf');
 
   }
 
