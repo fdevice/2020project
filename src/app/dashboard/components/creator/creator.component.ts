@@ -1335,11 +1335,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       let occupationArray: any[] = new Array();
 
-      if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {
+      if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {        
         
         this.baseCV.employer[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value;
         this.baseCV.trade[i] = ((<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value);
-
+        
         for (let o = 0; o < (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
 
           if ( (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
@@ -1550,6 +1550,280 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.baseCV.photoClass = this.imageClass;
 
     this.baseCV.sendBaseCVData(this.baseCVForm.get("image").value);    
+
+    this.router.navigate(["/kokpit"]);
+    
+  };
+
+  //********************  AKTUALIZOWANIE BAZOWEGO CV  ********************************/
+
+  public updateBaseCV() {
+
+    const dateOptions = {
+      day: undefined,
+      month: 'long',
+      year: 'numeric'
+    };   
+    
+    // let occupationArray: any[] = new Array();
+
+    // WARUNKI ZATRUDNIENIA
+    this.baseCV.position = this.baseCVForm.get('position').value;
+    this.baseCV.location = this.baseCVForm.get('location').value;
+    this.baseCV.disposition = this.baseCVForm.get('disposition').value;
+    this.baseCV.salary = this.baseCVForm.get('salary').value;
+    
+    if (!this.selectAvailability) {
+      this.baseCV.availability = this.baseCVForm.get('availability').value;
+    } else {
+      // this.baseCV.availability = (new Date(this.baseCVForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
+      this.baseCV.availability = (new Date(this.baseCVForm.get('availabilityDate').value).toLocaleDateString());
+    };
+
+    if (this.baseCVForm.get('employment').value != '') {
+      this.baseCV.employment = this.baseCVForm.get('employment').value;
+    } else {
+      this.baseCV.employment = [];
+    };    
+
+    // DANE OSOBOWE
+    if (this.baseCVForm.get('name').value != undefined) {
+      this.baseCV.name = this.baseCVForm.get('name').value.charAt(0).toUpperCase() + this.baseCVForm.get('name').value.slice(1);
+    };
+    if (this.baseCVForm.get('surname').value != undefined) {
+      this.baseCV.surname = this.baseCVForm.get('surname').value.charAt(0).toUpperCase() + this.baseCVForm.get('surname').value.slice(1);
+    };          
+    this.baseCV.email = this.baseCVForm.get('email').value;
+    this.baseCV.phone = this.baseCVForm.get('phone').value;   
+    
+
+    // DOŚWIADCZENIE ZAWODOWE
+    this.baseCV.totalExperienceLength = (<FormArray>this.baseCVForm.get('experience')).length;
+
+    let startWork = new Array();
+    let finishWork = new Array()
+    let occupation = new Array();
+    let responsibilities = new Array();
+
+    for (let i = 0; i < (<FormArray>this.baseCVForm.get('experience')).length; i++) {
+
+      let occupationArray: any[] = new Array();
+
+      if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {        
+        
+        this.baseCV.employer[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value;
+        this.baseCV.trade[i] = ((<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value);
+        
+        for (let o = 0; o < (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
+
+          if ( (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
+
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+
+              startWork[o] = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
+                            
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+            };          
+            
+            finishWork[o] = 'obecnie';
+  
+          } else {
+            
+            if (this.workStartDateManuallyChanged[i][o] == true) {
+              startWork[o] = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
+            } else {
+              startWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
+            };
+            
+            if (this.workFinishDateManuallyChanged[i][o] == true) {
+              finishWork[o]  = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            } else {
+              finishWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
+            };          
+          };
+
+          occupation[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('occupation').value;
+
+          let responsibilitiesArray = ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
+          let chosenResponsibilities = [];
+
+          for (let j = 0; j < responsibilitiesArray.length; j++) {
+            chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
+            responsibilities[o] = chosenResponsibilities;
+          };      
+          
+          let occupationData: any[] = [
+            {
+              workStart: startWork[o],
+              workFinish: finishWork[o],
+              occupation: occupation[o],
+              responsibilities: responsibilities[o]
+            }
+          ]; 
+
+          occupationArray.push(occupationData);          
+
+        };  // Koniec pętli occupation          
+
+          this.baseCV.occupationData[i] = occupationArray;                                     
+
+      };
+    };
+
+    // EDUKACJA
+    this.baseCV.totalEducationLength = (<FormArray>this.baseCVForm.get('education')).length;
+
+    for (let e = 0; e < (<FormArray>this.baseCVForm.get('education')).length; e++) {
+
+      if ( (<FormArray>this.baseCVForm.get('education')).controls[e].get('schoolName').value !== '' ) {
+
+        if ( (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationTillNow').value ) {
+
+          if (this.educationStartDateManuallyChanged[e] == true) {
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
+          };                    
+
+          this.baseCV.finishEducation[e] = 'obecnie';
+
+          // this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishEducation[e] = 'obecnie';
+
+        } else {
+
+          if (this.educationStartDateManuallyChanged[e] == true) {
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
+          };  
+
+          if (this.educationFinishDateManuallyChanged[e] == true) {
+            this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.finishEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value;
+          }; 
+
+          // this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+
+          };
+
+          this.baseCV.schoolName[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('schoolName').value;
+
+          this.baseCV.schoolProfile[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('specialization').value || (<FormArray>this.baseCVForm.get('education')).controls[e].get('classProfile').value;
+          this.baseCV.schoolMode[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationMode').value || '';       
+          
+          if (this.schoolTypeSelected[e] == 1) {
+            this.baseCV.schoolTypeIndex[e] = 1;
+            this.baseCV.schoolType[e] = "Wyższa"; 
+          } else {
+            this.baseCV.schoolTypeIndex[e] = 2;
+            this.baseCV.schoolType[e] = "Średnia";             
+          };         
+      };
+    };
+
+    // KURSY
+    this.baseCV.totalCoursesLength = (<FormArray>this.baseCVForm.get('courses')).length;
+
+    for (let c = 0; c < (<FormArray>this.baseCVForm.get('courses')).length; c++) {
+
+      if ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value !== '') {
+
+        if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
+
+          if (this.courseStartDateManuallyChanged[c] == true) {
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
+          };                    
+
+          this.baseCV.finishCourse[c] = 'obecnie';
+
+          // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishCourse[c] = 'obecnie';
+        } else {
+
+          if (this.courseStartDateManuallyChanged[c] == true) {
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
+          };   
+
+          if (this.courseFinishDateManuallyChanged[c] == true) {
+            this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          } else {
+            this.baseCV.finishCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+          }; 
+
+          // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          // this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+        };
+
+        this.baseCV.courseName[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value;
+        this.baseCV.courseSubject[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseSubject').value;
+
+      };
+    };
+
+
+     // JĘZYKI OBCE
+     this.baseCV.totalLanguagesLength = (<FormArray>this.baseCVForm.get('languages')).length;
+
+     for (let l = 0; l < (<FormArray>this.baseCVForm.get('languages')).length; l++) {
+
+       if ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('languageName').value !== '') {
+
+         if ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('otherLanguage').value !== '') {
+           this.baseCV.languageName[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('otherLanguage').value);
+         } else {
+           this.baseCV.languageName[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('languageName').value);
+         }
+
+         this.baseCV.languageLevel[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('level').value);
+         this.baseCV.languageDescription[l] = this.selectedLanguageDegree[l];
+
+       };
+     };
+
+
+     // UMIEJĘTNOŚCI
+     if (this.baseCVForm.get('drivingLicenceDescription').value) {
+      this.baseCV.drivingLicence = this.baseCVForm.get('drivingLicenceDescription').value;
+    };
+    if (this.baseCVForm.get('knownProgramsDescription').value) {
+      this.baseCV.knownPrograms = this.baseCVForm.get('knownProgramsDescription').value;
+    };
+    if (this.baseCVForm.get('programmingSkillsDescription').value) {
+      this.baseCV.programmingLanguages = this.baseCVForm.get('programmingSkillsDescription').value;
+    };
+    if (this.baseCVForm.get('devicesUsageDescription').value) {
+      this.baseCV.devices = this.baseCVForm.get('devicesUsageDescription').value;
+    };
+    if (this.baseCVForm.get('permissionsDescription').value) {
+      this.baseCV.permissions = this.baseCVForm.get('permissionsDescription').value;
+    };
+    if (this.baseCVForm.get('knownRegulationsDescription').value) {
+      this.baseCV.regulations = this.baseCVForm.get('knownRegulationsDescription').value;
+    };
+    if (this.baseCVForm.get('otherSkillsDescription').value) {
+      this.baseCV.otherSkills = this.baseCVForm.get('otherSkillsDescription').value;
+    };
+
+    // MOCNE STRONY
+    this.getSelectedAdvantagesValues();
+    this.baseCV.advantages = this.selectedAdvantagesValues;
+    this.baseCV.selectedAdvantagesIndex = this.selectedAdvantagesValuesToDatabase;
+
+    // ZAINTERESOWANIA
+    this.baseCV.hobbies = this.baseCVForm.get('hobbies').value;    
+
+    // ZDJĘCIE
+    this.baseCV.photoClass = this.imageClass;
+
+    this.baseCV.updateBaseCVData(this.baseCVForm.get("image").value);    
 
     this.router.navigate(["/kokpit"]);
     

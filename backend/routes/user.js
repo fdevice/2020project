@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    // cb(error, "./backend/images");  // podczas pracy na developerce
-    cb(error, "images");   // na produkcji
+    cb(error, "./backend/images");  // podczas pracy na developerce
+    // cb(error, "images");   // na produkcji
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -120,7 +120,8 @@ router.post("/signup", (req, res, next) => {
 
 
       // ZAPISYWANIE BAZOWEGO CV
-    router.put("/cv", (req, res, next) => {
+    // router.put("/cv", (req, res, next) => {
+    router.post("/cv", (req, res, next) => {  
       // console.log(req.body);
       User.findOne({ email: req.body.loggedUserEmail })
         .then(user => {
@@ -256,6 +257,71 @@ router.post("/signup", (req, res, next) => {
             })
         })
     });
+
+    // AKTUALIZOWANIE BAZOWEGO CV
+      router.put("/cv", (req, res, next) => {       
+        // console.log(req.body);
+        User.updateOne(
+          { email: req.body.loggedUserEmail },
+          {
+            $set: {
+              // DANE OSOBOWE I KONTAKTOWE
+              name: req.body.cvData.name,
+              surname: req.body.cvData.surname,
+              contactEmail: req.body.cvData.contactEmail,
+              phone: req.body.cvData.phone,
+              "baseCVData.photoClass": req.body.cvData.photoClass,
+              // PREFEROWANE WARUNKI ZATRUDNIENIA
+              "baseCVData.position": req.body.cvData.position,
+              "baseCVData.disposition": req.body.cvData.disposition,
+              "baseCVData.location": req.body.cvData.location,
+              "baseCVData.availability": req.body.cvData.availability,
+              "baseCVData.salary": req.body.cvData.salary,
+              "baseCVData.employment": req.body.cvData.employment,
+              // DOŚWIADCZENIE ZAWODOWE
+              "baseCVData.experience": req.body.cvData.experience,
+              // EDUKACJA
+              "baseCVData.education": req.body.cvData.education,
+              // KURSY
+              "baseCVData.courses": req.body.cvData.courses,
+              // JĘZYKI
+              "baseCVData.languages": req.body.cvData.languages,
+              // UMIEJĘTNOŚCI
+              "baseCVData.skills.drivingLicence.checked": req.body.cvData.drivingLicenceChecked,
+              "baseCVData.skills.drivingLicence.description": req.body.cvData.drivingLicenceDescription,
+              "baseCVData.skills.knownPrograms.checked": req.body.cvData.knownProgramsChecked,
+              "baseCVData.skills.knownPrograms.description": req.body.cvData.knownProgramsDescription,
+              "baseCVData.skills.programmingSkills.checked": req.body.cvData.programmingSkillsChecked,
+              "baseCVData.skills.programmingSkills.description": req.body.cvData.programmingSkillsDescription,
+              "baseCVData.skills.devicesUsage.checked": req.body.cvData.devicesUsageChecked,
+              "baseCVData.skills.devicesUsage.description": req.body.cvData.devicesUsageDescription,
+              "baseCVData.skills.permissions.checked": req.body.cvData.permissionsChecked,
+              "baseCVData.skills.permissions.description": req.body.cvData.permissionsDescription,
+              "baseCVData.skills.knownRegulations.checked": req.body.cvData.knownRegulationsChecked,
+              "baseCVData.skills.knownRegulations.description": req.body.cvData.knownRegulationsDescription,
+              "baseCVData.skills.otherSkills.checked": req.body.cvData.otherSkillsChecked,
+              "baseCVData.skills.otherSkills.description": req.body.cvData.otherSkillsDescription,
+              // MOCNE STRONY
+              "baseCVData.advantages": req.body.cvData.advantages,
+              "baseCVData.selectedAdvantagesIndex": req.body.cvData.selectedAdvantagesIndex,
+              "baseCVData.hobby": req.body.cvData.hobby
+            },
+            $currentDate: { lastModified: true }
+          }          
+          )                         
+          .then(updatedUser => {
+            res.status(200).json({
+              message: "Aktualizacja danych użytkownika zakończona!",
+              result: updatedUser                
+            });
+              console.log(updatedUser);
+              console.log("Updated!")
+            })
+            .catch(err => {
+              res.status(500).send();
+              console.log(err);
+            })
+        });      
 
     // ZAPISYWANIE ZDJĘCIA
     router.post("/cv/photo", multer({storage: storage}).single("image"), (req, res, next) => {
