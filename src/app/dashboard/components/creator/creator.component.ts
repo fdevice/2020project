@@ -7,7 +7,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { HintMessageService } from '../../../../assets/services/hint-message.service';
 import { fadeInTop } from '../../../../assets/animations/animations';
 import { ListsViewerService } from '../../../../assets/services/list-viewer.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../../../../assets/components/warning-dialog/warning-dialog.component';
 import { DialogService } from '../../../../assets/services/dialog.service';
@@ -141,6 +141,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   isLoading: boolean = false;  
   hasBaseCV: boolean;
   loggedUser: any;
+  retrieveBaseCVSubscription$: Subscription;
+  populateFormSubscription$: Subscription;
 
   formValid: boolean = false;
   employmentSectionValid: boolean = false;
@@ -310,7 +312,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     this.loggedUser = this.userDataService.getLoggedAs(); 
     this.userDataService.retrieveCV(this.loggedUser);
-    this.userDataService.hasBaseCVUpdate.subscribe((result) => {
+    this.retrieveBaseCVSubscription$ = this.userDataService.hasBaseCVUpdate.subscribe((result) => {
       this.hasBaseCV = result;  
       if (this.hasBaseCV) {
         this.populatebaseCVForm();
@@ -335,8 +337,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.errorHandler = errorHandler;
       this.cdRef.detectChanges();
     }
-  }
-  
+  };   
 
   public addExperienceFormGroup(): FormGroup {
     return this.fb.group({            
@@ -1874,7 +1875,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     let educationFromDatabase = [];
     let coursesFromDatabase = [];
 
-    this.baseCV.receivedFormData.subscribe((CVData) => {
+    this.populateFormSubscription$ = this.baseCV.receivedFormData.subscribe((CVData) => {
       console.log(CVData);
       this.imageClass = CVData.data.baseCVData.photoClass; 
       employmentFromDatabase = CVData.data.baseCVData.employment;
@@ -2699,5 +2700,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   //   }
 
   // } 
+
+  ngOnDestroy() {
+    this.retrieveBaseCVSubscription$.unsubscribe();
+    this.populateFormSubscription$.unsubscribe();
+  };
 
 }
