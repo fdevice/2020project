@@ -49,6 +49,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   DatePickerConfig: Partial<BsDatepickerConfig>;  //Partial nie ma obowiązku dziedziczyć wszystkich atrybutów obiektu
   DatePickerWithoutDays: Partial<BsDatepickerConfig>;
+  DatePickerYearsOnly: Partial<BsDatepickerConfig>;
 
   uploadedImage: any;  
   imageClass: string = 'portrait';
@@ -76,6 +77,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   hoverMessages: any;
   currentHintPosition: number;
   minMode: BsDatepickerViewMode = 'month';
+  minModeYear: BsDatepickerViewMode = 'year';
   workPeriodEndDateIssue: any[];
   workPeriodEndDateIssueMessage: any[];
   workPeriodCurrentDateIssue: any[];
@@ -200,6 +202,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     ) {
       this.DatePickerConfig = Object.assign({}, {containerClass: 'theme-dark-blue', dateInputFormat: 'DD.MM.YYYY' }); //tworzymy zmienną z wybraną konfiguracją obiektu DatePicker
       this.DatePickerWithoutDays = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minMode, dateInputFormat: 'MMMM YYYY'});
+      this.DatePickerYearsOnly = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minModeYear, dateInputFormat: 'YYYY'});
     }
 
   ngOnInit() {          
@@ -2287,11 +2290,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           
             if (coursesFromDatabase[0][0].courseFinish != "obecnie") {
   
-              console.log("*** PO WEJŚCIU W PĘTLĘ ***");
-              console.log(coursesFromDatabase[0][0].courseStart);
-              console.log(coursesFromDatabase[0][0].courseFinish);
-              console.log(this.courseStartDateFormatted);
-              console.log("*** ********** ***");
+              // console.log("*** PO WEJŚCIU W PĘTLĘ ***");
+              // console.log(coursesFromDatabase[0][0].courseStart);
+              // console.log(coursesFromDatabase[0][0].courseFinish);
+              // console.log(this.courseStartDateFormatted);
+              // console.log("*** ********** ***");
     
               ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
               this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
@@ -2350,356 +2353,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     (error) => {
       console.log(error);
     });
-  };
-
-  //********************  GENEROWANIE CV DO PDF  ********************************/
-
-  // public async generatePDF(uploadedPhoto, icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10, calendar: HTMLElement): Promise<void> {
-
-  //   this.checkFormValidity();
-
-  //   if (this.formValid) {
-
-  //     this.isLoading = true;
-  //     console.log(this.screenInnerWidth);
-  //     console.log(uploadedPhoto.clientWidth);
-  //     console.log(uploadedPhoto.clientHeight);
-
-  //     let userPhotoWidth = uploadedPhoto.clientWidth;
-  //     let userPhotoHeight = uploadedPhoto.clientHeight;
-
-  //     if (this.screenInnerWidth < 1980 && this.screenInnerWidth >= 1800) {
-  //       userPhotoWidth = userPhotoWidth * 0.95; 
-  //     } else if (this.screenInnerWidth < 1800 && this.screenInnerWidth >= 1500) {
-  //       userPhotoWidth = userPhotoWidth * 1.25; 
-  //     } else if (this.screenInnerWidth < 1500 && this.screenInnerWidth >= 1450) {
-  //       userPhotoWidth = userPhotoWidth * 1.4;
-  //     } else if (this.screenInnerWidth < 1450 && this.screenInnerWidth >= 1400) {
-  //       userPhotoWidth = userPhotoWidth * 1.5;
-  //     } else if (this.screenInnerWidth < 1400 && this.screenInnerWidth >= 1280) {
-  //       userPhotoWidth = userPhotoWidth * 1.55;
-  //     } else if (this.screenInnerWidth < 1280 && this.screenInnerWidth >= 1160) {
-  //       userPhotoWidth = userPhotoWidth * 1.3; 
-  //     } else if (this.screenInnerWidth < 1160 && this.screenInnerWidth >= 1100) {
-  //       userPhotoWidth = userPhotoWidth * 1.35; 
-  //     } else if (this.screenInnerWidth < 1100 && this.screenInnerWidth >= 992) {
-  //       userPhotoWidth = userPhotoWidth * 1.55; 
-  //     } else if (this.screenInnerWidth < 992 && this.screenInnerWidth >= 900) { 
-  //       userPhotoWidth = userPhotoWidth * 0.7; 
-  //     } else if (this.screenInnerWidth < 900 && this.screenInnerWidth >= 850) { 
-  //       userPhotoWidth = userPhotoWidth * 0.75; 
-  //     } else if (this.screenInnerWidth < 850 && this.screenInnerWidth >= 769) { 
-  //       userPhotoWidth = userPhotoWidth * 0.8; 
-  //     } else if (this.screenInnerWidth < 769 && this.screenInnerWidth >= 720) { 
-  //       userPhotoWidth = userPhotoWidth * 0.4; 
-  //     } else if (this.screenInnerWidth < 720 && this.screenInnerWidth >= 630) {
-  //       userPhotoWidth = userPhotoWidth * 0.45; 
-  //     } else if (this.screenInnerWidth < 630 && this.screenInnerWidth >= 580) { 
-  //       userPhotoWidth = userPhotoWidth * 0.5; 
-  //     } else if (this.screenInnerWidth < 580 && this.screenInnerWidth >= 558) {
-  //       userPhotoWidth = userPhotoWidth * 0.6; 
-  //     } else if (this.screenInnerWidth < 558 && this.screenInnerWidth >= 500) {
-  //       userPhotoWidth = userPhotoWidth * 0.9; 
-  //     } else if (this.screenInnerWidth < 500 && this.screenInnerWidth >= 480) {
-  //       userPhotoWidth = userPhotoWidth * 1.0; 
-  //     } else if (this.screenInnerWidth < 480 && this.screenInnerWidth >= 420) {
-  //       userPhotoWidth = userPhotoWidth * 1.2; 
-  //     } else if (this.screenInnerWidth < 420 && this.screenInnerWidth >= 400) {
-  //       userPhotoWidth = userPhotoWidth * 0.8; 
-  //     } else if (this.screenInnerWidth < 400 && this.screenInnerWidth >= 360) {
-  //       userPhotoWidth = userPhotoWidth * 0.9; 
-  //     } else if (this.screenInnerWidth < 360 && this.screenInnerWidth >= 300) {
-  //       userPhotoWidth = userPhotoWidth * 1.0; 
-  //     } 
-      
-  //     const userPhoto = await domtoimage.toPng(uploadedPhoto, {width: userPhotoWidth, height: userPhotoHeight, cachebust: true});
-  //     const headerIcon1 = await domtoimage.toPng(icon1, {width: icon1.clientWidth, height: icon1.clientHeight});
-  //     const headerIcon2 = await domtoimage.toPng(icon2, {width: icon2.clientWidth, height: icon2.clientHeight});
-  //     const headerIcon3 = await domtoimage.toPng(icon3, {width: icon3.clientWidth, height: icon3.clientHeight});
-  //     const headerIcon4 = await domtoimage.toPng(icon4, {width: icon4.clientWidth, height: icon4.clientHeight});
-  //     const headerIcon5 = await domtoimage.toPng(icon5, {width: icon5.clientWidth, height: icon5.clientHeight});
-  //     const headerIcon6 = await domtoimage.toPng(icon6, {width: icon6.clientWidth, height: icon6.clientHeight});
-  //     const headerIcon7 = await domtoimage.toPng(icon7, {width: icon7.clientWidth, height: icon7.clientHeight});
-  //     const headerIcon8 = await domtoimage.toPng(icon8, {width: icon8.clientWidth, height: icon8.clientHeight});
-  //     const headerIcon9 = await domtoimage.toPng(icon9, {width: icon9.clientWidth, height: icon9.clientHeight});
-  //     const headerIcon10 = await domtoimage.toPng(icon10, {width: icon10.clientWidth, height: icon10.clientHeight});
-  //     const calendarIcon = await domtoimage.toPng(calendar, {width: calendar.clientWidth, height: calendar.clientHeight});
-
-  //     const dateOptions = {
-  //       day: undefined,
-  //       month: 'long',
-  //       year: 'numeric'
-  //     };
-
-  //     // renderowane ikony i zdjęcie
-  //     this.PDF.userPhoto = userPhoto;
-  //     this.PDF.calendarIcon = calendarIcon;
-  //     this.PDF.conditionsHeaderIcon = headerIcon1;
-  //     this.PDF.personalDataHeaderIcon = headerIcon2;
-  //     this.PDF.experienceHeaderIcon = headerIcon3;
-  //     this.PDF.educationHeaderIcon = headerIcon4;
-  //     this.PDF.coursesHeaderIcon = headerIcon5;
-  //     this.PDF.languagesHeaderIcon = headerIcon6;
-  //     this.PDF.skillsHeaderIcon = headerIcon7;
-  //     this.PDF.advantagesHeaderIcon = headerIcon8;
-  //     this.PDF.hobbiesHeaderIcon = headerIcon9;
-  //     this.PDF.requirementsHeaderIcon = headerIcon10;
-
-  //     // WARUNKI ZATRUDNIENIA
-  //     this.PDF.position = this.baseCVForm.get('position').value;
-  //     this.PDF.location = this.baseCVForm.get('location').value;
-
-  //     if (!this.selectAvailability) {
-  //       this.PDF.availability = this.baseCVForm.get('availability').value;
-  //     } else {
-  //       this.PDF.availability = (new Date(this.baseCVForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
-  //     };
-
-  //     this.PDF.disposition = this.baseCVForm.get('disposition').value;
-
-  //     if (this.baseCVForm.get('employment').value != '') {
-  //       console.dir(this.baseCVForm.get('employment').value);              
-  //       this.PDF.employment = (this.baseCVForm.get('employment').value).map(emp => {
-  //         return emp.value;
-  //       }).join(', ');        
-  //     } else {
-  //       this.PDF.employment = '';
-  //     };
-
-  //     this.PDF.salary = this.baseCVForm.get('salary').value;
-
-  //     // DANE OSOBOWE
-  //     this.PDF.name = this.baseCVForm.get('name').value.toUpperCase();
-  //     this.PDF.surname = this.baseCVForm.get('surname').value.toUpperCase();
-  //     this.PDF.email = this.baseCVForm.get('email').value;
-  //     this.PDF.phone = this.baseCVForm.get('phone').value;
-
-  //     // // DOŚWIADCZENIE ZAWODOWE
-  //     // this.PDF.totalExperienceLength = (<FormArray>this.baseCVForm.get('experience')).length;
-
-  //     // for (let i = 0; i < (<FormArray>this.baseCVForm.get('experience')).length; i++) {
-
-  //     //   if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {
-
-  //     //     if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('experienceTillNow').value ) {
-
-  //     //       this.PDF.startWork[i] = new Date((<FormArray>this.baseCVForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //     //       this.PDF.finishWork[i] = 'obecnie';
-
-  //     //     } else {
-
-  //     //       this.PDF.startWork[i] = new Date((<FormArray>this.baseCVForm.get('experience')).controls[i].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //     //       this.PDF.finishWork[i] = new Date((<FormArray>this.baseCVForm.get('experience')).controls[i].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-
-  //     //       };
-
-  //     //       this.PDF.employer[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value;
-  //     //       this.PDF.trade[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value;
-  //     //       this.PDF.occupation[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupation').value;
-
-  //     //       let responsibilitiesArray = ((<FormArray>this.baseCVForm.get('experience')).controls[i].get('responsibilities') as FormArray);
-  //     //       let chosenResponsibilities = [];
-
-  //     //       for (let j = 0; j < responsibilitiesArray.length; j++) {
-  //     //         chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
-  //     //         this.PDF.responsibilities[i] = chosenResponsibilities;
-  //     //       };
-
-  //     //   };
-  //     // };
-
-
-  //     // DOŚWIADCZENIE ZAWODOWE
-  //   this.PDF.totalExperienceLength = (<FormArray>this.baseCVForm.get('experience')).length;
-
-  //   let startWork = new Array();
-  //   let finishWork = new Array()
-  //   let occupation = new Array();
-  //   let responsibilities = new Array();
-
-  //   for (let i = 0; i < (<FormArray>this.baseCVForm.get('experience')).length; i++) {
-
-  //     let occupationArray: any[] = new Array();
-
-  //     if ( (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value !== '' ) {
-
-  //       this.PDF.employer[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('employerName').value;
-  //       this.PDF.trade[i] = (<FormArray>this.baseCVForm.get('experience')).controls[i].get('trade').value;
-
-  //       for (let o = 0; o < (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
-
-  //         if ( (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
-
-  //           if (this.workStartDateManuallyChanged[i][o] == true) {
-
-  //             startWork[o] = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-                            
-  //           } else {
-  //             startWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
-  //           };          
-            
-  //           finishWork[o] = 'obecnie';
-  
-  //         } else {
-            
-  //           if (this.workStartDateManuallyChanged[i][o] == true) {
-  //             startWork[o] = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
-  //           } else {
-  //             startWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
-  //           };
-            
-  //           if (this.workFinishDateManuallyChanged[i][o] == true) {
-  //             finishWork[o]  = new Date((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-  //           } else {
-  //             finishWork[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
-  //           };          
-  //         };
-
-  //         occupation[o] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('occupation').value;
-
-  //         let responsibilitiesArray = ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
-  //         let chosenResponsibilities = [];
-
-  //         for (let j = 0; j < responsibilitiesArray.length; j++) {
-  //           chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
-  //           responsibilities[o] = chosenResponsibilities;
-  //         };      
-          
-  //         let occupationData: any[] = [
-  //           {
-  //             workStart: startWork[o],
-  //             workFinish: finishWork[o],
-  //             occupation: occupation[o],
-  //             responsibilities: responsibilities[o]
-  //           }
-  //         ]; 
-
-  //         occupationArray.push(occupationData);          
-
-  //       };  // Koniec pętli occupation          
-
-  //         this.PDF.occupationArray[i] = occupationArray;                                     
-
-  //     };
-
-  //     this.PDF.totalOccupationArrayLength[i] = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).length;
-
-  //   };
-
-
-
-  //     // EDUKACJA
-  //     this.PDF.totalEducationLength = (<FormArray>this.baseCVForm.get('education')).length;
-
-  //     for (let e = 0; e < (<FormArray>this.baseCVForm.get('education')).length; e++) {
-
-  //       if ((<FormArray>this.baseCVForm.get('education')).controls[e].get('schoolName').value !== '') {
-
-  //         if ( (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationTillNow').value ) {
-  //           this.PDF.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //           this.PDF.finishEducation[e] = 'obecnie';
-  //         } else {
-  //           this.PDF.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //           this.PDF.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-  //         };
-
-  //         this.PDF.schoolName[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('schoolName').value;
-  //         this.PDF.schoolProfile[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('specialization').value || (<FormArray>this.baseCVForm.get('education')).controls[e].get('classProfile').value;
-
-  //       };
-  //     };
-
-  //     // KURSY
-  //     this.PDF.totalCoursesLength = (<FormArray>this.baseCVForm.get('courses')).length;
-
-  //     for (let c = 0; c < (<FormArray>this.baseCVForm.get('courses')).length; c++) {
-
-  //       if ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value !== '') {
-
-  //         if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
-  //           this.PDF.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //           this.PDF.finishCourse[c] = 'obecnie';
-  //         } else {
-  //           this.PDF.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-  //           this.PDF.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-  //         };
-
-  //         this.PDF.courseName[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value;
-  //         this.PDF.courseSubject[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseSubject').value;
-
-  //       };
-  //     };
-
-  //     // JĘZYKI OBCE
-  //     this.PDF.totalLanguagesLength = (<FormArray>this.baseCVForm.get('languages')).length;
-
-  //     for (let l = 0; l < (<FormArray>this.baseCVForm.get('languages')).length; l++) {
-
-  //       if ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('languageName').value !== '') {
-
-  //         if ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('otherLanguage').value !== '') {
-  //           this.PDF.languageName[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('otherLanguage').value);
-  //         } else {
-  //           this.PDF.languageName[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('languageName').value);
-  //         }
-
-  //         this.PDF.languageLevel[l] = ('(' + (<FormArray>this.baseCVForm.get('languages')).controls[l].get('level').value + ')');
-  //         this.PDF.languageDescription[l] = this.selectedLanguageDegree[l];
-
-  //       };
-  //     };
-
-
-  //     // UMIEJĘTNOŚCI
-  //     if (this.baseCVForm.get('drivingLicenceDescription').value) {
-  //       this.PDF.drivingLicence = this.baseCVForm.get('drivingLicenceDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('knownProgramsDescription').value) {
-  //       this.PDF.computerPrograms = this.baseCVForm.get('knownProgramsDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('programmingSkillsDescription').value) {
-  //       this.PDF.programmingLanguages = this.baseCVForm.get('programmingSkillsDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('devicesUsageDescription').value) {
-  //       this.PDF.devices = this.baseCVForm.get('devicesUsageDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('permissionsDescription').value) {
-  //       this.PDF.permissions = this.baseCVForm.get('permissionsDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('knownRegulationsDescription').value) {
-  //       this.PDF.regulations = this.baseCVForm.get('knownRegulationsDescription').value;
-  //     };
-  //     if (this.baseCVForm.get('otherSkillsDescription').value) {
-  //       this.PDF.otherSkills = this.baseCVForm.get('otherSkillsDescription').value;
-  //     };
-
-  //     // MOCNE STRONY
-  //     this.PDF.advantages = this.selectedAdvantagesValues;
-
-  //     // ZAINTERESOWANIA
-  //     this.PDF.hobbies = this.baseCVForm.get('hobbies').value;
-
-  //     // WYMAGANIA REKRUTACYJNE
-  //     for (let r = 0; r < this.requirementsListLength; r++ ) {
-  //       if ((<FormArray>this.baseCVForm.get('requirements')).controls[r].get('requirement').value === '') {
-  //         (<FormArray>this.baseCVForm.get('requirements')).controls[r].get('answer').patchValue('');
-  //       };
-  //       if ((<FormArray>this.baseCVForm.get('requirements')).controls[r].get('requirement').value !='') {
-  //         this.PDF.requirements[r] = (<FormArray>this.baseCVForm.get('requirements')).controls[r].get('requirement').value;
-  //         this.PDF.answers[r] = (<FormArray>this.baseCVForm.get('requirements')).controls[r].get('answer').value;
-  //       };
-  //     };
-
-  //     // KLAUZULA
-  //     this.PDF.clause = this.baseCVForm.get('clause').value;
-
-  //     setTimeout(() => this.PDF.generatePDF(), 300);
-  //     this.isLoading = false;
-  //   } else {
-  //     this.openErrorsDialog();
-  //   }
-
-  // } 
+  };  
 
   ngOnDestroy() {
     this.retrieveBaseCVSubscription$.unsubscribe();

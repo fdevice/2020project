@@ -614,6 +614,7 @@ export class CreatePdfService {
     // window.open(this.document.output('bloburl'), '_blank');
 
     this.document.save(this.name + '_' + this.surname + '_CV' + '.pdf');
+    this.document = new jsPDF('p', 'mm', 'a4');
 
   }
 

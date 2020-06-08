@@ -815,7 +815,7 @@
                                        [id]="'coursePeriodStart'+c"
                                        placeholder="Od..."
                                        formControlName="coursePeriodStart"
-                                       [bsConfig]="DatePickerWithoutDays"
+                                       [bsConfig]="DatePickerYearsOnly"
                                        bsDatepicker
                                        autocomplete="off"
                                        (ngModelChange)="checkCoursesDate(c); setControlManuallyChanged('courseStart', c, $event)"
@@ -830,7 +830,7 @@
                                     [id]="'coursePeriodEnd'+c"
                                     placeholder="Do..."
                                     formControlName="coursePeriodEnd"
-                                    [bsConfig]="DatePickerWithoutDays"
+                                    [bsConfig]="DatePickerYearsOnly"
                                     bsDatepicker
                                     autocomplete="off"
                                     (ngModelChange)="checkCoursesDate(c); setControlManuallyChanged('courseFinish', c, $event)"

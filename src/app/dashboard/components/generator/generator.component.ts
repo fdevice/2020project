@@ -50,6 +50,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
   DatePickerConfig: Partial<BsDatepickerConfig>;  //Partial nie ma obowiązku dziedziczyć wszystkich atrybutów obiektu
   DatePickerWithoutDays: Partial<BsDatepickerConfig>;
+  DatePickerYearsOnly: Partial<BsDatepickerConfig>;
 
   uploadedImage: any; 
   imageClass: string = 'portrait'; 
@@ -77,6 +78,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   hoverMessages: any;
   currentHintPosition: number;
   minMode: BsDatepickerViewMode = 'month';
+  minModeYear: BsDatepickerViewMode = 'year';
   workPeriodEndDateIssue: any[];
   workPeriodEndDateIssueMessage: any[];
   workPeriodCurrentDateIssue: any[];
@@ -202,6 +204,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     ) {
       this.DatePickerConfig = Object.assign({}, {containerClass: 'theme-dark-blue', dateInputFormat: 'DD.MM.YYYY' }); //tworzymy zmienną z wybraną konfiguracją obiektu DatePicker
       this.DatePickerWithoutDays = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minMode, dateInputFormat: 'MMMM YYYY'});
+      this.DatePickerYearsOnly = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minModeYear, dateInputFormat: 'YYYY'});
     }
 
   ngOnInit() {        
