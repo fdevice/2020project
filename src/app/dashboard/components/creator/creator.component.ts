@@ -60,6 +60,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   languageLevels: any[];
   advantagesList: string[];
   studiesMode: string[];
+  schoolType: any[];
   selectAvailability: boolean = false;
   schoolTypeSelected: number[] = [];
   languageNameSelectedIndex: any[] = [];
@@ -86,8 +87,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   educationEndDateIssueMessage: string[];
   educationCurrentDateIssue: boolean[];
   educationCurrentDateIssueMessage: string[];
-  coursesEndDateIssue: boolean[];
-  coursesEndDateIssueMessage: string[];
+  // coursesEndDateIssue: boolean[];
+  // coursesEndDateIssueMessage: string[];
   coursesCurrentDateIssue: boolean[];
   coursesCurrentDateIssueMessage: string[];
 
@@ -105,11 +106,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   educationStartDateManuallyChanged: boolean[] = new Array(30);
   educationFinishDateManuallyChanged: boolean[] = new Array(30);
 
-  courseTillNowSelected: boolean[] = new Array(30);
+  // courseTillNowSelected: boolean[] = new Array(30);
   courseStartDateFormatted: any[] = new Array(30);
-  courseFinishDateFormatted: any[] = new Array(30);
+  // courseFinishDateFormatted: any[] = new Array(30);
   courseStartDateManuallyChanged: boolean[] = new Array(30);
-  courseFinishDateManuallyChanged: boolean[] = new Array(30);
+  // courseFinishDateManuallyChanged: boolean[] = new Array(30);
 
   advantagesLeft: number;
   polishAdvantageSuffix: string;
@@ -250,8 +251,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.educationEndDateIssueMessage = [];
     this.educationCurrentDateIssue = [];
     this.educationCurrentDateIssueMessage = [];
-    this.coursesEndDateIssue = [];
-    this.coursesEndDateIssueMessage = [];
+    // this.coursesEndDateIssue = [];
+    // this.coursesEndDateIssueMessage = [];
     this.coursesCurrentDateIssue = [];
     this.coursesCurrentDateIssueMessage = [];
 
@@ -262,6 +263,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     this.employment = this.sharedLists.getEmploymentList();
     this.availability = this.sharedLists.getAvailabilityList();
+    this.schoolType = this.sharedLists.getSchoolTypes();    
     this.studiesMode = this.sharedLists.getStudiesModes();
     this.languageLevels = this.sharedLists.getLanguageLevels();
     this.selectedLanguageDegree = [];
@@ -389,10 +391,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     return this.fb.group({
       courseName: ['', Validators.required],
       courseSubject: [''],
-      coursePeriodStart: ['', Validators.required],
-      coursePeriodEnd: [''],
-      coursePeriodNow: [''],
-      courseTillNow: ['']
+      coursePeriodStart: ['', Validators.required]
+      // coursePeriodEnd: [''],
+      // coursePeriodNow: [''],
+      // courseTillNow: ['']
     })
   };
 
@@ -606,7 +608,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
@@ -655,7 +657,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
@@ -696,28 +698,27 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
     let startCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
-    let nowCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodNow');
+    // let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let nowCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodNow');
 
-    console.log("Start course on close edit button click: " + startCourse.value + " / " + typeof startCourse.value);
-    console.log("Finish course on close edit button click: " + finishCourse.value + " / " + typeof finishCourse.value);
+    console.log("Start course on close edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
 
     if (this.courseStartDateFormatted[c] == undefined) {
       this.courseStartDateFormatted[c] = new Date(startCourse.value).toLocaleDateString('pl', dateOptions);
     };
 
-    if (this.courseFinishDateFormatted[c] == undefined) {
-      this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
-    };
+    // if (this.courseFinishDateFormatted[c] == undefined) {
+    //   this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
+    // };
 
-    if ((!finishCourse.value && !nowCourse.value)) {
-      (<FormArray>this.baseCVForm.get('courses')).controls[c].setErrors({'incorrect': true});
-    };
+    // if ((!finishCourse.value && !nowCourse.value)) {
+    //   (<FormArray>this.baseCVForm.get('courses')).controls[c].setErrors({'incorrect': true});
+    // };
 
     if ((<FormArray>this.baseCVForm.get('courses')).controls[c].invalid) {
       this.coursesCompletionError = true;
@@ -735,22 +736,21 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.hideNextCourseButton = true;
 
     let startCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
 
-    console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);
-    console.log("Finish course on edit button click: " + finishCourse.value + " / " + typeof finishCourse.value);
+    console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
   };
 
   public finishCoursesEdition(c: number) {
 
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
     let startCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
 
     if (startCourse.value instanceof Object) {
       this.courseStartDateFormatted[c] = new Date(startCourse.value).toLocaleDateString('pl', dateOptions);
@@ -758,11 +758,11 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.courseStartDateFormatted[c] = startCourse.value;
     };
 
-    if (finishCourse.value instanceof Object) {
-      this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
-    } else {
-      this.courseFinishDateFormatted[c] = finishCourse.value;
-    };
+    // if (finishCourse.value instanceof Object) {
+    //   this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
+    // } else {
+    //   this.courseFinishDateFormatted[c] = finishCourse.value;
+    // };
 
     this.coursesCompleted[c] = true;
     this.coursesEditMode[c] = false;
@@ -797,6 +797,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   }
 
   public getSelectedEducationIndex(event: any, e: number) {
+    console.log("Wybrany rodzaj szkoły: ");
     console.log(event.value);
     this.schoolTypeSelected[e] = event.value;    
   }
@@ -1053,13 +1054,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     }
   };
 
-  public setCourseTillNow(i: number) {
-    if ((<FormArray>this.baseCVForm.get('courses')).controls[i].get('courseTillNow').value) {
-      (<FormArray>this.baseCVForm.get('courses')).controls[i].get('coursePeriodNow').setValue('obecnie');
-    } else {
-      (<FormArray>this.baseCVForm.get('courses')).controls[i].get('coursePeriodNow').setValue('');
-    }
-  };
+  // public setCourseTillNow(i: number) {
+  //   if ((<FormArray>this.baseCVForm.get('courses')).controls[i].get('courseTillNow').value) {
+  //     (<FormArray>this.baseCVForm.get('courses')).controls[i].get('coursePeriodNow').setValue('obecnie');
+  //   } else {
+  //     (<FormArray>this.baseCVForm.get('courses')).controls[i].get('coursePeriodNow').setValue('');
+  //   }
+  // };
 
   public setExperienceControlManuallyChanged (control: string, index: number, o: number, e: Event) {
     if (e != null && e instanceof Object) {  // z serwera zwracany jest typ String, a po wybraniu z kalendarza typ Object
@@ -1094,10 +1095,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.courseStartDateManuallyChanged[index] = true;
         console.log("courseStartDateManuallyChanged[" + index + "]: " + this.courseStartDateManuallyChanged[index]);
       };
-      if (control === 'courseFinish') {
-        this.courseFinishDateManuallyChanged[index] = true;
-        console.log("courseFinishDateManuallyChanged[" + index + "]: " + this.courseFinishDateManuallyChanged[index]);
-      };
+      // if (control === 'courseFinish') {
+      //   this.courseFinishDateManuallyChanged[index] = true;
+      //   console.log("courseFinishDateManuallyChanged[" + index + "]: " + this.courseFinishDateManuallyChanged[index]);
+      // };
     };     
   };
 
@@ -1162,16 +1163,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   public checkCoursesDate(c: number) {
     let today = new Date();
     let startDate = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
-    let endDate = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
-    let tillNow = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodNow').value;
+    // let endDate = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+    // let tillNow = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodNow').value;
 
-    if ((startDate > endDate) && endDate != '' && tillNow === '') {
-      this.coursesEndDateIssue[c] = true;
-      this.coursesEndDateIssueMessage[c] = 'Data rozpoczęcia kursu nie może być nowsza od daty jej zakończenia!';
-    } else {
-      this.coursesEndDateIssue[c] = false;
-      this.coursesEndDateIssueMessage[c] = '';
-    };
+    // if ((startDate > endDate) && endDate != '' && tillNow === '') {
+    //   this.coursesEndDateIssue[c] = true;
+    //   this.coursesEndDateIssueMessage[c] = 'Data rozpoczęcia kursu nie może być nowsza od daty jej zakończenia!';
+    // } else {
+    //   this.coursesEndDateIssue[c] = false;
+    //   this.coursesEndDateIssueMessage[c] = '';
+    // };
 
     if (startDate > today) {
       this.coursesCurrentDateIssue[c] = true;
@@ -1293,7 +1294,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       day: undefined,
       month: 'long',
       year: 'numeric'
-    };   
+    };  
+    
+    const dateOptionsYearsOnly = {
+      day: undefined,
+      month: undefined,
+      year: 'numeric'
+    }; 
     
     // let occupationArray: any[] = new Array();
 
@@ -1411,7 +1418,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         if ( (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationTillNow').value ) {
 
           if (this.educationStartDateManuallyChanged[e] == true) {
-            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
           };                    
@@ -1424,13 +1431,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         } else {
 
           if (this.educationStartDateManuallyChanged[e] == true) {
-            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
           };  
 
           if (this.educationFinishDateManuallyChanged[e] == true) {
-            this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.finishEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value;
           }; 
@@ -1462,35 +1469,35 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       if ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value !== '') {
 
-        if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
+        // if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
+
+        //   if (this.courseStartDateManuallyChanged[c] == true) {
+        //     this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+        //   } else {
+        //     this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
+        //   };                    
+
+        //   this.baseCV.finishCourse[c] = 'obecnie';
+
+        //   // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+        //   // this.baseCV.finishCourse[c] = 'obecnie';
+        // } else {
 
           if (this.courseStartDateManuallyChanged[c] == true) {
-            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
-          };                    
-
-          this.baseCV.finishCourse[c] = 'obecnie';
-
-          // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-          // this.baseCV.finishCourse[c] = 'obecnie';
-        } else {
-
-          if (this.courseStartDateManuallyChanged[c] == true) {
-            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
           };   
 
-          if (this.courseFinishDateManuallyChanged[c] == true) {
-            this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.finishCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
-          }; 
+          // if (this.courseFinishDateManuallyChanged[c] == true) {
+          //   this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          // } else {
+          //   this.baseCV.finishCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+          // }; 
 
           // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
           // this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-        };
+        // };
 
         this.baseCV.courseName[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value;
         this.baseCV.courseSubject[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseSubject').value;
@@ -1567,7 +1574,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       day: undefined,
       month: 'long',
       year: 'numeric'
-    };   
+    }; 
+    
+    const dateOptionsYearsOnly = {
+      day: undefined,
+      month: undefined,
+      year: 'numeric'
+    };
     
     // let occupationArray: any[] = new Array();
 
@@ -1685,7 +1698,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         if ( (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationTillNow').value ) {
 
           if (this.educationStartDateManuallyChanged[e] == true) {
-            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
           };                    
@@ -1698,13 +1711,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         } else {
 
           if (this.educationStartDateManuallyChanged[e] == true) {
-            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart').value;
           };  
 
           if (this.educationFinishDateManuallyChanged[e] == true) {
-            this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.finishEducation[e] = new Date((<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.finishEducation[e] = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd').value;
           }; 
@@ -1736,35 +1749,35 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
       if ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value !== '') {
 
-        if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
+        // if ( (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseTillNow').value ) {
+
+        //   if (this.courseStartDateManuallyChanged[c] == true) {
+        //     this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+        //   } else {
+        //     this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
+        //   };                    
+
+        //   this.baseCV.finishCourse[c] = 'obecnie';
+
+        //   // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+        //   // this.baseCV.finishCourse[c] = 'obecnie';
+        // } else {
 
           if (this.courseStartDateManuallyChanged[c] == true) {
-            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
-          };                    
-
-          this.baseCV.finishCourse[c] = 'obecnie';
-
-          // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-          // this.baseCV.finishCourse[c] = 'obecnie';
-        } else {
-
-          if (this.courseStartDateManuallyChanged[c] == true) {
-            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           } else {
             this.baseCV.startCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value;
           };   
 
-          if (this.courseFinishDateManuallyChanged[c] == true) {
-            this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-          } else {
-            this.baseCV.finishCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
-          }; 
+          // if (this.courseFinishDateManuallyChanged[c] == true) {
+          //   this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          // } else {
+          //   this.baseCV.finishCourse[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+          // }; 
 
           // this.baseCV.startCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
           // this.baseCV.finishCourse[c] = new Date((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-        };
+        // };
 
         this.baseCV.courseName[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').value;
         this.baseCV.courseSubject[c] = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseSubject').value;
@@ -1840,8 +1853,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   compareFnEdu: ((f1: any, f2: any) => boolean) | null = this.compareByEdu 
 
   compareFn1(f1: any, f2: any) {    
-    console.log("f1: " + f1 + "typ: " + typeof(f1));
-    console.log("f2: " + f2 + "typ: " + typeof(f2));       
+    console.log("f1: " + f1 + " typ: " + typeof(f1));
+    console.log("f2: " + f2 + " typ: " + typeof(f2));       
     return f1.toString() && f2 && f1.toString() === f2;
   }
 
@@ -2288,29 +2301,29 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           console.log(coursesFromDatabase);                
           if (coursesFromDatabase.length > 0) { 
           
-            if (coursesFromDatabase[0][0].courseFinish != "obecnie") {
+            // if (coursesFromDatabase[0][0].courseFinish != "obecnie") {
   
-              // console.log("*** PO WEJŚCIU W PĘTLĘ ***");
-              // console.log(coursesFromDatabase[0][0].courseStart);
-              // console.log(coursesFromDatabase[0][0].courseFinish);
-              // console.log(this.courseStartDateFormatted);
-              // console.log("*** ********** ***");
+            //   // console.log("*** PO WEJŚCIU W PĘTLĘ ***");
+            //   // console.log(coursesFromDatabase[0][0].courseStart);
+            //   // console.log(coursesFromDatabase[0][0].courseFinish);
+            //   // console.log(this.courseStartDateFormatted);
+            //   // console.log("*** ********** ***");
     
-              ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
-              this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
-              ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodEnd').patchValue(coursesFromDatabase[0][0].courseFinish));
-              this.courseFinishDateFormatted[0] = coursesFromDatabase[0][0].courseFinish;          
-            } else {
+            //   ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
+            //   this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
+            //   ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodEnd').patchValue(coursesFromDatabase[0][0].courseFinish));
+            //   this.courseFinishDateFormatted[0] = coursesFromDatabase[0][0].courseFinish;          
+            // } else {
               ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
               this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;   
-              this.courseTillNowSelected[0] = true; 
-              this.setCourseTillNow(0);          
-            };               
+              // this.courseTillNowSelected[0] = true; 
+              // this.setCourseTillNow(0);          
+            // };               
   
             ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseName').patchValue(coursesFromDatabase[0][0].courseName));
             ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseSubject').patchValue(coursesFromDatabase[0][0].courseSubject));               
             
-            this.coursesEndDateIssue[0] = false;
+            // this.coursesEndDateIssue[0] = false;
             this.coursesCurrentDateIssue[0] = false;
             (<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').markAsDirty();  
             
@@ -2323,22 +2336,22 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     
               (<FormArray>this.baseCVForm.get('courses')).push(this.addCoursesFormGroup());                      
     
-            if (coursesFromDatabase[c][0].courseFinish !== "obecnie") {
-              ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
-              this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;  
-              ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').patchValue(coursesFromDatabase[c][0].courseFinish));
-              this.courseFinishDateFormatted[c] = coursesFromDatabase[c][0].courseFinish;  
-            } else {
+            // if (coursesFromDatabase[c][0].courseFinish !== "obecnie") {
+            //   ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
+            //   this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;  
+            //   ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd').patchValue(coursesFromDatabase[c][0].courseFinish));
+            //   this.courseFinishDateFormatted[c] = coursesFromDatabase[c][0].courseFinish;  
+            // } else {
               ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
               this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;   
-              this.courseTillNowSelected[c] = true; 
-              this.setCourseTillNow(c);           
-            };              
+              // this.courseTillNowSelected[c] = true; 
+              // this.setCourseTillNow(c);           
+            // };              
   
             ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseName').patchValue(coursesFromDatabase[c][0].courseName));
             ((<FormArray>this.baseCVForm.get('courses')).controls[c].get('courseSubject').patchValue(coursesFromDatabase[c][0].courseSubject));    
             
-            this.coursesEndDateIssue[c] = false;
+            // this.coursesEndDateIssue[c] = false;
             this.coursesCurrentDateIssue[c] = false;
             (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart').markAsDirty(); 
     

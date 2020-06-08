@@ -47,7 +47,7 @@ export class CreatePdfService {
   schoolName: any = new Array();
   schoolProfile: any = new Array();
   startCourse: any = new Array();
-  finishCourse: any = new Array();
+  // finishCourse: any = new Array();
   courseName: any = new Array();
   courseSubject: any = new Array();
   languageName: any = new Array();
@@ -310,7 +310,11 @@ export class CreatePdfService {
         this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
         this.document.setFontSize(8);
         this.document.setTextColor(gray);
-        this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' - ' + this.finishEducation[e]);
+        if (this.finishEducation[e] === 'obecnie') {
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' r. - ' + this.finishEducation[e]);
+        } else {
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' r. - ' + this.finishEducation[e] + ' r.');
+        };        
         this.document.setFontSize(10);
         this.document.setTextColor(black);
 
@@ -349,7 +353,8 @@ export class CreatePdfService {
           this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
           this.document.setFontSize(8);
           this.document.setTextColor(gray);
-          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c] + ' - ' + this.finishCourse[c]);
+          // this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c] + ' - ' + this.finishCourse[c]);
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c] + ' r.');
           this.document.setFontSize(10);
           this.document.setTextColor(black);
 

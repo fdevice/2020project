@@ -4,7 +4,7 @@ export const HOVER_MESSAGE =
     dostepnosc: "Wskaż, od kiedy możesz rozpocząć pracę",
     pozadaneStanowisko: "Wskaż, na jakie stanowisko aplikujesz",
     formaZatrudnienia: "Poinformuj, jaka forma zatrudnienia Cię interesuje",
-    oczekiwaniaFinansowe: "To pole nie jest obowiązkowe. Podanie oczekiwanego wynagrodzenia może zaoszczędzić Twój czas. Najlepiej podać przedział kwot, które będą dla Ciebie satysfakcjonujące w zależności od stanowiska i obowiązków.",
+    oczekiwaniaFinansowe: "To pole nie jest obowiązkowe. Podanie oczekiwanego wynagrodzenia może zaoszczędzić Twój czas. Najlepiej podać przedział kwot netto (na rękę), które będą dla Ciebie satysfakcjonujące w zależności od stanowiska i obowiązków.",
     akceptowalnaLokalizacja: "Podaj nazwy miast lub dzielnic, na terenie których możesz podjąć pracę",
     imie: "Podaj swoje imię lub imiona",
     nazwisko: "Podaj swoje nazwisko",
@@ -38,10 +38,10 @@ export const HOVER_MESSAGE =
     edukacjaUsun: "Kliknij, żeby usunąć ostatnią pozycję",
     kursy: "Nie zasypuj pracodawcy zbyt dużą liczbą szkoleń, napisz o tych najświeższych, które przydadzą się w pracy, jakiej szukasz.",
     nazwaKursu: "Wpisz nazwę kursu",
-    czasTrwaniaKursu: "Wskaż początek i koniec trwania kursu",
-    czasTrwaniaKursuOd: "Wskaż datę rozpoczęcia kursu",
-    czasTrwaniaKursuDo: "Wskaż datę zakończenia kursu",
-    czasTrwaniaKursuObecnie: "Zaznacz, jeśli ten kurs wciąż trwa",
+    // czasTrwaniaKursu: "Wskaż początek i koniec trwania kursu",
+    czasTrwaniaKursuOd: "Wskaż rok rozpoczęcia kursu",
+    // czasTrwaniaKursuDo: "Wskaż datę zakończenia kursu",
+    // czasTrwaniaKursuObecnie: "Zaznacz, jeśli ten kurs wciąż trwa",
     specjalizacjaKursu: "Co było tematem/przedmiotem kursu?",
     kursyDodaj: "Kliknij, żeby dodać kolejny kurs",
     kursyUsun: "Kliknij, żeby usunąć kurs",
@@ -80,5 +80,6 @@ export const HOVER_MESSAGE =
     wymaganieUsun: "Kliknij, żeby usunąć ostatnią pozycję z listy wymagań",
     klauzula: 'Pamiętaj, że Twoje CV musi zawierać treść klauzuli pozwalającej na przetwarzanie Twoich danych osobowych na potrzeby rekrutacji. Jeżeli pracodawca wymaga klauzuli o konkretnej treści, możesz wkleić ją w miejsce obecnej',
     generujPDF: "Kliknij w przycisk, żeby wygenerować plik w formacie PDF zawierający Twoje CV",
-    zapiszBazoweCV: "Kliknij w przycisk, żeby zapisać swoje bazowe CV"
+    zapiszBazoweCV: "Kliknij w przycisk, żeby zapisać swoje bazowe CV",
+    aktualizujBazoweCV: "Kliknij w przycisk, żeby zaktualizować bazowe CV"
   }

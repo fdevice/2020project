@@ -96,7 +96,7 @@
                       class="cv-form-header"
                       style="font-size: 0.95em;"
                       (mouseover)="setHints(hoverMessages.dyspozycyjnosc)"
-                      (mouseout)="clearHints()">Dyspozycyjność:</label>
+                      (mouseout)="clearHints()">Wymiar pracy:</label>
                 <input type="text" id="disposition"
                       class="form-control"
                       maxlength="40"
@@ -130,7 +130,7 @@
                    class="cv-form-header"
                    style="padding-top: 5px;"
                   (mouseover)="setHints(hoverMessages.oczekiwaniaFinansowe)"
-                  (mouseout)="clearHints()">Oczekiwania finansowe (opcjonalnie):</label>
+                  (mouseout)="clearHints()">Oczekiwania finansowe - kwota netto (opcjonalnie):</label>
               <input type="text"
                     id="salary"
                     class="form-control"
@@ -517,9 +517,10 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.rodzajSzkoly)"
                                   (blur)="clearHints()"
-                                  [compareWith]="compareFn1">
-                            <mat-option [value]="1">Wyższa</mat-option>
-                            <mat-option [value]="2">Średnia</mat-option>
+                                  [compareWith]="compareByEdu">
+                            <!-- <mat-option [value]="1">Wyższa</mat-option>
+                            <mat-option [value]="2">Średnia</mat-option> -->
+                            <mat-option *ngFor="let type of schoolType" [value]="type.id">{{ type.value }}</mat-option>
                           </mat-select>
                         </div>
                     </div>
@@ -536,7 +537,7 @@
                                 [id]="'educationPeriodStart'+e"
                                 placeholder="Od..."
                                 formControlName="educationPeriodStart"
-                                [bsConfig]="DatePickerWithoutDays"
+                                [bsConfig]="DatePickerYearsOnly"
                                 bsDatepicker
                                 (mouseover)="setHints(hoverMessages.okresNaukiOd)"
                                 (mouseout)="clearHints()"
@@ -551,7 +552,7 @@
                                [id]="'educationPeriodEnd'+e"
                                placeholder="Do..."
                                formControlName="educationPeriodEnd"
-                               [bsConfig]="DatePickerWithoutDays"
+                               [bsConfig]="DatePickerYearsOnly"
                                bsDatepicker
                                (mouseover)="setHints(hoverMessages.okresNaukiDo)"
                                (mouseout)="clearHints()"
@@ -657,7 +658,7 @@
                                         [id]="'educationPeriodStart'+e"
                                         placeholder="Od..."
                                         formControlName="educationPeriodStart"
-                                        [bsConfig]="DatePickerWithoutDays"
+                                        [bsConfig]="DatePickerYearsOnly"
                                         bsDatepicker
                                         autocomplete="off"
                                         (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)"
@@ -672,7 +673,7 @@
                                   [id]="'educationPeriodEnd'+e"
                                   placeholder="Do..."
                                   formControlName="educationPeriodEnd"
-                                  [bsConfig]="DatePickerWithoutDays"
+                                  [bsConfig]="DatePickerYearsOnly"
                                   bsDatepicker
                                   autocomplete="off"
                                   (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)"
@@ -768,12 +769,12 @@
                   <div id="education-completed" *ngIf="(this.educationCompleted[e] == true)" class="mb-4 ml-4">
                       <small *ngIf="(getEducationControls(e).get('educationTillNow')).value; else educationCompletedDate" class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ educationStartDateFormatted[e] }} - obecnie
+                          {{ educationStartDateFormatted[e] }} r. - obecnie
                       </small>
                       <ng-template #educationCompletedDate>
                         <small class="text-muted">
                           <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ educationStartDateFormatted[e] }} - {{ educationFinishDateFormatted[e]  }}
+                          {{ educationStartDateFormatted[e] }} r. - {{ educationFinishDateFormatted[e]  }} r.
                         </small>
                       </ng-template>
                       <p *ngIf="this.schoolTypeSelected[e] == 1; else schoolSelected" style="font-size: 16px; margin-bottom: 5px">
@@ -807,13 +808,13 @@
                             <label *ngIf="(screenInnerWidth > 768)"
                                    [attr.for]="'coursePeriodStart'+c"
                                    class="col-md-1 col-form-label"
-                                   (mouseover)="setHints(hoverMessages.czasTrwaniaKursu)"
+                                   (mouseover)="setHints(hoverMessages.czasTrwaniaKursuOd)"
                                    (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
                             <div class="col-lg-4">
                                 <input type="text"
                                        class="form-control courses-date-input"
                                        [id]="'coursePeriodStart'+c"
-                                       placeholder="Od..."
+                                       placeholder="Rok rozpoczęcia kursu"
                                        formControlName="coursePeriodStart"
                                        [bsConfig]="DatePickerYearsOnly"
                                        bsDatepicker
@@ -824,7 +825,7 @@
                                        (focus)="setHints(hoverMessages.czasTrwaniaKursuOd)"
                                        (blur)="clearHints()">
                             </div>
-                              <div class="col-lg-4">
+                              <!-- <div class="col-lg-4">
                                 <input *ngIf="!(getCoursesControls(c).get('courseTillNow').value)" type="text"
                                     class="form-control courses-date-input"
                                     [id]="'coursePeriodEnd'+c"
@@ -839,8 +840,8 @@
                                     (focus)="setHints(hoverMessages.czasTrwaniaKursuDo)"
                                     (blur)="clearHints()">
                                 <input *ngIf="getCoursesControls(c).get('courseTillNow').value" type="text" class="form-control courses-date-input" [id]="'coursePeriodNow'+c" formControlName="coursePeriodNow" readonly>
-                              </div>
-                              <div class="col-lg-2">
+                              </div> -->
+                              <!-- <div class="col-lg-2">
                                 <div class="form-check now-checkbox">
                                   <input type="checkbox"
                                          [id]="'courseTillNowCbox'+c"
@@ -856,11 +857,11 @@
                                          (mouseover)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
                                          (mouseout)="clearHints()">Obecnie</label>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
-                            <div *ngIf="this.coursesEndDateIssue[c]" class="row">
+                            <!-- <div *ngIf="this.coursesEndDateIssue[c]" class="row">
                               <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesEndDateIssueMessage[c]}}</strong></p>
-                            </div>
+                            </div> -->
                             <div *ngIf="this.coursesCurrentDateIssue[c]" class="row">
                               <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesCurrentDateIssueMessage[c]}}</strong></p>
                             </div>
@@ -924,16 +925,17 @@
                 </div>
 
                 <div id="course-completed" *ngIf="this.coursesCompleted[c]" class="mb-4 ml-4">
-                    <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted">
+                    <!-- <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted"> -->
+                    <small class="text-muted">
                       <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                        {{ courseStartDateFormatted[c] }} - obecnie
+                        {{ courseStartDateFormatted[c] }} r.
                     </small>
-                    <ng-template #courseCompletedDate>
+                    <!-- <ng-template #courseCompletedDate>
                       <small class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
                         {{ courseStartDateFormatted[c] }} - {{ courseFinishDateFormatted[c] }}
                       </small>
-                    </ng-template>
+                    </ng-template> -->
                     <p *ngIf="!(getCoursesControls(c).get('courseSubject').value === ''); else onlyCourseName" style="font-size: 16px; margin-bottom: 5px">
                      <strong> {{ getCoursesControls(c).get('courseName').value }} </strong> / {{ getCoursesControls(c).get('courseSubject').value }}
                     </p>
@@ -1468,9 +1470,9 @@
                                 id="baseCVButton"
                                 type="button"
                                 (click)="updateBaseCV()"
-                                (mouseover)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (mouseover)="setHints(hoverMessages.aktualizujBazoweCV)"
                                 (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.zapiszBazoweCV)"
+                                (focus)="setHints(hoverMessages.aktualizujBazoweCV)"
                                 (blur)="clearHints()">Zaktualizuj Bazowe CV</button>
                       </div>
                     </div>

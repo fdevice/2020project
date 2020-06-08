@@ -5,6 +5,7 @@ import { EMPLOYMENT_LIST } from '../json/employment';
 import { AVAILABILITY_LIST } from '../json/availability';
 import { STUDIES_MODES } from '../json/studies-modes';
 import { LANGUAGE_LEVELS } from '../json/language-levels';
+import { SCHOOL_TYPES } from '../json/school-types';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class ListsViewerService {
 
   public getAvailabilityList() {
     return AVAILABILITY_LIST;
+  }
+
+  public getSchoolTypes() {
+    return SCHOOL_TYPES;
   }
 
   public getStudiesModes() {

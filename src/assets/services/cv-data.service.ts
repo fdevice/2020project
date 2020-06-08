@@ -40,7 +40,7 @@ export class CVDataService {
     schoolTypeIndex: any = new Array();
     schoolMode: any = new Array();
     startCourse: any = new Array();
-    finishCourse: any = new Array();
+    // finishCourse: any = new Array();
     courseName: any = new Array();
     courseSubject: any = new Array();
     languageName: any = new Array();
@@ -182,7 +182,7 @@ export class CVDataService {
                 let coursesData: any[] = [
                 {
                     courseStart: this.startCourse[c],
-                    courseFinish: this.finishCourse[c],
+                    // courseFinish: this.finishCourse[c],
                     courseName: this.courseName[c],
                     courseSubject: this.courseSubject[c]                    
                 }
@@ -429,7 +429,7 @@ export class CVDataService {
                 let coursesData: any[] = [
                 {
                     courseStart: this.startCourse[c],
-                    courseFinish: this.finishCourse[c],
+                    // courseFinish: this.finishCourse[c],
                     courseName: this.courseName[c],
                     courseSubject: this.courseSubject[c]                    
                 }

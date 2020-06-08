@@ -60,6 +60,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   languagesList: any[];
   languageLevels: any[];
   advantagesList: string[];
+  schoolType: any[];
   studiesMode: string[];
   selectAvailability: boolean = false;
   schoolTypeSelected: number[] = [];
@@ -87,8 +88,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   educationEndDateIssueMessage: string[];
   educationCurrentDateIssue: boolean[];
   educationCurrentDateIssueMessage: string[];
-  coursesEndDateIssue: boolean[];
-  coursesEndDateIssueMessage: string[];
+  // coursesEndDateIssue: boolean[];
+  // coursesEndDateIssueMessage: string[];
   coursesCurrentDateIssue: boolean[];
   coursesCurrentDateIssueMessage: string[];
 
@@ -106,11 +107,11 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   educationStartDateManuallyChanged: boolean[] = new Array(30);
   educationFinishDateManuallyChanged: boolean[] = new Array(30);
 
-  courseTillNowSelected: boolean[] = new Array(30);
+  // courseTillNowSelected: boolean[] = new Array(30);
   courseStartDateFormatted: any[] = new Array(30);
-  courseFinishDateFormatted: any[] = new Array(30);
+  // courseFinishDateFormatted: any[] = new Array(30);
   courseStartDateManuallyChanged: boolean[] = new Array(30);
-  courseFinishDateManuallyChanged: boolean[] = new Array(30);
+  // courseFinishDateManuallyChanged: boolean[] = new Array(30);
 
   advantagesLeft: number;
   polishAdvantageSuffix: string;
@@ -252,8 +253,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.educationEndDateIssueMessage = [];
     this.educationCurrentDateIssue = [];
     this.educationCurrentDateIssueMessage = [];
-    this.coursesEndDateIssue = [];
-    this.coursesEndDateIssueMessage = [];
+    // this.coursesEndDateIssue = [];
+    // this.coursesEndDateIssueMessage = [];
     this.coursesCurrentDateIssue = [];
     this.coursesCurrentDateIssueMessage = [];
 
@@ -264,6 +265,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
     this.employment = this.sharedLists.getEmploymentList();
     this.availability = this.sharedLists.getAvailabilityList();
+    this.schoolType = this.sharedLists.getSchoolTypes();
     this.studiesMode = this.sharedLists.getStudiesModes();
     this.languageLevels = this.sharedLists.getLanguageLevels();
     this.selectedLanguageDegree = [];
@@ -408,10 +410,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     return this.fb.group({
       courseName: ['', Validators.required],
       courseSubject: [''],
-      coursePeriodStart: ['', Validators.required],
-      coursePeriodEnd: [''],
-      coursePeriodNow: [''],
-      courseTillNow: ['']
+      coursePeriodStart: ['', Validators.required]
+      // coursePeriodEnd: [''],
+      // coursePeriodNow: [''],
+      // courseTillNow: ['']
     })
   };
 
@@ -625,7 +627,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
@@ -674,7 +676,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
@@ -715,28 +717,27 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
     let startCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
-    let nowCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodNow');
+    // let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let nowCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodNow');
 
-    console.log("Start course on close edit button click: " + startCourse.value + " / " + typeof startCourse.value);
-    console.log("Finish course on close edit button click: " + finishCourse.value + " / " + typeof finishCourse.value);
+    console.log("Start course on close edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
 
     if (this.courseStartDateFormatted[c] == undefined) {
       this.courseStartDateFormatted[c] = new Date(startCourse.value).toLocaleDateString('pl', dateOptions);
     };
 
-    if (this.courseFinishDateFormatted[c] == undefined) {
-      this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
-    };
+    // if (this.courseFinishDateFormatted[c] == undefined) {
+    //   this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
+    // };
 
-    if ((!finishCourse.value && !nowCourse.value)) {
-      (<FormArray>this.cvForm.get('courses')).controls[c].setErrors({'incorrect': true});
-    };
+    // if ((!finishCourse.value && !nowCourse.value)) {
+    //   (<FormArray>this.cvForm.get('courses')).controls[c].setErrors({'incorrect': true});
+    // };
 
     if ((<FormArray>this.cvForm.get('courses')).controls[c].invalid) {
       this.coursesCompletionError = true;
@@ -754,22 +755,21 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.hideNextCourseButton = true;
 
     let startCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
 
-    console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);
-    console.log("Finish course on edit button click: " + finishCourse.value + " / " + typeof finishCourse.value);
+    console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
   };
 
   public finishCoursesEdition(c: number) {
 
     const dateOptions = {
       day: undefined,
-      month: 'long',
+      month: undefined,
       year: 'numeric'
     };
 
     let startCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart');
-    let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
+    // let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
 
     if (startCourse.value instanceof Object) {
       this.courseStartDateFormatted[c] = new Date(startCourse.value).toLocaleDateString('pl', dateOptions);
@@ -777,11 +777,11 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       this.courseStartDateFormatted[c] = startCourse.value;
     };
 
-    if (finishCourse.value instanceof Object) {
-      this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
-    } else {
-      this.courseFinishDateFormatted[c] = finishCourse.value;
-    };
+    // if (finishCourse.value instanceof Object) {
+    //   this.courseFinishDateFormatted[c] = new Date(finishCourse.value).toLocaleDateString('pl', dateOptions);
+    // } else {
+    //   this.courseFinishDateFormatted[c] = finishCourse.value;
+    // };
 
     this.coursesCompleted[c] = true;
     this.coursesEditMode[c] = false;
@@ -816,8 +816,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   }
 
   public getSelectedEducationIndex(event: any, e: number) {
+    console.log("Wybrany rodzaj szkoły: ");
     console.log(event.value);
-    this.schoolTypeSelected[e] = event.value;    
+    this.schoolTypeSelected[e] = event.value;  
   }
 
 
@@ -1070,13 +1071,13 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     }
   };
 
-  public setCourseTillNow(i: number) {
-    if ((<FormArray>this.cvForm.get('courses')).controls[i].get('courseTillNow').value) {
-      (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('obecnie');
-    } else {
-      (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('');
-    }
-  };
+  // public setCourseTillNow(i: number) {
+  //   if ((<FormArray>this.cvForm.get('courses')).controls[i].get('courseTillNow').value) {
+  //     (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('obecnie');
+  //   } else {
+  //     (<FormArray>this.cvForm.get('courses')).controls[i].get('coursePeriodNow').setValue('');
+  //   }
+  // };
 
   public setExperienceControlManuallyChanged (control: string, index: number, o: number, e: Event) {
     if (e != null && e instanceof Object) {  // z serwera zwracany jest typ String, a po wybraniu z kalendarza typ Object
@@ -1111,10 +1112,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         this.courseStartDateManuallyChanged[index] = true;
         console.log("courseStartDateManuallyChanged[" + index + "]: " + this.courseStartDateManuallyChanged[index]);
       };
-      if (control === 'courseFinish') {
-        this.courseFinishDateManuallyChanged[index] = true;
-        console.log("courseFinishDateManuallyChanged[" + index + "]: " + this.courseFinishDateManuallyChanged[index]);
-      };
+      // if (control === 'courseFinish') {
+      //   this.courseFinishDateManuallyChanged[index] = true;
+      //   console.log("courseFinishDateManuallyChanged[" + index + "]: " + this.courseFinishDateManuallyChanged[index]);
+      // };
     };     
   };
 
@@ -1179,16 +1180,16 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   public checkCoursesDate(c: number) {
     let today = new Date();
     let startDate = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value;
-    let endDate = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value;
-    let tillNow = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodNow').value;
+    // let endDate = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value;
+    // let tillNow = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodNow').value;
 
-    if ((startDate > endDate) && endDate != '' && tillNow === '') {
-      this.coursesEndDateIssue[c] = true;
-      this.coursesEndDateIssueMessage[c] = 'Data rozpoczęcia kursu nie może być nowsza od daty jej zakończenia!';
-    } else {
-      this.coursesEndDateIssue[c] = false;
-      this.coursesEndDateIssueMessage[c] = '';
-    };
+    // if ((startDate > endDate) && endDate != '' && tillNow === '') {
+    //   this.coursesEndDateIssue[c] = true;
+    //   this.coursesEndDateIssueMessage[c] = 'Data rozpoczęcia kursu nie może być nowsza od daty jej zakończenia!';
+    // } else {
+    //   this.coursesEndDateIssue[c] = false;
+    //   this.coursesEndDateIssueMessage[c] = '';
+    // };
 
     if (startDate > today) {
       this.coursesCurrentDateIssue[c] = true;
@@ -1300,273 +1301,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         return this.dialogService.confirm('Czy na pewno chcesz opuscić stronę? Wprowadzone zmiany zostaną odrzucone.');
     }
     return true;
-  }
-
-  //********************  TWORZENIE BAZOWEGO CV  ********************************/
-
-//   public saveBaseCV() {
-
-//     const dateOptions = {
-//       day: undefined,
-//       month: 'long',
-//       year: 'numeric'
-//     };   
-    
-//     // let occupationArray: any[] = new Array();
-
-//     // WARUNKI ZATRUDNIENIA
-//     this.baseCV.position = this.cvForm.get('position').value;
-//     this.baseCV.location = this.cvForm.get('location').value;
-//     this.baseCV.disposition = this.cvForm.get('disposition').value;
-//     this.baseCV.salary = this.cvForm.get('salary').value;
-    
-//     if (!this.selectAvailability) {
-//       this.baseCV.availability = this.cvForm.get('availability').value;
-//     } else {
-//       // this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString('pl') + ' r.');
-//       this.baseCV.availability = (new Date(this.cvForm.get('availabilityDate').value).toLocaleDateString());
-//     };
-
-//     if (this.cvForm.get('employment').value != '') {
-//       this.baseCV.employment = this.cvForm.get('employment').value;
-//     } else {
-//       this.baseCV.employment = [];
-//     };    
-
-//     // DANE OSOBOWE
-//     this.baseCV.name = this.cvForm.get('name').value.charAt(0).toUpperCase() + this.cvForm.get('name').value.slice(1);
-//     this.baseCV.surname = this.cvForm.get('surname').value.charAt(0).toUpperCase() + this.cvForm.get('surname').value.slice(1);
-//     this.baseCV.email = this.cvForm.get('email').value;
-//     this.baseCV.phone = this.cvForm.get('phone').value;   
-    
-
-//     // DOŚWIADCZENIE ZAWODOWE
-//     this.baseCV.totalExperienceLength = (<FormArray>this.cvForm.get('experience')).length;
-
-//     let startWork = new Array();
-//     let finishWork = new Array()
-//     let occupation = new Array();
-//     let responsibilities = new Array();
-
-//     for (let i = 0; i < (<FormArray>this.cvForm.get('experience')).length; i++) {
-
-//       let occupationArray: any[] = new Array();
-
-//       if ( (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value !== '' ) {
-
-//         this.baseCV.employer[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('employerName').value;
-//         this.baseCV.trade[i] = (<FormArray>this.cvForm.get('experience')).controls[i].get('trade').value;
-
-//         for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).length; o++) {         
-
-//           if ( (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('experienceTillNow').value ) {
-
-//             if (this.workStartDateManuallyChanged[i][o] == true) {
-
-//               startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions);
-                            
-//             } else {
-//               startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
-//             };          
-            
-//             finishWork[o] = 'obecnie';
-  
-//           } else {
-            
-//             if (this.workStartDateManuallyChanged[i][o] == true) {
-//               startWork[o] = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value).toLocaleDateString('pl', dateOptions); 
-//             } else {
-//               startWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart').value;
-//             };
-            
-//             if (this.workFinishDateManuallyChanged[i][o] == true) {
-//               finishWork[o]  = new Date((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-//             } else {
-//               finishWork[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd').value;
-//             };          
-//           };
-
-//           occupation[o] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('occupation').value;
-
-//           let responsibilitiesArray = ((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
-//           let chosenResponsibilities = [];
-
-//           for (let j = 0; j < responsibilitiesArray.length; j++) {
-//             chosenResponsibilities.push(responsibilitiesArray.controls[j].get('responsibility').value);
-//             responsibilities[o] = chosenResponsibilities;
-//           };      
-          
-//           let occupationData: any[] = [
-//             {
-//               workStart: startWork[o],
-//               workFinish: finishWork[o],
-//               occupation: occupation[o],
-//               responsibilities: responsibilities[o]
-//             }
-//           ]; 
-
-//           occupationArray.push(occupationData);          
-
-//         };  // Koniec pętli occupation          
-
-//           this.baseCV.occupationData[i] = occupationArray;                                     
-
-//       };
-//     };
-
-//     // EDUKACJA
-//     this.baseCV.totalEducationLength = (<FormArray>this.cvForm.get('education')).length;
-
-//     for (let e = 0; e < (<FormArray>this.cvForm.get('education')).length; e++) {
-
-//       if ( (<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').value !== '' ) {
-
-//         if ( (<FormArray>this.cvForm.get('education')).controls[e].get('educationTillNow').value ) {
-
-//           if (this.educationStartDateManuallyChanged[e] == true) {
-//             this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.startEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value;
-//           };                    
-
-//           this.baseCV.finishEducation[e] = 'obecnie';
-
-//           // this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           // this.baseCV.finishEducation[e] = 'obecnie';
-
-//         } else {
-
-//           if (this.educationStartDateManuallyChanged[e] == true) {
-//             this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.startEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value;
-//           };  
-
-//           if (this.educationFinishDateManuallyChanged[e] == true) {
-//             this.baseCV.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.finishEducation[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value;
-//           }; 
-
-//           // this.baseCV.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           // this.baseCV.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
-
-//           };
-
-//           this.baseCV.schoolName[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').value;
-
-//           this.baseCV.schoolProfile[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('specialization').value || (<FormArray>this.cvForm.get('education')).controls[e].get('classProfile').value;
-//           this.baseCV.schoolMode[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('educationMode').value || '';       
-          
-//           if (this.schoolTypeSelected[e] == 1) {
-//             this.baseCV.schoolTypeIndex[e] = 1;
-//             this.baseCV.schoolType[e] = "Wyższa"; 
-//           } else {
-//             this.baseCV.schoolTypeIndex[e] = 2;
-//             this.baseCV.schoolType[e] = "Średnia";             
-//           };         
-//       };
-//     };
-
-//     // KURSY
-//     this.baseCV.totalCoursesLength = (<FormArray>this.cvForm.get('courses')).length;
-
-//     for (let c = 0; c < (<FormArray>this.cvForm.get('courses')).length; c++) {
-
-//       if ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value !== '') {
-
-//         if ( (<FormArray>this.cvForm.get('courses')).controls[c].get('courseTillNow').value ) {
-
-//           if (this.courseStartDateManuallyChanged[c] == true) {
-//             this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.startCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value;
-//           };                    
-
-//           this.baseCV.finishCourse[c] = 'obecnie';
-
-//           // this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           // this.baseCV.finishCourse[c] = 'obecnie';
-//         } else {
-
-//           if (this.courseStartDateManuallyChanged[c] == true) {
-//             this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.startCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value;
-//           };   
-
-//           if (this.courseFinishDateManuallyChanged[c] == true) {
-//             this.baseCV.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-//           } else {
-//             this.baseCV.finishCourse[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value;
-//           }; 
-
-//           // this.baseCV.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-//           // this.baseCV.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-//         };
-
-//         this.baseCV.courseName[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value;
-//         this.baseCV.courseSubject[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('courseSubject').value;
-
-//       };
-//     };
-
-
-//      // JĘZYKI OBCE
-//      this.baseCV.totalLanguagesLength = (<FormArray>this.cvForm.get('languages')).length;
-
-//      for (let l = 0; l < (<FormArray>this.cvForm.get('languages')).length; l++) {
-
-//        if ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value !== '') {
-
-//          if ((<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value !== '') {
-//            this.baseCV.languageName[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value);
-//          } else {
-//            this.baseCV.languageName[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value);
-//          }
-
-//          this.baseCV.languageLevel[l] = ((<FormArray>this.cvForm.get('languages')).controls[l].get('level').value);
-//          this.baseCV.languageDescription[l] = this.selectedLanguageDegree[l];
-
-//        };
-//      };
-
-
-//      // UMIEJĘTNOŚCI
-//      if (this.cvForm.get('drivingLicenceDescription').value) {
-//       this.baseCV.drivingLicence = this.cvForm.get('drivingLicenceDescription').value;
-//     };
-//     if (this.cvForm.get('knownProgramsDescription').value) {
-//       this.baseCV.knownPrograms = this.cvForm.get('knownProgramsDescription').value;
-//     };
-//     if (this.cvForm.get('programmingSkillsDescription').value) {
-//       this.baseCV.programmingLanguages = this.cvForm.get('programmingSkillsDescription').value;
-//     };
-//     if (this.cvForm.get('devicesUsageDescription').value) {
-//       this.baseCV.devices = this.cvForm.get('devicesUsageDescription').value;
-//     };
-//     if (this.cvForm.get('permissionsDescription').value) {
-//       this.baseCV.permissions = this.cvForm.get('permissionsDescription').value;
-//     };
-//     if (this.cvForm.get('knownRegulationsDescription').value) {
-//       this.baseCV.regulations = this.cvForm.get('knownRegulationsDescription').value;
-//     };
-//     if (this.cvForm.get('otherSkillsDescription').value) {
-//       this.baseCV.otherSkills = this.cvForm.get('otherSkillsDescription').value;
-//     };
-
-//     // MOCNE STRONY
-//     this.getSelectedAdvantagesValues();
-//     this.baseCV.advantages = this.selectedAdvantagesValues;
-//     this.baseCV.selectedAdvantagesIndex = this.selectedAdvantagesValuesToDatabase;
-
-//     // ZAINTERESOWANIA
-//     this.baseCV.hobbies = this.cvForm.get('hobbies').value;    
-
-//     // ZDJĘCIE
-//     this.baseCV.sendBaseCVData(this.cvForm.get("image").value);
-    
-//   }
+  } 
 
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue 
 
@@ -2021,23 +1756,23 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
           console.log(coursesFromDatabase);                
           if (coursesFromDatabase.length > 0) { 
           
-            if (coursesFromDatabase[0][0].courseFinish != "obecnie") {               
+            // if (coursesFromDatabase[0][0].courseFinish != "obecnie") {               
     
-              ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
-              this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
-              ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodEnd').patchValue(coursesFromDatabase[0][0].courseFinish));
-              this.courseFinishDateFormatted[0] = coursesFromDatabase[0][0].courseFinish;          
-            } else {
+            //   ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
+            //   this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
+            //   ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodEnd').patchValue(coursesFromDatabase[0][0].courseFinish));
+            //   this.courseFinishDateFormatted[0] = coursesFromDatabase[0][0].courseFinish;          
+            // } else {
               ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
               this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;   
-              this.courseTillNowSelected[0] = true; 
-              this.setCourseTillNow(0);          
-            };               
+              // this.courseTillNowSelected[0] = true; 
+              // this.setCourseTillNow(0);          
+            // };               
   
             ((<FormArray>this.cvForm.get('courses')).controls[0].get('courseName').patchValue(coursesFromDatabase[0][0].courseName));
             ((<FormArray>this.cvForm.get('courses')).controls[0].get('courseSubject').patchValue(coursesFromDatabase[0][0].courseSubject));               
             
-            this.coursesEndDateIssue[0] = false;
+            // this.coursesEndDateIssue[0] = false;
             this.coursesCurrentDateIssue[0] = false;
             (<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').markAsDirty();  
             
@@ -2049,22 +1784,22 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
                 (<FormArray>this.cvForm.get('courses')).push(this.addCoursesFormGroup());  
               };                                  
     
-            if (coursesFromDatabase[c][0].courseFinish !== "obecnie") {
-              ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
-              this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;  
-              ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').patchValue(coursesFromDatabase[c][0].courseFinish));
-              this.courseFinishDateFormatted[c] = coursesFromDatabase[c][0].courseFinish;  
-            } else {
+            // if (coursesFromDatabase[c][0].courseFinish !== "obecnie") {
+            //   ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
+            //   this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;  
+            //   ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').patchValue(coursesFromDatabase[c][0].courseFinish));
+            //   this.courseFinishDateFormatted[c] = coursesFromDatabase[c][0].courseFinish;  
+            // } else {
               ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
               this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;   
-              this.courseTillNowSelected[c] = true; 
-              this.setCourseTillNow(c);           
-            };              
+            //   this.courseTillNowSelected[c] = true; 
+            //   this.setCourseTillNow(c);           
+            // };              
   
             ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').patchValue(coursesFromDatabase[c][0].courseName));
             ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseSubject').patchValue(coursesFromDatabase[c][0].courseSubject));    
             
-            this.coursesEndDateIssue[c] = false;
+            // this.coursesEndDateIssue[c] = false;
             this.coursesCurrentDateIssue[c] = false;
             (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').markAsDirty(); 
     
@@ -2155,6 +1890,12 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       const dateOptions = {
         day: undefined,
         month: 'long',
+        year: 'numeric'
+      };
+
+      const dateOptionsYearsOnly = {
+        day: undefined,
+        month: undefined,
         year: 'numeric'
       };
 
@@ -2323,11 +2064,11 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         if ((<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').value !== '') {
 
           if ( (<FormArray>this.cvForm.get('education')).controls[e].get('educationTillNow').value ) {
-            this.PDF.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
+            this.PDF.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
             this.PDF.finishEducation[e] = 'obecnie';
           } else {
-            this.PDF.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptions);
-            this.PDF.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptions);
+            this.PDF.startEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
+            this.PDF.finishEducation[e] = new Date((<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value).toLocaleDateString('pl', dateOptionsYearsOnly);
           };
 
           this.PDF.schoolName[e] = (<FormArray>this.cvForm.get('education')).controls[e].get('schoolName').value;
@@ -2343,13 +2084,13 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
         if ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value !== '') {
 
-          if ( (<FormArray>this.cvForm.get('courses')).controls[c].get('courseTillNow').value ) {
-            this.PDF.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-            this.PDF.finishCourse[c] = 'obecnie';
-          } else {
-            this.PDF.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
-            this.PDF.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
-          };
+          // if ( (<FormArray>this.cvForm.get('courses')).controls[c].get('courseTillNow').value ) {
+          //   this.PDF.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptions);
+          //   this.PDF.finishCourse[c] = 'obecnie';
+          // } else {
+            this.PDF.startCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').value).toLocaleDateString('pl', dateOptionsYearsOnly);
+            // this.PDF.finishCourse[c] = new Date((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').value).toLocaleDateString('pl', dateOptions);
+          // };
 
           this.PDF.courseName[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').value;
           this.PDF.courseSubject[c] = (<FormArray>this.cvForm.get('courses')).controls[c].get('courseSubject').value;
