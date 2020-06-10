@@ -229,7 +229,7 @@ export class CreatePdfService {
           this.document.setFontSize(14);
           this.document.setTextColor(black);
           this.document.circle(this.deepMargin, this.fromTop, 1, 'F');
-          this.document.text(this.deepMargin + 5, this.fromTop + 1.5, this.employer[i] + '  /  ' + this.trade[i]);
+          this.document.text(this.deepMargin + 5, this.fromTop + 1.5, this.employer[i] + '  /  ' + (this.trade[i]).toLowerCase());
           this.fromTop += 5;
 
           console.log("OccupationArray[" + i + "]: ");
@@ -245,16 +245,19 @@ export class CreatePdfService {
             this.document.setFontSize(9);
             this.document.setTextColor(black);
             this.document.text(this.deepMargin + 16, this.fromTop + 7, this.occupationArray[i][o][0].occupation);
-            this.document.setFontSize(6);
+            this.document.setFontSize(7);
             this.fromTop += 10;
 
-            for (let j = 0; j < this.occupationArray[i][o][0].responsibilities.length; j++) {            
-            this.document.circle(this.deepMargin + 20, this.fromTop, 0.5, 'F');
-            this.document.text(this.deepMargin + 24, this.fromTop + 0.75, this.occupationArray[i][o][0].responsibilities[j]);
-            this.fromTop += 4;
+            for (let j = 0; j < this.occupationArray[i][o][0].responsibilities.length; j++) {      
+              if (this.occupationArray[i][o][0].responsibilities[j] !== '' && this.occupationArray[i][o][0].responsibilities[j] !== undefined) {
+                    this.document.circle(this.deepMargin + 20, this.fromTop, 0.5, 'F');
+                    this.document.text(this.deepMargin + 24, this.fromTop + 0.75, this.occupationArray[i][o][0].responsibilities[j]);
+                    this.fromTop += 4;
 
-            this.shouldAddNewPage();
-        };
+                    this.shouldAddNewPage();
+              }     
+            
+          };
             this.fromTop += 1;
       };
 

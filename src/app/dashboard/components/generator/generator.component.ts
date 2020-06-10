@@ -846,6 +846,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     return (this.cvForm.get('courses') as FormArray).controls[c];
   }
 
+  public getLanguagesControls(l: number) {
+    return (this.cvForm.get('languages') as FormArray).controls[l];
+  }
+
   public checkAdvantagesControlsDirty() {     //zwraca true, jeśli którakolwiek z kontrolek w tablicy advantagesArray została dotknięta
     let advFlag = false;
     this.advantagesArray.controls.forEach((control) => {

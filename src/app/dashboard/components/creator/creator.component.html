@@ -198,6 +198,7 @@
                                class="form-control"
                                id="email"
                                formControlName="email"
+                               style="font-size: 0.8rem;"
                                placeholder="Adres e-mail"
                                autocomplete="off"
                                (mouseover)="setHints(hoverMessages.adresEmail)"
@@ -613,7 +614,7 @@
                               <input type="text"
                                       class="form-control"
                                       [id]="'specialization'+e"
-                                      placeholder="Specjalizacja"
+                                      placeholder="Kierunek lub specjalizacja"
                                       formControlName="specialization"
                                       autocomplete="off"
                                       (mouseover)="setHints(hoverMessages.specjalizacjaStudiow)"
@@ -891,12 +892,12 @@
                                     <input type="text"
                                            class="form-control"
                                            [id]="'courseSubject'+c"
-                                           placeholder="Przedmiot kursu (opcjonalnie)"
+                                           placeholder="Organizator (opcjonalnie)"
                                            formControlName="courseSubject"
                                            autocomplete="off"
-                                           (mouseover)="setHints(hoverMessages.specjalizacjaKursu)"
+                                           (mouseover)="setHints(hoverMessages.organizatorKursu)"
                                            (mouseout)="clearHints()"
-                                           (focus)="setHints(hoverMessages.specjalizacjaKursu)"
+                                           (focus)="setHints(hoverMessages.organizatorKursu)"
                                            (blur)="clearHints()">
                                 </div>
                             </div>
@@ -1010,7 +1011,8 @@
                                        (mouseover)="setHints(llevel.description)"
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(llevel.description)"
-                                       (blur)="clearHints()">
+                                       (blur)="clearHints()"
+                                       [disabled]="getLanguagesControls(l).get('languageName').pristine">
                                 <label class="form-check-label col-lg-12"
                                        [attr.for]="'language'+l+'_degree'+li"
                                        (mouseover)="setHints(llevel.description)"
@@ -1407,7 +1409,7 @@
             </div>
         </div> -->
         <!-- <hr style="border: 1px dashed;" class="mt-3 mb-5"> -->
-            <div id="clause">
+            <!-- <div id="clause">
               <div class="row"
                    (mouseover)="setHints(hoverMessages.zainteresowania)"
                    (mouseout)="clearHints()">
@@ -1432,8 +1434,8 @@
                                 (blur)="clearHints()"></textarea>
                 </div>
               </div>
-          </div>
-          <hr>
+          </div> -->
+          <!-- <hr> -->
                 <!-- <div *ngIf="isLoading">
                   <mat-spinner>Trwa generowanie PDF</mat-spinner>
                   <div>

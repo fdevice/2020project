@@ -42,7 +42,7 @@ export const HOVER_MESSAGE =
     czasTrwaniaKursuOd: "Wskaż rok rozpoczęcia kursu",
     // czasTrwaniaKursuDo: "Wskaż datę zakończenia kursu",
     // czasTrwaniaKursuObecnie: "Zaznacz, jeśli ten kurs wciąż trwa",
-    specjalizacjaKursu: "Co było tematem/przedmiotem kursu?",
+    organizatorKursu: "Wpisz nazwę organizatora kursu",
     kursyDodaj: "Kliknij, żeby dodać kolejny kurs",
     kursyUsun: "Kliknij, żeby usunąć kurs",
     jezykObcy: "Wybierz język obcy, którym potrafisz się posługiwać",
