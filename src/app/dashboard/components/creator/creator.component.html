@@ -379,19 +379,20 @@
                               </div>
                             </div>
                             <div class="col-xl-5">
-                              <button class="btn btn-info mr-2"
+                              <button *ngIf="getExperienceControls(i).enabled"
+                                      class="btn btn-info mr-2"
                                       type="button"
-                                      [id]="'addRespButton'+'_'+i+'_'+o"
+                                      [id]="'addRespButton'+'_'+i+'_'+o"                                      
                                       (click)="addNewResponsibility(i, o)"
                                       (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
                                       (mouseout)="clearHints()"
                                       (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
                                       (blur)="clearHints()">Dodaj obowiązek
                               </button>
-                              <button *ngIf="(getResponsibilitiesControls(i, o).length) > 1"
+                              <button *ngIf="((getResponsibilitiesControls(i, o).length) > 1) && getExperienceControls(i).enabled"
                                       class="btn btn-danger"
                                       type="button"
-                                      [id]="'removeRespButton'+'_'+i+'_'+o"
+                                      [id]="'removeRespButton'+'_'+i+'_'+o"                                      
                                       (click)="removeResponsibility(i, o)"
                                       (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
                                       (mouseout)="clearHints()"
@@ -402,7 +403,7 @@
                           </div>
                           <div class="form-group row section-row">
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && (hideNextOccupButton[i][o] === false)" 
+                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && (hideNextOccupButton[i][o] === false) && getExperienceControls(i).enabled" 
                               class="btn btn-info"
                               type="button"
                               [id]="'addOccupationButton'+'_'+i+'_'+o"
@@ -415,7 +416,7 @@
                           </div>
                           <div class="form-group row section-row">
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupation(i).length) > 1 && (hideNextOccupButton[i][o] === false)"
+                              <button *ngIf="(getOccupation(i).length) > 1 && (hideNextOccupButton[i][o] === false) && getExperienceControls(i).enabled"
                                 class="btn btn-danger"
                                 type="button"
                                 [id]="'removeOccuButton'+'_'+i+'_'+o"
@@ -444,7 +445,7 @@
                       </div> 
                       <div class="form-group row section-row">
                         <div class="col-xl-3">                      
-                          <button *ngIf="(getExperienceControls(i).get('employerName').dirty) && !hideNextExpButton"
+                          <button *ngIf="(getExperienceControls(i).get('employerName').dirty) && !hideNextExpButton && !experienceEditionModeEnabled"
                           class="btn btn-info"
                           type="button"
                           id="addExperienceButton"
@@ -483,8 +484,8 @@
                         </ul>
                         <br>
                       </div>       <!-- Koniec pętli occupation -->                                                                      
-                      <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>
+                      <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
+                      <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>
                     </div>
 
                   <!-- *** -->
@@ -752,7 +753,7 @@
                       </div>
                       <div class="form-group row section-row">
                           <div class="col-xl-6">
-                              <button *ngIf="(getEducationControls(e).get('educationPeriodStart').dirty) && !hideNextEduButton"
+                              <button *ngIf="(getEducationControls(e).get('educationPeriodStart').dirty) && !hideNextEduButton && !educationEditionModeEnabled"
                               class="btn btn-info"
                               type="button"
                               id="addEducationButton"
@@ -762,8 +763,10 @@
                               (focus)="setHints(hoverMessages.edukacjaDodaj)"
                               (blur)="clearHints()">Dodaj kolejną szkołę / uczelnię</button>
                           </div>
-                        </div>
-                    <button *ngIf="educationEditMode[e]" class="btn btn-success" type="button" (click)="finishEducationEdition(e)">Zakończ edycję</button>
+                        </div>                    
+                    <div class="form-group row section-row mt-0 mb-4">
+                      <button *ngIf="educationEditMode[e]" class="btn btn-sm btn-success" type="button" (click)="finishEducationEdition(e)">Zakończ edycję</button>
+                    </div> 
 
                   </div>
 
@@ -786,8 +789,8 @@
                           <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('classProfile').value }}
                         </p>
                       </ng-template>
-                      <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleEducationEdit(e)">Edytuj</button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenEducation(e)">Usuń</button>
+                      <button type="button" *ngIf="!educationEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleEducationEdit(e)">Edytuj</button>
+                      <button type="button" *ngIf="!educationEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenEducation(e)">Usuń</button>
                     </div>
 
                 </div>
@@ -804,7 +807,7 @@
                 <div formArrayName="courses" *ngFor="let course of coursesArray.controls; let c = index">
                   <div *ngIf="!this.coursesCompleted[c]">
                     <div [formGroupName]="c">
-                        <div class="form-group row section-row">
+                        <div class="form-group row section-row mt-3">
 
                             <label *ngIf="(screenInnerWidth > 768)"
                                    [attr.for]="'coursePeriodStart'+c"
@@ -907,21 +910,23 @@
                       <div class="col-xl-4 mt-2 mb-2">
                         <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
                       </div>
+                  </div>
+                  <div class="form-group row section-row mb-0">
+                    <div class="col-xl-6 mb-1">
+                        <button *ngIf="(getCoursesControls(c).get('coursePeriodStart').dirty) && !hideNextCourseButton && !coursesEditionModeEnabled"
+                        class="btn btn-info"
+                        type="button"
+                        id="addCoursesButton"
+                        (click)="addCoursesButtonClick(c)"
+                        (mouseover)="setHints(hoverMessages.kursyDodaj)"
+                        (mouseout)="clearHints()"
+                        (focus)="setHints(hoverMessages.kursyDodaj)"
+                        (blur)="clearHints()">Dodaj kolejny kurs</button>
                     </div>
-                    <div class="form-group row section-row">
-                        <div class="col-xl-6">
-                            <button *ngIf="(getCoursesControls(c).get('coursePeriodStart').dirty) && !hideNextCourseButton"
-                            class="btn btn-info"
-                            type="button"
-                            id="addCoursesButton"
-                            (click)="addCoursesButtonClick(c)"
-                            (mouseover)="setHints(hoverMessages.kursyDodaj)"
-                            (mouseout)="clearHints()"
-                            (focus)="setHints(hoverMessages.kursyDodaj)"
-                            (blur)="clearHints()">Dodaj kolejny kurs</button>
-                        </div>
-                      </div>
-                  <button *ngIf="coursesEditMode[c]" class="btn btn-success" type="button" (click)="finishCoursesEdition(c)">Zakończ edycję</button>
+                  </div>
+                    <div class="form-group row section-row mt-0 mb-4">
+                      <button *ngIf="coursesEditMode[c]" class="btn btn-sm btn-success" type="button" (click)="finishCoursesEdition(c)">Zakończ edycję</button>
+                    </div>                 
 
                 </div>
 
@@ -945,8 +950,8 @@
                         <strong> {{ getCoursesControls(c).get('courseName').value }} </strong>
                       </p>
                     </ng-template>
-                    <button type="button" class="btn btn-sm btn-info mr-2" (click)="toggleCoursesEdit(c)">Edytuj</button>
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeChosenCourse(c)">Usuń</button>
+                    <button *ngIf="!coursesEditionModeEnabled" type="button" class="btn btn-sm btn-info mr-2" (click)="toggleCoursesEdit(c)">Edytuj</button>
+                    <button *ngIf="!coursesEditionModeEnabled" type="button" class="btn btn-sm btn-danger" (click)="removeChosenCourse(c)">Usuń</button>
                   </div>
 
                 </div>

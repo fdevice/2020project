@@ -133,6 +133,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   hideNextOccupButton: any[];
   hideNextEduButton: boolean = false;
   hideNextCourseButton: boolean = false;
+  experienceEditionModeEnabled: boolean;
+  educationEditionModeEnabled: boolean;
+  coursesEditionModeEnabled: boolean;
 
   drivingLicenceChecked: boolean = false;
   knownProgramsChecked: boolean = false;
@@ -262,6 +265,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.educationCompleted = [];
     this.coursesCompleted = [];
     // this.experienceEditMode.fill(false, 0, 0);
+
+    this.experienceEditionModeEnabled = false;
+    this.educationEditionModeEnabled = false;
+    this.coursesEditionModeEnabled = false;
 
     this.employment = this.sharedLists.getEmploymentList();
     this.availability = this.sharedLists.getAvailabilityList();
@@ -568,12 +575,16 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.experienceCompleted[i] = false;
     this.experienceEditMode[i] = true;
     this.hideNextExpButton = true;
+    this.experienceEditionModeEnabled = true;
 
     for (let o = 0; o < (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length; o++) {
 
       let startWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
       let finishWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
       let nowWork = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
+
+      this.cvForm.get('experience').disable();
+      (<FormArray>this.cvForm.get('experience')).controls[i].enable();
 
       console.log("Start work on edit button click: " + startWork.value + " / " + typeof startWork.value);
       console.log("Finish work on edit button click: " + finishWork.value + " / " + typeof finishWork.value);
@@ -611,6 +622,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       };
     };           
     
+    this.cvForm.get('experience').enable();
+    this.experienceEditionModeEnabled = false;
     this.experienceCompleted[i] = true;
     this.experienceEditMode[i] = false;
     this.hideNextExpButton = false;
@@ -664,9 +677,13 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.educationCompleted[e] = false;
     this.educationEditMode[e] = true;
     this.hideNextEduButton = true;
+    this.educationEditionModeEnabled = true;
 
     let startEducation = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart');
     let finishEducation= (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd');
+
+    this.cvForm.get('education').disable();
+    (<FormArray>this.cvForm.get('education')).controls[e].enable();
 
     console.log("Start education on edit button click: " + startEducation.value + " / " + typeof startEducation.value);
     console.log("Finish education on edit button click: " + finishEducation.value + " / " + typeof finishEducation.value);
@@ -701,6 +718,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       this.educationFinishDateFormatted[e] = finishEducation.value;
     };
 
+    this.cvForm.get('education').enable();
+    this.educationEditionModeEnabled = false;
     this.educationCompleted[e] = true;
     this.educationEditMode[e] = false;
     this.hideNextEduButton = false;
@@ -753,9 +772,13 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.coursesCompleted[c] = false;
     this.coursesEditMode[c] = true;
     this.hideNextCourseButton = true;
+    this.coursesEditionModeEnabled = true;
 
     let startCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart');
     // let finishCourse = (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd');
+
+    this.cvForm.get('courses').disable();
+    (<FormArray>this.cvForm.get('courses')).controls[c].enable();
 
     console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
   };
@@ -783,6 +806,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     //   this.courseFinishDateFormatted[c] = finishCourse.value;
     // };
 
+    this.cvForm.get('courses').enable();
+    this.coursesEditionModeEnabled = false;
     this.coursesCompleted[c] = true;
     this.coursesEditMode[c] = false;
     this.hideNextCourseButton = false;

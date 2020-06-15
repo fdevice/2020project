@@ -132,6 +132,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   hideNextOccupButton: any[];
   hideNextEduButton: boolean = false;
   hideNextCourseButton: boolean = false;
+  experienceEditionModeEnabled: boolean;
+  educationEditionModeEnabled: boolean;
+  coursesEditionModeEnabled: boolean;
 
   drivingLicenceChecked: boolean = false;
   knownProgramsChecked: boolean = false;
@@ -261,6 +264,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.coursesCompleted = [];
     // this.experienceEditMode.fill(false, 0, 0);
 
+    this.experienceEditionModeEnabled = false;
+    this.educationEditionModeEnabled = false;
+    this.coursesEditionModeEnabled = false;
+
     this.employment = this.sharedLists.getEmploymentList();
     this.availability = this.sharedLists.getAvailabilityList();
     this.schoolType = this.sharedLists.getSchoolTypes();    
@@ -360,7 +367,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       workPeriodStart: ['', Validators.required],
       workPeriodEnd: [''],
       workPeriodNow: [''],
-      experienceTillNow: [''],
+      experienceTillNow: [''],      
       responsibilities: this.fb.array([
         this.addResponsibilitiesFormArray()
       ])
@@ -369,7 +376,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   public addResponsibilitiesFormArray(): FormGroup {
     return this.fb.group({
-      responsibility: ['', Validators.required]
+      responsibility: ['', Validators.required]      
     });
   }
 
@@ -549,12 +556,16 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.experienceCompleted[i] = false;
     this.experienceEditMode[i] = true;
     this.hideNextExpButton = true;
+    this.experienceEditionModeEnabled = true;
 
     for (let o = 0; o < (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get("occupationArray")).controls.length; o++) {
 
       let startWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
       let finishWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
       let nowWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
+
+      this.baseCVForm.get('experience').disable();
+      (<FormArray>this.baseCVForm.get('experience')).controls[i].enable();
 
       console.log("Start work on edit button click: " + startWork.value + " / " + typeof startWork.value);
       console.log("Finish work on edit button click: " + finishWork.value + " / " + typeof finishWork.value);
@@ -592,6 +603,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       };
     };           
     
+    this.baseCVForm.get('experience').enable();
+    this.experienceEditionModeEnabled = false;
     this.experienceCompleted[i] = true;
     this.experienceEditMode[i] = false;
     this.hideNextExpButton = false;
@@ -645,9 +658,13 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.educationCompleted[e] = false;
     this.educationEditMode[e] = true;
     this.hideNextEduButton = true;
+    this.educationEditionModeEnabled = true;
 
     let startEducation = (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodStart');
     let finishEducation= (<FormArray>this.baseCVForm.get('education')).controls[e].get('educationPeriodEnd');
+
+    this.baseCVForm.get('education').disable();
+    (<FormArray>this.baseCVForm.get('education')).controls[e].enable();
 
     console.log("Start education on edit button click: " + startEducation.value + " / " + typeof startEducation.value);
     console.log("Finish education on edit button click: " + finishEducation.value + " / " + typeof finishEducation.value);
@@ -682,6 +699,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.educationFinishDateFormatted[e] = finishEducation.value;
     };
 
+    this.baseCVForm.get('education').enable();
+    this.educationEditionModeEnabled = false;
     this.educationCompleted[e] = true;
     this.educationEditMode[e] = false;
     this.hideNextEduButton = false;
@@ -734,9 +753,14 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.coursesCompleted[c] = false;
     this.coursesEditMode[c] = true;
     this.hideNextCourseButton = true;
+    this.coursesEditionModeEnabled = true;
 
     let startCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodStart');
     // let finishCourse = (<FormArray>this.baseCVForm.get('courses')).controls[c].get('coursePeriodEnd');
+
+    this.baseCVForm.get('courses').disable();
+    (<FormArray>this.baseCVForm.get('courses')).controls[c].enable();
+    
 
     console.log("Start course on edit button click: " + startCourse.value + " / " + typeof startCourse.value);    
   };
@@ -764,6 +788,8 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     //   this.courseFinishDateFormatted[c] = finishCourse.value;
     // };
 
+    this.baseCVForm.get('courses').enable();
+    this.coursesEditionModeEnabled = false;
     this.coursesCompleted[c] = true;
     this.coursesEditMode[c] = false;
     this.hideNextCourseButton = false;
