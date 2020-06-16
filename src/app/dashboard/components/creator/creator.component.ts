@@ -444,16 +444,17 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.focusOnResp = true;    
   }
 
-  public removeResponsibility(i: number, o: number): void {
-    let newResponsibility = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray;
-    newResponsibility.removeAt(newResponsibility.length - 1);
-    this.focusOnResp = true;    
+  public removeResponsibility(i: number, o: number, x: number): void {
+    let responsibilities = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray;
+    // newResponsibility.removeAt(newResponsibility.length - 1);
+    responsibilities.removeAt(x);
+    this.focusOnResp = true; 
   }
 
   public removeOccupation(i: number, o: number): void {
-    let newOccupation = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray'));
-    newOccupation.removeAt(newOccupation.length - 1);    
-    this.hideNextOccupButton[i][o-1] = false;   
+    let occupations = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray'));
+    occupations.removeAt(o);    
+    // this.hideNextOccupButton[i][o-1] = false;   
   };
 
   public addAdvantagesControls(): FormArray {   //tworzy i zapełnia tablicę baseCVForm.get("advantages")
@@ -2400,7 +2401,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
   ngOnDestroy() {
     this.retrieveBaseCVSubscription$.unsubscribe();
-    this.populateFormSubscription$.unsubscribe();
+    if (this.populateFormSubscription$ !== undefined) {
+      this.populateFormSubscription$.unsubscribe();
+    }    
   };
 
 }

@@ -463,9 +463,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.focusOnResp = true;    
   }
 
-  public removeResponsibility(i: number, o: number): void {
-    let newResponsibility = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray;
-    newResponsibility.removeAt(newResponsibility.length - 1);
+  public removeResponsibility(i: number, o: number, x: number): void {
+    let responsibilities = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('responsibilities') as FormArray;
+    // responsibilities.removeAt(newResponsibility.length - 1);
+    responsibilities.removeAt(x);
     this.focusOnResp = true;    
   }
 
@@ -2201,7 +2202,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   
   ngOnDestroy() {
     this.retrieveBaseCVSubscription$.unsubscribe();
-    this.populateFormSubscription$.unsubscribe();
+    if (this.populateFormSubscription$ !== undefined) {
+      this.populateFormSubscription$.unsubscribe();
+    }  
   };
 
 }

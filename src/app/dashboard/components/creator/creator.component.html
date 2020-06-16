@@ -358,65 +358,61 @@
                             </div>
                             </div>
                           
-                          <div class="form-group row section-row">                        
-                            <div class="col-xl-5">
-                              <div #resp *ngFor="let resp of getResponsibilitiesControls(i, o).controls; let x = index" formArrayName="responsibilities">
-                                <div [formGroupName]="x">
-                                  <input type="text"
-                                         class="form-control mb-3"
-                                         [id]="'responsibilities'+'_'+i+'_'+o+'_'+x"
-                                         placeholder="Zakres obowiązków"
-                                         formControlName="responsibility"
-                                         autocomplete="off"
-                                         respFocus
-                                         [shouldFocus]="focusOnResp"
-                                         (keydown.enter)="addNewResponsibility(i, o)"
-                                         (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
-                                         (mouseout)="clearHints()"
-                                         (focus)="setHints(hoverMessages.zakresObowiazkow)"
-                                         (blur)="clearHints()">
+                            <div class="form-group row section-row">                        
+                              <div class="col-xl-9">
+                                <div #resp *ngFor="let resp of getResponsibilitiesControls(i, o).controls; let x = index" formArrayName="responsibilities">                                  
+                                  <div [formGroupName]="x">
+                                    <div class="form-group row section-row">
+                                      <div class="col-xl-6">
+                                        <input type="text"
+                                            class="form-control mb-3"
+                                            [id]="'responsibilities'+'_'+i+'_'+o+'_'+x"
+                                            placeholder="Zakres obowiązków"
+                                            formControlName="responsibility"
+                                            autocomplete="off"
+                                            respFocus
+                                            [shouldFocus]="focusOnResp"
+                                            (keydown.enter)="addNewResponsibility(i, o)"
+                                            (mouseover)="setHints(hoverMessages.zakresObowiazkow)"
+                                            (mouseout)="clearHints()"
+                                            (focus)="setHints(hoverMessages.zakresObowiazkow)"
+                                            (blur)="clearHints()">                                    
+                                      </div>
+                                      <div class="col-xl-2">
+                                        <button *ngIf="((getResponsibilitiesControls(i, o).length) > 1) && getExperienceControls(i).enabled"
+                                          class="btn btn-sm btn-danger"
+                                          type="button"
+                                          [id]="'removeRespButton'+'_'+i+'_'+o+'_'+x"                                        
+                                          (click)="removeResponsibility(i, o, x)"
+                                          (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                          (mouseout)="clearHints()"
+                                          (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
+                                          (blur)="clearHints()">Usuń
+                                        </button>
+                                      </div>
+                                    </div>                                    
+                                  </div>                                
                                 </div>
-                              </div>
-                            </div>
-                            <div class="col-xl-5">
-                              <button *ngIf="getExperienceControls(i).enabled"
-                                      class="btn btn-info mr-2"
-                                      type="button"
-                                      [id]="'addRespButton'+'_'+i+'_'+o"                                      
-                                      (click)="addNewResponsibility(i, o)"
-                                      (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
-                                      (mouseout)="clearHints()"
-                                      (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
-                                      (blur)="clearHints()">Dodaj obowiązek
-                              </button>
-                              <button *ngIf="((getResponsibilitiesControls(i, o).length) > 1) && getExperienceControls(i).enabled"
-                                      class="btn btn-danger"
-                                      type="button"
-                                      [id]="'removeRespButton'+'_'+i+'_'+o"                                      
-                                      (click)="removeResponsibility(i, o)"
-                                      (mouseover)="setHints(hoverMessages.usunZakresObowiazkow)"
-                                      (mouseout)="clearHints()"
-                                      (focus)="setHints(hoverMessages.usunZakresObowiazkow)"
-                                      (blur)="clearHints()">Usuń obowiązek
-                              </button>
-                            </div>
-                          </div>
+                                <div class="row section-row form-group">
+                                  <div class="col-xl-3">
+                                    <button *ngIf="getExperienceControls(i).enabled"
+                                            class="btn btn-sm btn-info"
+                                            type="button"
+                                            [id]="'addRespButton'+'_'+i+'_'+o"                                        
+                                            (click)="addNewResponsibility(i, o)"
+                                            (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                            (mouseout)="clearHints()"
+                                            (focus)="setHints(hoverMessages.dodajZakresObowiazkow)"
+                                            (blur)="clearHints()">Dodaj obowiązek
+                                    </button>                                    
+                                  </div>
+                                </div>
+                              </div>                              
+                            </div> 
+                          <hr class="mb-3">                          
                           <div class="form-group row section-row">
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty) && (hideNextOccupButton[i][o] === false) && getExperienceControls(i).enabled" 
-                              class="btn btn-info"
-                              type="button"
-                              [id]="'addOccupationButton'+'_'+i+'_'+o"
-                              (click)="addOccupationButtonClick(i, o)"
-                              (mouseover)="setHints(hoverMessages.stanowiskoDodaj)"
-                              (mouseout)="clearHints()"
-                              (focus)="setHints(hoverMessages.stanowiskoDodaj)"
-                              (blur)="clearHints()">Dodaj stanowisko</button>
-                            </div>                                                                                 
-                          </div>
-                          <div class="form-group row section-row">
-                            <div class="col-lg-4">
-                              <button *ngIf="(getOccupation(i).length) > 1 && (hideNextOccupButton[i][o] === false) && getExperienceControls(i).enabled"
+                              <button *ngIf="(getOccupation(i).length) > 1  && getExperienceControls(i).enabled"
                                 class="btn btn-danger"
                                 type="button"
                                 [id]="'removeOccuButton'+'_'+i+'_'+o"
@@ -426,6 +422,19 @@
                                 (focus)="setHints(hoverMessages.stanowiskoUsun)"
                                 (blur)="clearHints()">Usuń stanowisko</button>
                             </div>  
+                          </div>
+                          <div class="form-group row section-row">
+                            <div class="col-lg-4">
+                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty || (getOccupationControls(i, o).get('workPeriodStart').value !== '')) && (o == getOccupation(i).length - 1) && getExperienceControls(i).enabled" 
+                              class="btn btn-info"
+                              type="button"
+                              [id]="'addOccupationButton'+'_'+i+'_'+o"
+                              (click)="addOccupationButtonClick(i, o)"
+                              (mouseover)="setHints(hoverMessages.stanowiskoDodaj)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.stanowiskoDodaj)"
+                              (blur)="clearHints()">Dodaj stanowisko</button>
+                            </div>                                                                                 
                           </div>
                           <br>                         
                         </div>
@@ -437,7 +446,7 @@
                       <!-- <div *ngIf="this.workPeriodCurrentDateIssue[i][o]" class="row">
                         <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodCurrentDateIssueMessage[i]}}</strong></p>
                       </div>                     -->
-                      
+                      <hr class="mb-3">
                       <div *ngIf="experienceCompletionError" class="row">
                         <div class="col-xl-4 mt-2 mb-2">
                           <h5 style="color: red">Proszę uzupełnić powyższe pola!</h5>
