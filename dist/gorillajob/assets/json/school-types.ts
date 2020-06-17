@@ -6,5 +6,21 @@ export const SCHOOL_TYPES = [
   {
     'id':2,
     'value':'Średnia'
-  }  
+  },
+  {
+    'id':3,
+    'value':'Policealna'
+  },  
+  {
+    'id':4,
+    'value':'Zawodowa'
+  },
+  {
+    'id':5,
+    'value':'Gimnazjum'
+  },
+  {
+    'id':6,
+    'value':'Podstawowa'
+  }
 ]

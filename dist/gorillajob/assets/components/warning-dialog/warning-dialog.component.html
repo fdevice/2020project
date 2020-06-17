@@ -1,9 +1,5 @@
 <h1 mat-dialog-title>Aby wygenerować CV, należy obowiązkowo uzupełnić poniższe pola:</h1>
-<div mat-dialog-content>
-  <!-- <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.animal">
-  </mat-form-field> -->
+<div mat-dialog-content>  
   <ul>
     <li *ngFor="let error of data.errors">
         <small>{{ error }}</small>

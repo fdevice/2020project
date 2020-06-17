@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Uwaga!</h1>
+<div mat-dialog-content>  
+  <p style="font-size: 0.97em;">Kliknięcie w przycisk "<strong>Usuń</strong>" spowoduje usunięcie z formularza wskazanego pracodawcy wraz z przypisanymi do niego stanowiskami.</p>
+  <p style="font-size: 0.97em;">Jeżeli chcesz usunąć pojedyncze stanowisko, zamknij ten komunikat, a następnie kliknij w przycisk "Edytuj" pod wybranym pracodawcą.</p>
+  <br>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-flat-button color="warn" [mat-dialog-close]="true">Usuń</button>
+  <button mat-raised-button color="primary" (click)="onCloseClick()"> Zamknij </button>
+</div>

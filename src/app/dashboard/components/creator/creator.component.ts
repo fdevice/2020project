@@ -15,11 +15,13 @@ import { CVDataService } from 'src/assets/services/cv-data.service';
 import { mimeType } from 'src/assets/validators/mime-type.validator';
 import { UserDataService } from '../../services/userData.service';
 import { Router } from '@angular/router';
+import { MessageDialogComponent } from 'src/assets/components/message-dialog/message-dialog.component';
 
 defineLocale('pl', plLocale);
 
 export interface DialogData {
-  errors: string[];
+  errors?: string[];
+  warning?: string;
 }
 
 @Component({
@@ -617,6 +619,29 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     console.log('Tablica experienceCompleted: ' + this.experienceCompleted);
     console.log('Długość tablicy experience: ' + (<FormArray>this.baseCVForm.get('experience')).length);
   }
+
+  public onDeleteExperience(i: number) {
+    let deleteExperience: boolean = false;
+    
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '400px'
+      // data: {message: ''}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      deleteExperience = result;
+
+      if (deleteExperience == true) {
+        (<FormArray>this.baseCVForm.get('experience')).removeAt(i);
+        this.experienceCompleted.splice(i, 1);
+        console.log('Tablica experienceCompleted: ' + this.experienceCompleted);
+        console.log('Długość tablicy experience: ' + (<FormArray>this.baseCVForm.get('experience')).length);
+      } else {
+        return;
+      };
+    });     
+  };
 
   public addEducationButtonClick(e: number): void { 
     
@@ -1486,10 +1511,22 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           if (this.schoolTypeSelected[e] == 1) {
             this.baseCV.schoolTypeIndex[e] = 1;
             this.baseCV.schoolType[e] = "Wyższa"; 
-          } else {
+          } else if (this.schoolTypeSelected[e] == 2) {
             this.baseCV.schoolTypeIndex[e] = 2;
             this.baseCV.schoolType[e] = "Średnia";             
-          };         
+          } else if (this.schoolTypeSelected[e] == 3) {
+            this.baseCV.schoolTypeIndex[e] = 3;
+            this.baseCV.schoolType[e] = "Policealna";             
+          } else if (this.schoolTypeSelected[e] == 4) {
+            this.baseCV.schoolTypeIndex[e] = 4;
+            this.baseCV.schoolType[e] = "Zawodowa";             
+          } else if (this.schoolTypeSelected[e] == 5) {
+            this.baseCV.schoolTypeIndex[e] = 5;
+            this.baseCV.schoolType[e] = "Gimnazjum";             
+          } else {
+            this.baseCV.schoolTypeIndex[e] = 6;
+            this.baseCV.schoolType[e] = "Podstawowa";             
+          };   
       };
     };
 
@@ -1766,9 +1803,21 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           if (this.schoolTypeSelected[e] == 1) {
             this.baseCV.schoolTypeIndex[e] = 1;
             this.baseCV.schoolType[e] = "Wyższa"; 
-          } else {
+          } else if (this.schoolTypeSelected[e] == 2) {
             this.baseCV.schoolTypeIndex[e] = 2;
             this.baseCV.schoolType[e] = "Średnia";             
+          } else if (this.schoolTypeSelected[e] == 3) {
+            this.baseCV.schoolTypeIndex[e] = 3;
+            this.baseCV.schoolType[e] = "Policealna";             
+          } else if (this.schoolTypeSelected[e] == 4) {
+            this.baseCV.schoolTypeIndex[e] = 4;
+            this.baseCV.schoolType[e] = "Zawodowa";             
+          } else if (this.schoolTypeSelected[e] == 5) {
+            this.baseCV.schoolTypeIndex[e] = 5;
+            this.baseCV.schoolType[e] = "Gimnazjum";             
+          } else {
+            this.baseCV.schoolTypeIndex[e] = 6;
+            this.baseCV.schoolType[e] = "Podstawowa";             
           };         
       };
     };

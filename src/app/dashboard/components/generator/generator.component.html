@@ -496,7 +496,8 @@
                           <br>
                         </div>       <!-- Koniec pętli occupation -->                                                                      
                         <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
-                        <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button>
+                        <!-- <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button> -->
+                        <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="onDeleteExperience(i)">Usuń</button>
                       </div>
   
                     <!-- *** -->
@@ -658,7 +659,7 @@
   
                               </div>
                       </div>
-                      <div *ngIf="this.schoolTypeSelected[e] == 2">
+                      <div *ngIf="this.schoolTypeSelected[e] == 2 || (this.schoolTypeSelected[e] == 3) || (this.schoolTypeSelected[e] == 4)">
                           <div class="form-group row section-row">
                               <label *ngIf="(screenInnerWidth > 768)"
                                      [attr.for]="'educationPeriodStart'+e"
@@ -756,6 +757,89 @@
                                         </div>
                        </div>
                       </div>
+
+                      <div *ngIf="(this.schoolTypeSelected[e] == 5) || (this.schoolTypeSelected[e] == 6)">
+                        <div class="form-group row section-row">
+                            <label *ngIf="(screenInnerWidth > 768)"
+                                   [attr.for]="'educationPeriodStart'+e"
+                                   class="col-md-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.okresNauki)"
+                                   (mouseout)="clearHints()"><span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span></label>
+                            <div class="col-lg-4">
+                                <input type="text"
+                                        class="form-control education-date-input"
+                                        [id]="'educationPeriodStart'+e"
+                                        placeholder="Od..."
+                                        formControlName="educationPeriodStart"
+                                        [bsConfig]="DatePickerYearsOnly"
+                                        bsDatepicker
+                                        autocomplete="off"
+                                        (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)"
+                                        (mouseover)="setHints(hoverMessages.okresNaukiOd)"
+                                        (mouseout)="clearHints()"
+                                        (focus)="setHints(hoverMessages.okresNaukiOd)"
+                                        (blur)="clearHints()">
+                            </div>
+                            <div class="col-lg-4">
+                              <input *ngIf="!(getEducationControls(e).get('educationTillNow').value)" type="text"
+                                  class="form-control education-date-input"
+                                  [id]="'educationPeriodEnd'+e"
+                                  placeholder="Do..."
+                                  formControlName="educationPeriodEnd"
+                                  [bsConfig]="DatePickerYearsOnly"
+                                  bsDatepicker
+                                  autocomplete="off"
+                                  (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiDo)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresNaukiDo)"
+                                  (blur)="clearHints()">
+                              <input *ngIf="getEducationControls(e).get('educationTillNow').value" type="text" class="form-control education-date-input" [id]="'educationPeriodNow'+e" formControlName="educationPeriodNow" readonly>
+                            </div>
+                       <div class="col-lg-2">
+                         <div class="form-check now-checkbox">
+                           <input type="checkbox"
+                                  [id]="'educationTillNowCbox'+e"
+                                  class="form-check-input"
+                                  formControlName="educationTillNow"
+                                  (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()"
+                                  (focus)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (blur)="clearHints()">
+                           <label class="form-check-label now-label"
+                                  [attr.for]="'educationTillNowCbox'+e"
+                                  (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
+                                  (mouseout)="clearHints()">Obecnie</label>
+                         </div>
+                       </div>
+                     </div>
+                     <div *ngIf="this.educationEndDateIssue[e]" class="row">
+                       <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationEndDateIssueMessage[e]}}</strong></p>
+                     </div>
+                     <div *ngIf="this.educationCurrentDateIssue[e]" class="row">
+                       <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
+                     </div>
+                      <div class="form-group row section-row">
+                          <!-- <label [attr.for]="'schoolName'+e"
+                                   class="col-xl-1 col-form-label"
+                                   (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
+                                   (mouseout)="clearHints()">Nazwa szkoły:</label> -->
+                            <div class="col-lg-5">
+                                <input type="text"
+                                       class="form-control"
+                                       [id]="'schoolName'+e"
+                                       placeholder="Nazwa szkoły"
+                                       style="font-size: 1.5em; font-weight: 700;"
+                                       formControlName="schoolName"
+                                       autocomplete="off"
+                                       (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
+                                       (mouseout)="clearHints()"
+                                       (focus)="setHints(hoverMessages.nazwaSzkoly)"
+                                       (blur)="clearHints()">
+                            </div>                         
+                     </div>
+                    </div>
   
                       <div *ngIf="educationCompletionError" class="row">
                           <div class="col-xl-4 mt-2 mb-2">

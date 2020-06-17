@@ -39,11 +39,13 @@ import { TopTooltipComponent } from 'src/assets/components/top-tooltip/top-toolt
 import { ElementFocusDirective } from 'src/assets/directives/element-focus.directive';
 import { CreatorComponent } from './dashboard/components/creator/creator.component';
 import { WarningDialogComponent } from 'src/assets/components/warning-dialog/warning-dialog.component';
+import { MessageDialogComponent } from 'src/assets/components/message-dialog/message-dialog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CreatePdfService } from 'src/assets/services/create-pdf.service';
 import { ListsViewerService } from 'src/assets/services/list-viewer.service';
 import { DialogService } from 'src/assets/services/dialog.service';
 import { CanDeactivateGuard } from 'src/assets/guards/can-deactivate-guard';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { CanDeactivateGuard } from 'src/assets/guards/can-deactivate-guard';
     // TopTooltipComponent,
     // ElementFocusDirective,
     // CreatorComponent,
-    WarningDialogComponent
+    WarningDialogComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +98,8 @@ import { CanDeactivateGuard } from 'src/assets/guards/can-deactivate-guard';
   bootstrap: [AppComponent],
   entryComponents: [
     ErrorComponent,
-    WarningDialogComponent
+    WarningDialogComponent,
+    MessageDialogComponent
   ]
 })
 export class AppModule { }
