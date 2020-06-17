@@ -321,7 +321,7 @@ export class CreatePdfService {
         this.document.setFontSize(10);
         this.document.setTextColor(black);
 
-        if (this.schoolProfile === '') {
+        if (this.schoolProfile[e] === '') {
           this.document.text(this.deepMargin + 8, this.fromTop + 8, this.schoolName[e]);
         } else {
           this.document.text(this.deepMargin + 8, this.fromTop + 8, this.schoolName[e] + ' / ' + this.schoolProfile[e]);
