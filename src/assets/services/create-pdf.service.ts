@@ -110,10 +110,10 @@ export class CreatePdfService {
     this.document.text(35, this.fromTop, this.position);
     this.document.setTextColor(black);
     this.document.setFontSize(9);
-    this.document.text(105, this.fromTop, 'Lokalizacja:')
+    this.document.text(120, this.fromTop, 'Lokalizacja:')
     this.document.setTextColor(gray);
     this.document.setFontSize(8);
-    this.document.text(124, this.fromTop, this.location);
+    this.document.text(139, this.fromTop, this.location);
     this.fromTop += 7;
 
     this.document.setTextColor(black);
@@ -124,10 +124,10 @@ export class CreatePdfService {
     this.document.text(35, this.fromTop + 0.15, this.availability);
     this.document.setTextColor(black);
     this.document.setFontSize(9);
-    this.document.text(105, this.fromTop, 'Dyspozycyjność:')
+    this.document.text(120, this.fromTop, 'Dyspozycyjność:')
     this.document.setTextColor(gray);
     this.document.setFontSize(8);
-    this.document.text(130, this.fromTop, this.disposition);
+    this.document.text(145, this.fromTop, this.disposition);
 
     /* 4 scenariusze:
       - samo employment
@@ -146,51 +146,53 @@ export class CreatePdfService {
       this.fromTop += 7;
     }
     else if (this.employment != '' && this.salary != '') {
+      let splitEmployment: any = this.document.splitTextToSize(this.employment, 55);
       this.fromTop += 7;
       this.document.setTextColor(black);
       this.document.setFontSize(9);
       this.document.text(this.deepMargin, this.fromTop, 'Preferowana forma zatrudnienia:');
       this.document.setTextColor(gray);
       this.document.setFontSize(8);
-      this.document.text(66, this.fromTop, this.employment);
-      this.fromTop += 7;
+      this.document.text(66, this.fromTop, splitEmployment);
+      // this.fromTop += 7;
       this.document.setTextColor(black);
       this.document.setFontSize(9);
-      this.document.text(this.deepMargin, this.fromTop, 'Minimalne wynagrodzenie:')
+      this.document.text(120, this.fromTop, 'Oczekiwania finansowe:')
       this.document.setTextColor(gray);
       this.document.setFontSize(8);
-      this.document.text(57, this.fromTop, this.salary);
+      this.document.text(157, this.fromTop, this.salary);
       this.fromTop += 7;
     }
     else if (this.employment === '' && this.salary != '') {
       this.fromTop += 7;
       this.document.setTextColor(black);
       this.document.setFontSize(9);
-      this.document.text(this.deepMargin, this.fromTop, 'Minimalne wynagrodzenie:');
+      this.document.text(this.deepMargin, this.fromTop, 'Oczekiwania finansowe:');
       this.document.setTextColor(gray);
       this.document.setFontSize(8);
-      this.document.text(57, this.fromTop, this.salary);
+      this.document.text(53, this.fromTop, this.salary);
       this.fromTop += 7;
     } else {
       this.fromTop += 7;
     };
 
     // pozioma linia po Warunkach Zatrudnienia
+    this.fromTop += 7;
     this.document.setDrawColor('#CFE6EF');
     this.document.setLineWidth(0.1);
     this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
     this.fromTop += 7;
 
 
-    // STOPKA
-    this.document.setDrawColor('#CFE6EF');
-    this.document.setLineWidth(0.1);
-    this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
+    // // STOPKA
+    // this.document.setDrawColor('#CFE6EF');
+    // this.document.setLineWidth(0.1);
+    // this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
 
-    let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-    this.document.setTextColor(gray);
-    this.document.setFontSize(6);
-    this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
+    // let splitClause: any = this.document.splitTextToSize(this.clause, 270);
+    // this.document.setTextColor(gray);
+    // this.document.setFontSize(6);
+    // this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
 
 
     // DANE OSOBOWE + ZDJĘCIE
@@ -518,21 +520,21 @@ export class CreatePdfService {
     // MOCNE STRONY
     // this.shouldAddNewPage();
 
-    if (this.fromTop >= (this.documentHeight - this.footerHeight - 40)) {
-      this.document.addPage();
-      this.fromTop = 15;
+    // if (this.fromTop >= (this.documentHeight - this.footerHeight - 40)) {
+    //   this.document.addPage();
+    //   this.fromTop = 15;
 
-      // STOPKA
-      this.document.setFontSize(8);
-      this.document.setDrawColor('#CFE6EF');
-      this.document.setLineWidth(0.1);
-      this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
+    //   // STOPKA
+    //   this.document.setFontSize(8);
+    //   this.document.setDrawColor('#CFE6EF');
+    //   this.document.setLineWidth(0.1);
+    //   this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
 
-      let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-      this.document.setTextColor(gray);
-      this.document.setFontSize(6);
-      this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
-      };
+    //   let splitClause: any = this.document.splitTextToSize(this.clause, 270);
+    //   this.document.setTextColor(gray);
+    //   this.document.setFontSize(6);
+    //   this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
+    //   };
 
     this.document.addImage(this.advantagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
     this.document.setTextColor(black);
@@ -581,33 +583,43 @@ export class CreatePdfService {
     // this.fromTop += 9;
 
 
-    // WYMAGANIA REKRUTACYJNE
+    // WYMAGANIA REKRUTACYJNE    
     if (this.requirements[0]) {
+      let splitRequirements: any;           
+      let splitAnswers: any;
+      const reqLineLength = 150;
       this.shouldAddNewPage();
       this.document.setDrawColor('#696969');
       this.document.setLineWidth(0.75);
       this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      this.fromTop += 9;
+      this.fromTop += 11;
       this.document.addImage(this.requirementsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
       this.document.setTextColor(black);
       this.document.setFontSize(this.headerFont + 3);
       this.document.text(this.deepMargin + 2, this.fromTop + 2, 'WYMAGANIA REKRUTACYJNE Z OFERTY');
       this.fromTop += 8;
+      this.document.setFontSize(10);
 
       for (let r = 0; r < this.requirements.length; r++) {
-        if (this.requirements[r] != undefined) {
-          this.document.setFontSize(10);
+        if (this.requirements[r] != undefined) {          
+          splitRequirements = this.document.splitTextToSize(this.requirements[r], reqLineLength);
+          splitAnswers = this.document.splitTextToSize(this.answers[r], reqLineLength);                      
           this.document.setTextColor(black);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
-          this.document.text(this.deepMargin + 23, this.fromTop + 1, this.requirements[r]);
-          this.fromTop += 5;
+          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
+          this.fromTop += 10;
+          this.shouldAddNewPage();
           this.document.setTextColor(gray);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
-          this.document.text(this.deepMargin + 23, this.fromTop + 1, this.answers[r]);
-          this.fromTop += 8;
+          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitAnswers);  
+          splitRequirements = [];
+          splitAnswers = [];       
+
+          this.fromTop += 15;
 
           this.shouldAddNewPage();
-        };
+        };        
+
       };
 
       if (this.fromTop >= (this.documentHeight - this.footerHeight - 15)) {
@@ -628,20 +640,20 @@ export class CreatePdfService {
 
   public shouldAddNewPage() {
     const gray: number = 100;
-    if (this.fromTop >= (this.documentHeight - this.footerHeight - 15)) {
+    if (this.fromTop >= (this.documentHeight - 15)) {
       this.document.addPage();
       this.fromTop = 15;
 
-      // STOPKA
-      this.document.setFontSize(8);
-      this.document.setDrawColor('#CFE6EF');
-      this.document.setLineWidth(0.1);
-      this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
+      // // STOPKA
+      // this.document.setFontSize(8);
+      // this.document.setDrawColor('#CFE6EF');
+      // this.document.setLineWidth(0.1);
+      // this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
 
-      let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-      this.document.setTextColor(gray);
-      this.document.setFontSize(6);
-      this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
+      // let splitClause: any = this.document.splitTextToSize(this.clause, 270);
+      // this.document.setTextColor(gray);
+      // this.document.setFontSize(6);
+      // this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
       };
   }
 
