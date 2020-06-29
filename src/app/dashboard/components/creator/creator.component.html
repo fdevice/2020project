@@ -398,7 +398,8 @@
                                     <button *ngIf="getExperienceControls(i).enabled"
                                             class="btn btn-sm btn-info"
                                             type="button"
-                                            [id]="'addRespButton'+'_'+i+'_'+o"                                        
+                                            [id]="'addRespButton'+'_'+i+'_'+o"  
+                                            [disabled]="getResponsibilitiesControls(i,o).controls[(getResponsibilitiesControls(i, o).length - 1)].get('responsibility').value == undefined || getResponsibilitiesControls(i,o).controls[(getResponsibilitiesControls(i, o).length - 1)].get('responsibility').value == ''"                                    
                                             (click)="addNewResponsibility(i, o)"
                                             (mouseover)="setHints(hoverMessages.dodajZakresObowiazkow)"
                                             (mouseout)="clearHints()"
@@ -408,11 +409,10 @@
                                   </div>
                                 </div>
                               </div>                              
-                            </div> 
-                          <hr class="mb-3">                          
-                          <div class="form-group row section-row">
+                            </div>                                                    
+                          <div *ngIf="(getOccupation(i).length) > 1  && getExperienceControls(i).enabled" class="form-group row section-row">                            
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupation(i).length) > 1  && getExperienceControls(i).enabled"
+                              <button
                                 class="btn btn-danger"
                                 type="button"
                                 [id]="'removeOccuButton'+'_'+i+'_'+o"
@@ -423,9 +423,9 @@
                                 (blur)="clearHints()">Usuń stanowisko</button>
                             </div>  
                           </div>
-                          <div class="form-group row section-row">
+                          <div *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty || (getOccupationControls(i, o).get('workPeriodStart').value !== '')) && (o == getOccupation(i).length - 1) && getExperienceControls(i).enabled" class="form-group row section-row">                            
                             <div class="col-lg-4">
-                              <button *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty || (getOccupationControls(i, o).get('workPeriodStart').value !== '')) && (o == getOccupation(i).length - 1) && getExperienceControls(i).enabled" 
+                              <button 
                               class="btn btn-info"
                               type="button"
                               [id]="'addOccupationButton'+'_'+i+'_'+o"
@@ -453,16 +453,17 @@
                         </div>
                       </div> 
                       <div class="form-group row section-row">
-                        <div class="col-xl-3">                      
-                          <button *ngIf="(getExperienceControls(i).get('employerName').dirty) && !hideNextExpButton && !experienceEditionModeEnabled"
-                          class="btn btn-info"
-                          type="button"
-                          id="addExperienceButton"
-                          (click)="addExperienceButtonClick(i)"
-                          (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
-                          (mouseout)="clearHints()"
-                          (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
-                          (blur)="clearHints()">Dodaj inne miejsce pracy</button>                                        
+                        <div class="col-xl-3">                                              
+                          <button *ngIf="!hideNextExpButton && !experienceEditionModeEnabled"
+                              class="btn btn-info"
+                              type="button"
+                              id="addExperienceButton"
+                              [disabled]="(getExperienceControls(i).get('employerName').pristine) || (getExperienceControls(i).get('employerName').value == '')"
+                              (click)="addExperienceButtonClick(i)"
+                              (mouseover)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                              (mouseout)="clearHints()"
+                              (focus)="setHints(hoverMessages.doswiadczenieZawodoweDodaj)"
+                              (blur)="clearHints()">Dodaj inne miejsce pracy</button>                                        
                           <button *ngIf="experienceEditMode[i]" class="btn btn-success" type="button" (click)="finishExperienceEdition(i)">Zakończ edycję</button>
                         </div> 
                       </div>
@@ -846,10 +847,11 @@
                       </div>
                       <div class="form-group row section-row">
                           <div class="col-xl-6">
-                              <button *ngIf="(getEducationControls(e).get('educationPeriodStart').dirty) && !hideNextEduButton && !educationEditionModeEnabled"
+                              <button *ngIf="!hideNextEduButton && !educationEditionModeEnabled"
                               class="btn btn-info"
                               type="button"
                               id="addEducationButton"
+                              [disabled]="(getEducationControls(e).get('educationPeriodStart').pristine) || (getEducationControls(e).get('educationPeriodStart').value == '')"
                               (click)="addEducationButtonClick(e)"
                               (mouseover)="setHints(hoverMessages.edukacjaDodaj)"
                               (mouseout)="clearHints()"
@@ -874,14 +876,15 @@
                           {{ educationStartDateFormatted[e] }} r. - {{ educationFinishDateFormatted[e]  }} r.
                         </small>
                       </ng-template>
-                      <p *ngIf="this.schoolTypeSelected[e] == 1; else schoolSelected" style="font-size: 16px; margin-bottom: 5px">
+                      <p *ngIf="this.schoolTypeSelected[e] == 1" style="font-size: 16px; margin-bottom: 5px">
                        <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('specialization').value }}
                       </p>
-                      <ng-template #schoolSelected>
-                        <p style="font-size: 16px; margin-bottom: 5px">
-                          <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('classProfile').value }}
-                        </p>
-                      </ng-template>
+                      <p *ngIf="(this.schoolTypeSelected[e] == 2 || this.schoolTypeSelected[e] == 3 || this.schoolTypeSelected[e] == 4)" style="font-size: 16px; margin-bottom: 5px">
+                        <strong> {{ getEducationControls(e).get('schoolName').value }} </strong> / {{ getEducationControls(e).get('specialization').value }}
+                      </p>
+                      <p *ngIf="(this.schoolTypeSelected[e] == 5 || this.schoolTypeSelected[e] == 6)" style="font-size: 16px; margin-bottom: 5px">
+                        <strong> {{ getEducationControls(e).get('schoolName').value }} </strong>
+                      </p>                      
                       <button type="button" *ngIf="!educationEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleEducationEdit(e)">Edytuj</button>
                       <button type="button" *ngIf="!educationEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenEducation(e)">Usuń</button>
                     </div>
@@ -895,8 +898,7 @@
                   <div class="col-xl-12">
                     <h5 class="section-header courses-header mb-3 mt-3"><span class="cv-icon"><i class="fas fa-award mr-3" #headerIcon5></i></span><strong>KURSY I SZKOLENIA</strong></h5>
                   </div>
-                </div>
-                <!-- <div formArrayName="courses" *ngFor="let course of cvForm.get('courses').controls; let c = index"> -->
+                </div>                
                 <div formArrayName="courses" *ngFor="let course of coursesArray.controls; let c = index">
                   <div *ngIf="!this.coursesCompleted[c]">
                     <div [formGroupName]="c">
@@ -921,53 +923,13 @@
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.czasTrwaniaKursuOd)"
                                        (blur)="clearHints()">
-                            </div>
-                              <!-- <div class="col-lg-4">
-                                <input *ngIf="!(getCoursesControls(c).get('courseTillNow').value)" type="text"
-                                    class="form-control courses-date-input"
-                                    [id]="'coursePeriodEnd'+c"
-                                    placeholder="Do..."
-                                    formControlName="coursePeriodEnd"
-                                    [bsConfig]="DatePickerYearsOnly"
-                                    bsDatepicker
-                                    autocomplete="off"
-                                    (ngModelChange)="checkCoursesDate(c); setControlManuallyChanged('courseFinish', c, $event)"
-                                    (mouseover)="setHints(hoverMessages.czasTrwaniaKursuDo)"
-                                    (mouseout)="clearHints()"
-                                    (focus)="setHints(hoverMessages.czasTrwaniaKursuDo)"
-                                    (blur)="clearHints()">
-                                <input *ngIf="getCoursesControls(c).get('courseTillNow').value" type="text" class="form-control courses-date-input" [id]="'coursePeriodNow'+c" formControlName="coursePeriodNow" readonly>
-                              </div> -->
-                              <!-- <div class="col-lg-2">
-                                <div class="form-check now-checkbox">
-                                  <input type="checkbox"
-                                         [id]="'courseTillNowCbox'+c"
-                                         class="form-check-input"
-                                         formControlName="courseTillNow"
-                                         (ngModelChange)="setCourseTillNow(c); checkCoursesDate(c)"
-                                         (mouseover)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
-                                         (mouseout)="clearHints()"
-                                         (focus)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
-                                         (blur)="clearHints()">
-                                  <label class="form-check-label now-label"
-                                         [attr.for]="'courseTillNowCbox'+c"
-                                         (mouseover)="setHints(hoverMessages.czasTrwaniaKursuObecnie)"
-                                         (mouseout)="clearHints()">Obecnie</label>
-                                </div>
-                              </div> -->
-                            </div>
-                            <!-- <div *ngIf="this.coursesEndDateIssue[c]" class="row">
-                              <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesEndDateIssueMessage[c]}}</strong></p>
-                            </div> -->
+                            </div>                              
+                          </div>                            
                             <div *ngIf="this.coursesCurrentDateIssue[c]" class="row">
                               <p class="col-xl-12 lead text-danger ml-2"><strong>{{coursesCurrentDateIssueMessage[c]}}</strong></p>
                             </div>
-                            <div class="form-group row section-row">
-                                <!-- <label [attr.for]="'organizerName'+c"
-                                   class="col-xl-1 col-form-label"
-                                   (mouseover)="setHints(hoverMessages.nazwaOrganizatora)"
-                                   (mouseout)="clearHints()">Nazwa organizatora:</label> -->
-                            <div class="col-xl-5">
+                            <div class="form-group row section-row">                                
+                              <div class="col-xl-5">
                                 <input type="text"
                                        class="form-control"
                                        [id]="'courseName'+c"
@@ -979,11 +941,7 @@
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.nazwaKursu)"
                                        (blur)="clearHints()">
-                            </div>
-                                <!-- <label [attr.for]="'courseName'+c"
-                                       class="col-xl-1 col-form-label"
-                                       (mouseover)="setHints(hoverMessages.specjalizacjaKursu)"
-                                       (mouseout)="clearHints()">Specjalizacja:</label> -->
+                              </div>                                
                                 <div class="col-xl-5">
                                     <input type="text"
                                            class="form-control"
@@ -1006,10 +964,11 @@
                   </div>
                   <div class="form-group row section-row mb-0">
                     <div class="col-xl-6 mb-1">
-                        <button *ngIf="(getCoursesControls(c).get('coursePeriodStart').dirty) && !hideNextCourseButton && !coursesEditionModeEnabled"
+                        <button *ngIf="!hideNextCourseButton && !coursesEditionModeEnabled"
                         class="btn btn-info"
                         type="button"
                         id="addCoursesButton"
+                        [disabled]="(getCoursesControls(c).get('coursePeriodStart').pristine) || (getCoursesControls(c).get('coursePeriodStart').value == '')"
                         (click)="addCoursesButtonClick(c)"
                         (mouseover)="setHints(hoverMessages.kursyDodaj)"
                         (mouseout)="clearHints()"

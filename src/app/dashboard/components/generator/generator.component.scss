@@ -1247,6 +1247,7 @@
   }
 
   .photo-landscape img {
+    object-fit: cover;
     width: auto;
     height: 100%;
   }
@@ -1277,6 +1278,11 @@
   #addLanguagesButton, #removeLanguagesButton,
   #addRespButton, #removeRespButton {
     margin: 0 3px;
+  }
+
+  #addExperienceButton[disabled], #addEducationButton[disabled], #addCoursesButton[disabled] {
+    background-color: silver !important;  
+    border: none;    
   }
   
   hr.style8 {

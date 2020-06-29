@@ -1735,7 +1735,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
           //   this.workPeriodCurrentDateIssue[e] = false;
 
           (<FormArray>this.cvForm.get('experience')).controls[e].get('employerName').markAsDirty();  
+          this.experienceCompleted[e] = true;
           this.hideNextExpButton = false;
+
+          (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());  
        }                      
       }; // koniec doświadczenia zawodowego
 
@@ -1802,6 +1805,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
             this.educationEndDateIssue[e] = false;
             this.educationCurrentDateIssue[e] = false;
             (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').markAsDirty(); 
+
+            this.educationCompleted[e] = true;
+          (<FormArray>this.cvForm.get('education')).push(this.addEducationFormGroup());
   
           };                  
         }; // koniec edukacji
@@ -1809,20 +1815,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
           // KURSY
           coursesFromDatabase = CVData.data.baseCVData.courses;
           console.log(coursesFromDatabase);                
-          if (coursesFromDatabase.length > 0) { 
-          
-            // if (coursesFromDatabase[0][0].courseFinish != "obecnie") {               
-    
-            //   ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
-            //   this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;  
-            //   ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodEnd').patchValue(coursesFromDatabase[0][0].courseFinish));
-            //   this.courseFinishDateFormatted[0] = coursesFromDatabase[0][0].courseFinish;          
-            // } else {
-              ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
-              this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;   
-              // this.courseTillNowSelected[0] = true; 
-              // this.setCourseTillNow(0);          
-            // };               
+          if (coursesFromDatabase.length > 0) {           
+            
+            ((<FormArray>this.cvForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
+            this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;                               
   
             ((<FormArray>this.cvForm.get('courses')).controls[0].get('courseName').patchValue(coursesFromDatabase[0][0].courseName));
             ((<FormArray>this.cvForm.get('courses')).controls[0].get('courseSubject').patchValue(coursesFromDatabase[0][0].courseSubject));               
@@ -1837,26 +1833,20 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
               
               if ((<FormArray>this.cvForm.get('courses')).length < coursesFromDatabase.length) {
                 (<FormArray>this.cvForm.get('courses')).push(this.addCoursesFormGroup());  
-              };                                  
-    
-            // if (coursesFromDatabase[c][0].courseFinish !== "obecnie") {
-            //   ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
-            //   this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;  
-            //   ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodEnd').patchValue(coursesFromDatabase[c][0].courseFinish));
-            //   this.courseFinishDateFormatted[c] = coursesFromDatabase[c][0].courseFinish;  
-            // } else {
-              ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
-              this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;   
-            //   this.courseTillNowSelected[c] = true; 
-            //   this.setCourseTillNow(c);           
-            // };              
-  
-            ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').patchValue(coursesFromDatabase[c][0].courseName));
-            ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseSubject').patchValue(coursesFromDatabase[c][0].courseSubject));    
+              };                                   
             
-            // this.coursesEndDateIssue[c] = false;
-            this.coursesCurrentDateIssue[c] = false;
-            (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').markAsDirty(); 
+              ((<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').patchValue(coursesFromDatabase[c][0].courseStart));
+              this.courseStartDateFormatted[c] = coursesFromDatabase[c][0].courseStart;                            
+  
+              ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseName').patchValue(coursesFromDatabase[c][0].courseName));
+              ((<FormArray>this.cvForm.get('courses')).controls[c].get('courseSubject').patchValue(coursesFromDatabase[c][0].courseSubject));    
+            
+              // this.coursesEndDateIssue[c] = false;
+              this.coursesCurrentDateIssue[c] = false;
+              (<FormArray>this.cvForm.get('courses')).controls[c].get('coursePeriodStart').markAsDirty(); 
+
+              this.coursesCompleted[c] = true;     
+              (<FormArray>this.cvForm.get('courses')).push(this.addCoursesFormGroup());  
     
             };
           
@@ -1907,8 +1897,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         userPhotoWidth = userPhotoWidth * 0.75; 
       } else if (this.screenInnerWidth < 850 && this.screenInnerWidth >= 769) { 
         userPhotoWidth = userPhotoWidth * 0.8; 
-      } else if (this.screenInnerWidth < 769 && this.screenInnerWidth >= 720) { 
-        userPhotoWidth = userPhotoWidth * 0.4; 
+      } else if (this.screenInnerWidth < 769 && this.screenInnerWidth >= 750) { 
+        userPhotoWidth = userPhotoWidth * 0.55; 
+      } else if (this.screenInnerWidth < 750 && this.screenInnerWidth >= 720) { 
+        userPhotoWidth = userPhotoWidth * 0.6;
       } else if (this.screenInnerWidth < 720 && this.screenInnerWidth >= 630) {
         userPhotoWidth = userPhotoWidth * 0.45; 
       } else if (this.screenInnerWidth < 630 && this.screenInnerWidth >= 580) { 
