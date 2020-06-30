@@ -127,6 +127,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   coursesCompleted: boolean[];
   coursesEditMode: boolean[] = new Array(30);
   defaultClause: string;
+  addClause: boolean;
   errorHandler: boolean = false;
   experienceCompletionError: boolean = false;
   educationCompletionError: boolean = false;
@@ -157,10 +158,12 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   employmentSectionValid: boolean = false;
   personalDataSectionValid: boolean = false;
   educationSectionValid: boolean = false;
+  languagesValid: boolean;
+  languagesError: boolean[] = new Array();
   advantagesSectionValid: boolean = false;
   hobbySectionValid: boolean = false;
   uploadedImageValid: boolean = false;
-  clauseValid: boolean = false;
+  // clauseValid: boolean = false;
   baseURL: boolean;
   formErrors: string[] = new Array();
 
@@ -239,7 +242,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.hoverMessages = this.hoverHints.setHintMessage();    
 
     this.localeService.use('pl');
-    this.defaultClause = "Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu tej oraz przyszłych rekrutacji (zgodnie z ustawą z dnia 10 maja 2018 roku o ochronie danych osobowych (Dz. U. z 2018, poz. 1000) oraz zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (RODO)."
+    this.defaultClause = "Zgadzam się na przetwarzanie moich danych osobowych zawartych w zgłoszeniu rekrutacyjnym dla celów obecnej i przyszłych rekrutacji.";
+    this.addClause = false;
 
     this.currentHint = '';        //treść "podpowiadałki"
     this.currentTopHint = '';
@@ -323,7 +327,8 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       requirements: this.fb.array([
         this.addRequirementsFormGroup()
       ]),
-      clause: [this.defaultClause, Validators.required]        
+      addClause: [this.addClause],
+      clause: [{value: this.defaultClause, disabled: true}]        
     });
 
     this.loggedUser = this.userDataService.getLoggedAs(); 
@@ -1254,7 +1259,22 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     };
   };  
 
+  public onAddClause() {
+    this.addClause = !this.addClause;
+    console.log(this.addClause);
+    if (this.addClause) {
+      this.cvForm.get("clause").enable();
+    } else {
+      this.cvForm.get("clause").disable();
+    };
+  };
+
   public checkFormValidity() {
+
+    this.PDF.totalLanguagesLength = (<FormArray>this.cvForm.get('languages')).length;
+
+     
+
     let position = this.cvForm.get('position');
     let location = this.cvForm.get('location');
     let availability = this.cvForm.get('availability');
@@ -1264,8 +1284,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     let email = this.cvForm.get('email');
     let phone = this.cvForm.get('phone');
     let education = (<FormArray>this.cvForm.get('education'));
+
     let hobby = this.cvForm.get('hobbies');
-    let clause = this.cvForm.get('clause');
+    // let clause = this.cvForm.get('clause');
 
     this.employmentSectionValid = (position.valid && location.valid && availability.valid && disposition.valid) ? true : false;
     this.personalDataSectionValid = (name.valid && surname.valid && email.valid && phone.valid) ? true : false;
@@ -1273,7 +1294,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.educationSectionValid = (education.controls[0].get('schoolType').valid && education.controls[0].get('educationPeriodStart').valid && education.controls[0].get('schoolName').valid) ? true : false;
     this.advantagesSectionValid = (!this.advantagesError && this.selectedAdvantagesValues != undefined) ? true : false;
     this.hobbySectionValid = (hobby.valid) ? true : false;
-    this.clauseValid = (clause.valid) ? true : false;
+    // this.clauseValid = (clause.valid) ? true : false;
 
     if (!position.valid) {
       this.formErrors.push('Stanowisko');
@@ -1285,7 +1306,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       this.formErrors.push('Dostępność');
     };
     if (!disposition.valid) {
-      this.formErrors.push('Dyspozycyjność');
+      this.formErrors.push('Wymiar pracy');
     };
     if (!name.valid) {
       this.formErrors.push('Imię');
@@ -1317,9 +1338,26 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     if (!hobby.valid) {
       this.formErrors.push('Zainteresowania');
     };
-    if (!clause.valid) {
-      this.formErrors.push('Treść klauzuli');
-    };
+    // if (!clause.valid) {
+    //   this.formErrors.push('Treść klauzuli');
+    // };
+
+    for (let l = 0; l < (<FormArray>this.cvForm.get('languages')).length; l++) {
+      if ((<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value !== '' && ((<FormArray>this.cvForm.get('languages')).controls[l].get('level').value === '' || (<FormArray>this.cvForm.get('languages')).controls[l].get('level').value === undefined)) {
+         
+        if (((<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value !== '')) {
+          this.formErrors.push('Uzupełnij poziom umiejętności języka: ' + (<FormArray>this.cvForm.get('languages')).controls[l].get('otherLanguage').value);
+          this.languagesError[l] = true;
+        } else {
+          this.formErrors.push('Uzupełnij poziom umiejętności języka: ' + (<FormArray>this.cvForm.get('languages')).controls[l].get('languageName').value);
+          this.languagesError[l] = true;
+        };                 
+      } else {
+        this.languagesError[l] = false;
+      };
+    };    
+
+    this.languagesValid = this.languagesError.every((error)=> {return error == false});   // Zwraca true, jeśli każdy element tablicy languagesError jest równy false
 
     console.log(this.formErrors);
 
@@ -1327,7 +1365,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.formValid = (this.employmentSectionValid && this.personalDataSectionValid
                       && this.uploadedImageValid && this.educationSectionValid
                       && this.advantagesSectionValid && this.hobbySectionValid
-                      && this.clauseValid) ? true : false;
+                      && this.languagesValid) ? true : false;
 
 
     // if (this.employmentSectionValid && this.personalDataSectionValid && this.educationSectionValid && this.advantagesSectionValid && this.hobbySectionValid && this.uploadedImageValid) {
@@ -1865,6 +1903,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
     this.checkFormValidity();
 
+    console.log("Form is valid?: " + this.formValid);
+    console.log("Languages valis?: " + this.languagesValid);
+
     if (this.formValid) {
 
       this.isLoading = true;
@@ -2206,7 +2247,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       };
 
       // KLAUZULA
-      this.PDF.clause = this.cvForm.get('clause').value;
+      if (this.addClause) {
+        this.PDF.clause = this.cvForm.get('clause').value;
+      };      
 
       setTimeout(() => this.PDF.generatePDF(), 300);
       this.isLoading = false;

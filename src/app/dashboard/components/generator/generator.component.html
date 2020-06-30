@@ -1475,14 +1475,35 @@
                   </div>
                 </div>
                 <div class="form-group section-row row">
+                  <div class="col-4">
+                    <div class="form-check now-checkbox">
+                      <input type="checkbox"
+                             formControlName="addClause"
+                             id="addClause"
+                             class="form-check-input"                             
+                             (mouseover)="setHints(hoverMessages.dodajKlauzule)"
+                             (mouseout)="clearHints()"
+                             (focus)="setHints(hoverMessages.dodajKlauzule)"
+                             (blur)="clearHints()"
+                             [(ngModel)]="addClause"
+                             (click)="onAddClause()">
+                      <label class="form-check-label"
+                             style="padding-top: 0.1em;"
+                             for="addClause"
+                             (mouseover)="setHints(hoverMessages.dodajKlauzule)"
+                             (mouseout)="clearHints()">Załącz poniższą klauzulę</label>
+                    </div>      
+                  </div>
+                </div>
+                <div class="form-group section-row row">
                   <div class="col-11">
                         <textarea formControlName="clause"
                                   type="text"
                                   id="clause"
                                   class="form-control"
-                                  rows="6"
+                                  rows="3"
                                   maxlength="1000"
-                                  autocomplete="off"
+                                  autocomplete="off"                                  
                                   [value]="defaultClause"
                                   (input)="defaultClause = $event.target.value"
                                   (mouseover)="setHints(hoverMessages.klauzula)"
