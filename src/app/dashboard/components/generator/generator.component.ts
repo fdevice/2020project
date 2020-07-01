@@ -1215,7 +1215,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     
   };
 
-  public checkEducationDate(e: number) {
+  public checkEducationDate(e: number) {   // sprawdzanie poprawności daty (tymczasowo wyłączone)
     let today = new Date();
     let startDate = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodStart').value;
     let endDate = (<FormArray>this.cvForm.get('education')).controls[e].get('educationPeriodEnd').value;

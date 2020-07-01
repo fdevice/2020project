@@ -557,7 +557,7 @@
                                 (focus)="setHints(hoverMessages.okresNaukiOd)"
                                 (blur)="clearHints()"
                                 autocomplete="off"
-                                (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)">
+                                (ngModelChange)="setControlManuallyChanged('educationStart', e, $event)">
                      </div>
                      <div class="col-lg-4">
                         <input *ngIf="!(getEducationControls(e).get('educationTillNow').value)" type="text"
@@ -572,7 +572,7 @@
                                (focus)="setHints(hoverMessages.okresNaukiDo)"
                                (blur)="clearHints()"
                                autocomplete="off"
-                               (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)">
+                               (ngModelChange)="setControlManuallyChanged('educationFinish', e, $event)">
                          <input *ngIf="getEducationControls(e).get('educationTillNow').value" type="text" class="form-control education-date-input" [id]="'educationPeriodNow'+e" formControlName="educationPeriodNow" readonly>
                        </div>
                        <div class="col-lg-2">
@@ -585,7 +585,7 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.okresNaukiObecnie)"
                                   (blur)="clearHints()"
-                                  (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)">
+                                  (ngModelChange)="setEducationTillNow(e)">
                            <label class="form-check-label now-label"
                                   [attr.for]="'educationTillNowCbox'+e"
                                   (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
@@ -674,7 +674,7 @@
                                         [bsConfig]="DatePickerYearsOnly"
                                         bsDatepicker
                                         autocomplete="off"
-                                        (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)"
+                                        (ngModelChange)="setControlManuallyChanged('educationStart', e, $event)"
                                         (mouseover)="setHints(hoverMessages.okresNaukiOd)"
                                         (mouseout)="clearHints()"
                                         (focus)="setHints(hoverMessages.okresNaukiOd)"
@@ -689,7 +689,7 @@
                                   [bsConfig]="DatePickerYearsOnly"
                                   bsDatepicker
                                   autocomplete="off"
-                                  (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)"
+                                  (ngModelChange)="setControlManuallyChanged('educationFinish', e, $event)"
                                   (mouseover)="setHints(hoverMessages.okresNaukiDo)"
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.okresNaukiDo)"
@@ -702,7 +702,7 @@
                                   [id]="'educationTillNowCbox'+e"
                                   class="form-check-input"
                                   formControlName="educationTillNow"
-                                  (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)"
+                                  (ngModelChange)="setEducationTillNow(e)"
                                   (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.okresNaukiObecnie)"
@@ -773,7 +773,7 @@
                                       [bsConfig]="DatePickerYearsOnly"
                                       bsDatepicker
                                       autocomplete="off"
-                                      (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationStart', e, $event)"
+                                      (ngModelChange)="setControlManuallyChanged('educationStart', e, $event)"
                                       (mouseover)="setHints(hoverMessages.okresNaukiOd)"
                                       (mouseout)="clearHints()"
                                       (focus)="setHints(hoverMessages.okresNaukiOd)"
@@ -788,7 +788,7 @@
                                 [bsConfig]="DatePickerYearsOnly"
                                 bsDatepicker
                                 autocomplete="off"
-                                (ngModelChange)="checkEducationDate(e); setControlManuallyChanged('educationFinish', e, $event)"
+                                (ngModelChange)="setControlManuallyChanged('educationFinish', e, $event)"
                                 (mouseover)="setHints(hoverMessages.okresNaukiDo)"
                                 (mouseout)="clearHints()"
                                 (focus)="setHints(hoverMessages.okresNaukiDo)"
@@ -801,7 +801,7 @@
                                 [id]="'educationTillNowCbox'+e"
                                 class="form-check-input"
                                 formControlName="educationTillNow"
-                                (ngModelChange)="setEducationTillNow(e); checkEducationDate(e)"
+                                (ngModelChange)="setEducationTillNow(e)"
                                 (mouseover)="setHints(hoverMessages.okresNaukiObecnie)"
                                 (mouseout)="clearHints()"
                                 (focus)="setHints(hoverMessages.okresNaukiObecnie)"
@@ -868,12 +868,12 @@
                   <div id="education-completed" *ngIf="(this.educationCompleted[e] == true)" class="mb-4 ml-4">
                       <small *ngIf="(getEducationControls(e).get('educationTillNow')).value; else educationCompletedDate" class="text-muted">
                         <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ educationStartDateFormatted[e] }} r. - obecnie
+                          {{ educationStartDateFormatted[e] }} - obecnie
                       </small>
                       <ng-template #educationCompletedDate>
                         <small class="text-muted">
                           <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                          {{ educationStartDateFormatted[e] }} r. - {{ educationFinishDateFormatted[e]  }} r.
+                          {{ educationStartDateFormatted[e] }} - {{ educationFinishDateFormatted[e]  }}
                         </small>
                       </ng-template>
                       <p *ngIf="this.schoolTypeSelected[e] == 1" style="font-size: 16px; margin-bottom: 5px">
@@ -986,7 +986,7 @@
                     <!-- <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted"> -->
                     <small class="text-muted">
                       <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                        {{ courseStartDateFormatted[c] }} r.
+                        {{ courseStartDateFormatted[c] }}
                     </small>
                     <!-- <ng-template #courseCompletedDate>
                       <small class="text-muted">

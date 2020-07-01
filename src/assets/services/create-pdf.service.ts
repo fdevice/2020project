@@ -94,6 +94,7 @@ export class CreatePdfService {
     this.document.addFileToVFS("OpenSans-Regular.ttf", base64Fonts.openSansFont);
     this.document.addFont('OpenSans-Regular.ttf', 'openSans', 'normal');
     this.document.addFont('OpenSans-Regular.ttf', 'openSansBold', 'bold');
+    this.document.addFont('OpenSans-Regular.ttf', 'openSansItalic', 'italic');
     this.document.setFont('openSans');
     this.document.setFontSize(this.headerFont);
 
@@ -181,18 +182,7 @@ export class CreatePdfService {
     this.document.setDrawColor('#CFE6EF');
     this.document.setLineWidth(0.1);
     this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-    this.fromTop += 7;
-
-
-    // // STOPKA
-    // this.document.setDrawColor('#CFE6EF');
-    // this.document.setLineWidth(0.1);
-    // this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
-
-    // let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-    // this.document.setTextColor(gray);
-    // this.document.setFontSize(6);
-    // this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
+    this.fromTop += 7;   
 
 
     // DANE OSOBOWE + ZDJĘCIE
@@ -203,8 +193,14 @@ export class CreatePdfService {
     this.document.text(65, this.fromTop + 26, this.surname);
     this.document.setTextColor(gray);
     this.document.setFontSize(9);
-    this.document.text(65, this.fromTop + 35, this.email);
-    this.document.text(140, this.fromTop + 35, 'Nr telefonu: ' + this.phone);
+    if (this.email.length > 35) {
+      this.document.text(65, this.fromTop + 35, 'e-mail: ' + this.email);
+      this.document.text(65, this.fromTop + 40, 'telefon: ' + this.phone);
+    } else {
+      this.document.text(65, this.fromTop + 35, 'e-mail: ' + this.email);
+      this.document.text(140, this.fromTop + 35, 'telefon: ' + this.phone);
+    };
+    
     this.fromTop += 50;
 
     // pozioma linia po Danych Osobowych
@@ -247,7 +243,7 @@ export class CreatePdfService {
             this.document.setFontSize(9);
             this.document.setTextColor(black);
             this.document.text(this.deepMargin + 16, this.fromTop + 7, this.occupationArray[i][o][0].occupation);
-            this.document.setFontSize(7);
+            this.document.setFontSize(8);
             this.fromTop += 10;
 
             for (let j = 0; j < this.occupationArray[i][o][0].responsibilities.length; j++) {      
@@ -316,9 +312,9 @@ export class CreatePdfService {
         this.document.setFontSize(8);
         this.document.setTextColor(gray);
         if (this.finishEducation[e] === 'obecnie') {
-          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' r. - ' + this.finishEducation[e]);
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' - ' + this.finishEducation[e]);
         } else {
-          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' r. - ' + this.finishEducation[e] + ' r.');
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startEducation[e] + ' - ' + this.finishEducation[e]);
         };        
         this.document.setFontSize(10);
         this.document.setTextColor(black);
@@ -357,9 +353,8 @@ export class CreatePdfService {
 
           this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
           this.document.setFontSize(8);
-          this.document.setTextColor(gray);
-          // this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c] + ' - ' + this.finishCourse[c]);
-          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c] + ' r.');
+          this.document.setTextColor(gray);          
+          this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startCourse[c]);
           this.document.setFontSize(10);
           this.document.setTextColor(black);
 
@@ -607,7 +602,7 @@ export class CreatePdfService {
           this.document.setTextColor(black);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
           this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
-          this.fromTop += 10;
+          this.fromTop += 8;
           this.shouldAddNewPage();
           this.document.setTextColor(gray);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
@@ -615,21 +610,27 @@ export class CreatePdfService {
           splitRequirements = [];
           splitAnswers = [];       
 
-          this.fromTop += 15;
+          this.fromTop += 10;
 
           this.shouldAddNewPage();
-        };        
+        };      
+      };      
+    };    
 
-      };
-
-      if (this.fromTop >= (this.documentHeight - this.footerHeight - 15)) {
+    // STOPKA
+      if (this.clause != '' && this.clause != undefined) {
+        this.fromTop += 10;
+        this.document.setFontSize(8);        
         this.document.setDrawColor('#696969');
-        this.document.setLineWidth(0.75);
+        this.document.setLineWidth(0.1);        
+        this.document.setTextColor(black);
         this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      }
-    };
 
-    this.document.setFontSize(8);
+        let splitClause: any = this.document.splitTextToSize(this.clause, 200);                   
+        this.document.text(this.leftMargin, this.fromTop + 7, splitClause);
+      };      
+
+    this.document.setFontSize(8);    
 
     // window.open(this.document.output('bloburl'), '_blank');
 
@@ -642,19 +643,8 @@ export class CreatePdfService {
     const gray: number = 100;
     if (this.fromTop >= (this.documentHeight - 15)) {
       this.document.addPage();
-      this.fromTop = 15;
-
-      // // STOPKA
-      // this.document.setFontSize(8);
-      // this.document.setDrawColor('#CFE6EF');
-      // this.document.setLineWidth(0.1);
-      // this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
-
-      // let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-      // this.document.setTextColor(gray);
-      // this.document.setFontSize(6);
-      // this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
-      };
+      this.fromTop = 15;      
+    };
   }
 
 }
