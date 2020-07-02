@@ -146,7 +146,7 @@ export class CreatePdfService {
       this.document.text(66, this.fromTop, this.employment);
       this.fromTop += 7;
     }
-    else if (this.employment != '' && this.salary != '') {
+    else if (this.employment != '' && this.salary != '' && this.salary != undefined) {
       let splitEmployment: any = this.document.splitTextToSize(this.employment, 55);
       this.fromTop += 7;
       this.document.setTextColor(black);
@@ -164,14 +164,14 @@ export class CreatePdfService {
       this.document.text(157, this.fromTop, this.salary);
       this.fromTop += 7;
     }
-    else if (this.employment === '' && this.salary != '') {
+    else if (this.employment === '' && this.salary != '' && this.salary != undefined) {
       this.fromTop += 7;
       this.document.setTextColor(black);
       this.document.setFontSize(9);
       this.document.text(this.deepMargin, this.fromTop, 'Oczekiwania finansowe:');
       this.document.setTextColor(gray);
       this.document.setFontSize(8);
-      this.document.text(53, this.fromTop, this.salary);
+      this.document.text(53, this.fromTop, this.salary);      
       this.fromTop += 7;
     } else {
       this.fromTop += 7;
