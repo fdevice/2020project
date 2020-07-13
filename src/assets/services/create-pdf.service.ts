@@ -14,7 +14,7 @@ export class CreatePdfService {
   deepMargin: number = 16;
   documentWidth: number = 210;
   documentHeight: number = 297;
-  footerHeight: number = 20;
+  footerHeight: number = 16;
   headerFont: number = 14;
 
   position: string;
@@ -81,6 +81,8 @@ export class CreatePdfService {
   requirementsHeaderIcon: any = '';
 
   fromTop: number;
+  skillsFromTop: number;
+  hobbiesFromTop: number;
 
   document = new jsPDF('p', 'mm', 'a4');
 
@@ -364,7 +366,7 @@ export class CreatePdfService {
             this.document.text(this.deepMargin + 8, this.fromTop + 8, this.courseName[c] + ' / ' + this.courseSubject[c]);
           };
 
-          this.fromTop += 12;
+          this.fromTop += 14;
 
           this.shouldAddNewPage();
         };
@@ -374,18 +376,77 @@ export class CreatePdfService {
       this.document.setDrawColor('#CFE6EF');
       this.document.setLineWidth(0.1);
       this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      this.fromTop += 9;
+      this.fromTop += 12;
     };
 
 
-    // JĘZYKI OBCE
-    if (this.languageName[0]) {
+    // // JĘZYKI OBCE
+    // if (this.languageName[0]) {
+    //   this.shouldAddNewPage();
+    //   this.document.addImage(this.languagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
+    //   this.document.setTextColor(black);
+    //   this.document.setFontSize(this.headerFont + 3);
+    //   this.document.text(this.deepMargin + 2, this.fromTop + 2, 'JĘZYKI OBCE');
+    //   this.fromTop += 7;
+
+    //   // this.shouldAddNewPage();
+    //   this.document.setFontSize(10);
+    //   this.document.setTextColor(black);
+    //   this.document.text(this.deepMargin, this.fromTop + 3, this.languageName[0] + ' ' + this.languageLevel[0]);
+    //   this.document.setFontSize(7);
+    //   this.document.setTextColor(gray);
+
+    //   let splitDescription: any = this.document.splitTextToSize(this.languageDescription[0], 100);
+
+    //   this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
+    //   this.fromTop += 14;
+
+    //   this.shouldAddNewPage();
+
+    //   for (let l = 1; l < this.totalLanguagesLength; l++) {
+
+    //     if (this.languageName[l] != undefined) {
+
+    //       // this.shouldAddNewPage();
+    //       this.document.setFontSize(10);
+    //       this.document.setTextColor(black);
+    //       this.document.text(this.deepMargin, this.fromTop + 3, this.languageName[l] + ' ' + this.languageLevel[l]);
+    //       this.document.setFontSize(7);
+    //       this.document.setTextColor(gray);
+
+    //       let splitDescription: any = this.document.splitTextToSize(this.languageDescription[l], 100);
+
+    //       this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
+    //       this.fromTop += 14;
+
+    //       this.shouldAddNewPage();
+    //     };
+    //   };
+
+    //   // // pozioma linia po Językach Obcych
+    //   // this.document.setDrawColor('#CFE6EF');
+    //   // this.document.setLineWidth(0.1);
+    //   // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+    //   // this.fromTop += 9;
+    // };
+
+    // JĘZYKI OBCE + UMIEJĘTNOŚCI
+    if (this.languageName[0] && this.languageName[0] != undefined) {
       this.shouldAddNewPage();
       this.document.addImage(this.languagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
       this.document.setTextColor(black);
       this.document.setFontSize(this.headerFont + 3);
       this.document.text(this.deepMargin + 2, this.fromTop + 2, 'JĘZYKI OBCE');
+
+      if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
+        this.document.addImage(this.skillsHeaderIcon, 'PNG', 110, this.fromTop - 5, 9, 9);
+        this.document.setTextColor(black);
+        this.document.setFontSize(this.headerFont + 3);      
+        this.document.text(120, this.fromTop + 2, 'UMIEJĘTNOŚCI');
+      };           
+
       this.fromTop += 7;
+      this.skillsFromTop = this.fromTop;
 
       // this.shouldAddNewPage();
       this.document.setFontSize(10);
@@ -394,7 +455,7 @@ export class CreatePdfService {
       this.document.setFontSize(7);
       this.document.setTextColor(gray);
 
-      let splitDescription: any = this.document.splitTextToSize(this.languageDescription[0], 150);
+      let splitDescription: any = this.document.splitTextToSize(this.languageDescription[0], 80);
 
       this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
       this.fromTop += 14;
@@ -412,7 +473,7 @@ export class CreatePdfService {
           this.document.setFontSize(7);
           this.document.setTextColor(gray);
 
-          let splitDescription: any = this.document.splitTextToSize(this.languageDescription[l], 150);
+          let splitDescription: any = this.document.splitTextToSize(this.languageDescription[l], 80);
 
           this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
           this.fromTop += 14;
@@ -421,95 +482,201 @@ export class CreatePdfService {
         };
       };
 
-      // pozioma linia po Językach Obcych
-      this.document.setDrawColor('#CFE6EF');
-      this.document.setLineWidth(0.1);
-      this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      this.fromTop += 9;
-    };
+      // // pozioma linia po Językach Obcych
+      // this.document.setDrawColor('#CFE6EF');
+      // this.document.setLineWidth(0.1);
+      // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+      // this.fromTop += 9;
 
-
-
-    // UMIEJĘTNOŚCI
+      // UMIEJĘTNOŚCI
     if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
-      this.shouldAddNewPage();
-      this.document.addImage(this.skillsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-      this.document.setTextColor(black);
-      this.document.setFontSize(this.headerFont + 3);
-      this.document.text(this.deepMargin + 2, this.fromTop + 2, 'UMIEJĘTNOŚCI');
-      this.fromTop += 7;
+      // this.shouldAddNewPage();
+      // // this.document.addImage(this.skillsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
+      // this.document.addImage(this.skillsHeaderIcon, 'PNG', 120, this.fromTop - 5, 9, 9);
+      // this.document.setTextColor(black);
+      // this.document.setFontSize(this.headerFont + 3);
+      // // this.document.text(this.deepMargin + 2, this.fromTop + 2, 'UMIEJĘTNOŚCI');
+      // this.document.text(124, this.fromTop + 2, 'UMIEJĘTNOŚCI');
+      // this.fromTop += 7;
 
+      // (wzór umiejętności)
+      // if (this.drivingLicence != undefined) {
+      //   let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
+      //   this.document.setFontSize(10);
+      //   this.document.setTextColor(black);
+      //   this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
+      //   this.fromTop += 5;
+      //   this.shouldAddNewPage();
+      // };
+    
+      
       if (this.drivingLicence != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3, splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.computerPrograms != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.programmingLanguages != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Znane języki programowania: ' + this.programmingLanguages, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Języki programowania: ' + this.programmingLanguages, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.devices != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.permissions != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 90);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.regulations != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Znane ustawy i przepisy: ' + this.regulations, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Ustawy i przepisy: ' + this.regulations, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
       if (this.otherSkills != undefined) {
-        let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 150);
-        this.document.setFontSize(10);
+        let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 80);
+        this.document.setFontSize(9);
         this.document.setTextColor(black);
-        this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-        this.fromTop += 5;
+        this.document.text(120, this.skillsFromTop + 3,  splitDescription);
+        this.skillsFromTop += 6;
         this.shouldAddNewPage();
       };
 
-      this.fromTop += 5;
+      // this.fromTop += 5;
 
       // pozioma linia po Umiejętnościach
-      this.document.setDrawColor('#CFE6EF');
-      this.document.setLineWidth(0.1);
-      this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      this.fromTop += 9;
+      // this.document.setDrawColor('#CFE6EF');
+      // this.document.setLineWidth(0.1);
+      // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+      // this.fromTop += 9;
     };
+
+    } else {
+
+            // UMIEJĘTNOŚCI
+        if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
+          // this.shouldAddNewPage();
+          this.document.addImage(this.skillsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);          
+          this.document.setTextColor(black);
+          this.document.setFontSize(this.headerFont + 3);
+          this.document.text(this.deepMargin + 2, this.fromTop + 2, 'UMIEJĘTNOŚCI');          
+          this.fromTop += 7;
+
+          // (wzór umiejętności)
+          // if (this.drivingLicence != undefined) {
+          //   let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
+          //   this.document.setFontSize(10);
+          //   this.document.setTextColor(black);
+          //   this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
+          //   this.fromTop += 5;
+          //   this.shouldAddNewPage();
+          // };
+        
+          
+          if (this.drivingLicence != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.computerPrograms != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.programmingLanguages != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Języki programowania: ' + this.programmingLanguages, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.devices != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.permissions != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.regulations != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Ustawy i przepisy: ' + this.regulations, 140);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          if (this.otherSkills != undefined) {
+            let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 80);
+            this.document.setFontSize(9);
+            this.document.setTextColor(black);
+            this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
+            this.fromTop += 6;
+            this.shouldAddNewPage();
+          };
+
+          // this.fromTop += 5;
+
+          // pozioma linia po Umiejętnościach
+          // this.document.setDrawColor('#CFE6EF');
+          // this.document.setLineWidth(0.1);
+          // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+          // this.fromTop += 9;
+        };
+
+  };   
 
 
     // MOCNE STRONY
@@ -531,13 +698,19 @@ export class CreatePdfService {
     //   this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
     //   };
 
+    if (this.skillsFromTop != undefined && this.skillsFromTop > this.fromTop) {     // jeśli odległość od górnej krawędzi strony w sekcji z umiejętnościami jest większa niż po stronie języków
+      this.fromTop = this.skillsFromTop;
+    }
+    this.fromTop += 10;
+    this.hobbiesFromTop = this.fromTop;
+
+    if (this.advantages != undefined) {
     this.document.addImage(this.advantagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
     this.document.setTextColor(black);
     this.document.setFontSize(this.headerFont + 3);
     this.document.text(this.deepMargin + 2, this.fromTop + 2, 'MOCNE STRONY');
     this.fromTop += 7;
-
-    if (this.advantages != undefined) {
+    
       for (let a = 0; a < this.advantages.length; a++) {
         this.document.setFontSize(10);
         this.document.setTextColor(black);
@@ -548,6 +721,20 @@ export class CreatePdfService {
     };
     this.fromTop += 5;
 
+    // ZAINTERESOWANIA    
+    this.document.addImage(this.hobbiesHeaderIcon, 'PNG', 110, this.hobbiesFromTop - 5, 9, 9);
+    this.document.setTextColor(black);
+    this.document.setFontSize(this.headerFont + 3);
+    this.document.text(120, this.hobbiesFromTop + 2, 'ZAINTERESOWANIA');
+    this.hobbiesFromTop += 7;
+
+    let splitHobbies: any = this.document.splitTextToSize(this.hobbies, 120);
+    this.document.setFontSize(10);
+    this.document.setTextColor(black);
+    this.document.text(120, this.hobbiesFromTop + 3,  splitHobbies);
+    // this.fromTop += 12;
+    // this.shouldAddNewPage();
+
 
     // pozioma linia po Mocnych Stronach
     this.document.setDrawColor('#CFE6EF');
@@ -556,20 +743,20 @@ export class CreatePdfService {
     this.fromTop += 9;
 
 
-    // ZAINTERESOWANIA
-    this.shouldAddNewPage();
-    this.document.addImage(this.hobbiesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-    this.document.setTextColor(black);
-    this.document.setFontSize(this.headerFont + 3);
-    this.document.text(this.deepMargin + 2, this.fromTop + 2, 'ZAINTERESOWANIA');
-    this.fromTop += 7;
+    // // ZAINTERESOWANIA
+    // this.shouldAddNewPage();
+    // this.document.addImage(this.hobbiesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
+    // this.document.setTextColor(black);
+    // this.document.setFontSize(this.headerFont + 3);
+    // this.document.text(this.deepMargin + 2, this.fromTop + 2, 'ZAINTERESOWANIA');
+    // this.fromTop += 7;
 
-    let splitHobbies: any = this.document.splitTextToSize(this.hobbies, 260);
-    this.document.setFontSize(10);
-    this.document.setTextColor(black);
-    this.document.text(this.deepMargin, this.fromTop + 3,  splitHobbies);
-    this.fromTop += 12;
-    this.shouldAddNewPage();
+    // let splitHobbies: any = this.document.splitTextToSize(this.hobbies, 260);
+    // this.document.setFontSize(10);
+    // this.document.setTextColor(black);
+    // this.document.text(this.deepMargin, this.fromTop + 3,  splitHobbies);
+    // this.fromTop += 12;
+    // this.shouldAddNewPage();
 
     // // pozioma linia po Zainteresowaniach
     // this.document.setDrawColor('#CFE6EF');
@@ -620,14 +807,14 @@ export class CreatePdfService {
     // STOPKA
       if (this.clause != '' && this.clause != undefined) {
         this.fromTop += 10;
-        this.document.setFontSize(8);        
+        this.document.setFontSize(6);        
         this.document.setDrawColor('#696969');
         this.document.setLineWidth(0.1);        
         this.document.setTextColor(black);
-        this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+        this.document.line(this.leftMargin,  this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
 
         let splitClause: any = this.document.splitTextToSize(this.clause, 200);                   
-        this.document.text(this.leftMargin, this.fromTop + 7, splitClause);
+        this.document.text(this.leftMargin, this.documentHeight - this.footerHeight + 5, splitClause);
       };      
 
     this.document.setFontSize(8);    
@@ -639,9 +826,8 @@ export class CreatePdfService {
 
   }
 
-  public shouldAddNewPage() {
-    const gray: number = 100;
-    if (this.fromTop >= (this.documentHeight - 15)) {
+  public shouldAddNewPage() {    
+    if (this.fromTop >= (this.documentHeight - this.footerHeight - 10)) {
       this.document.addPage();
       this.fromTop = 15;      
     };

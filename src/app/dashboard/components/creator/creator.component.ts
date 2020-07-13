@@ -134,6 +134,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   hideNextOccupButton: any[];
   hideNextEduButton: boolean = false;
   hideNextCourseButton: boolean = false;
+  hideNextLanguagesButton: any[] = new Array();
   experienceEditionModeEnabled: boolean;
   educationEditionModeEnabled: boolean;
   coursesEditionModeEnabled: boolean;
@@ -231,6 +232,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.hideNextOccupButton = Array2D(30,30);
 
     this.hideNextOccupButton[0][0] = false;
+    this.hideNextLanguagesButton[0] = false;
 
     this.languagesList = this.sharedLists.getLanguageList();
     this.advantagesList = this.sharedLists.getAdvantagesList();
@@ -829,13 +831,19 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   }
 
 
-  public addLanguagesButtonClick(): void {
+  public addLanguagesButtonClick(l: number): void {
     (<FormArray>this.baseCVForm.get('languages')).push(this.addLanguagesFormGroup());   
+    this.hideNextLanguagesButton[l] = true;
   }
 
-  public removeLanguagesButtonClick(): void {
-    let lastElement = (<FormArray>this.baseCVForm.get('languages')).length;
-    (<FormArray>this.baseCVForm.get('languages')).removeAt(lastElement - 1);    
+  public removeLanguagesButtonClick(l: number): void {
+    // let lastElement = (<FormArray>this.baseCVForm.get('languages')).length;
+    (<FormArray>this.baseCVForm.get('languages')).removeAt(l);  
+    this.hideNextLanguagesButton[(<FormArray>this.baseCVForm.get('languages')).length - 1] = false;
+    if ((<FormArray>this.baseCVForm.get('languages')).length == 0) {
+      (<FormArray>this.baseCVForm.get('languages')).push(this.addLanguagesFormGroup());
+      this.hideNextLanguagesButton[0] == false;
+    }  
   }
 
   public getSelectedAvailabilityIndex(event: any) {
@@ -2110,7 +2118,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       for (let l = 1; l < languagesFromDatabase.length; l++) {  // Jeśli w bazowym CV jest więcej języków niż 1
         
         if ((<FormArray>this.baseCVForm.get('languages')).length < languagesFromDatabase.length  ) {
-          this.addLanguagesButtonClick();
+          this.addLanguagesButtonClick(l);
         };        
 
         ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('languageName').patchValue(languagesFromDatabase[l][0].languageName));
@@ -2192,55 +2200,55 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       let responsibilitiesFromDatabase: any[] = new Array();
       let responsibilitiesArrayToFill: any[] = new Array();
 
-      occupationDataFromDatabase[0] = experienceFromDatabase[0][0].occupationData;
-      console.log("OccupFromDB0: ");
-      console.dir(occupationDataFromDatabase[0]);
+      // occupationDataFromDatabase[0] = experienceFromDatabase[0][0].occupationData;
+      // console.log("OccupFromDB0: ");
+      // console.dir(occupationDataFromDatabase[0]);
 
-      ((<FormArray>this.baseCVForm.get('experience')).controls[0].get('employerName').setValue(experienceFromDatabase[0][0].employerName));
-      ((<FormArray>this.baseCVForm.get('experience')).controls[0].get('trade').setValue(experienceFromDatabase[0][0].trade));
+      // ((<FormArray>this.baseCVForm.get('experience')).controls[0].get('employerName').setValue(experienceFromDatabase[0][0].employerName));
+      // ((<FormArray>this.baseCVForm.get('experience')).controls[0].get('trade').setValue(experienceFromDatabase[0][0].trade));
 
-      for (let o = 0; o < occupationDataFromDatabase[0].length; o++) {
+      // for (let o = 0; o < occupationDataFromDatabase[0].length; o++) {
         
-          if ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).length < occupationDataFromDatabase[0].length) {                                
-            this.addOccupationButtonClick(0, 0)
-          }
+      //     if ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).length < occupationDataFromDatabase[0].length) {                                
+      //       this.addOccupationButtonClick(0, 0)
+      //     }
 
-          ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('occupation').patchValue(occupationDataFromDatabase[0][o][0].occupation));
+      //     ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('occupation').patchValue(occupationDataFromDatabase[0][o][0].occupation));
 
-          if (occupationDataFromDatabase[0][o][0].workFinish != "obecnie") {          
+      //     if (occupationDataFromDatabase[0][o][0].workFinish != "obecnie") {          
 
-          ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodStart').patchValue(occupationDataFromDatabase[0][o][0].workStart));
-          this.workStartDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workStart;  
-          ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodEnd').patchValue(occupationDataFromDatabase[0][o][0].workFinish));
-          this.workFinishDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workFinish;          
-        } else {
-          ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodStart').patchValue(occupationDataFromDatabase[0][o][0].workStart));
-          this.workStartDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workStart;   
-          this.experienceTillNowSelected[0][o] = true;             
-          this.getOccupationControls(0,o).get('experienceTillNow').patchValue(this.experienceTillNowSelected[0][o]);       
-        };
+      //     ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodStart').patchValue(occupationDataFromDatabase[0][o][0].workStart));
+      //     this.workStartDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workStart;  
+      //     ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodEnd').patchValue(occupationDataFromDatabase[0][o][0].workFinish));
+      //     this.workFinishDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workFinish;          
+      //   } else {
+      //     ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('workPeriodStart').patchValue(occupationDataFromDatabase[0][o][0].workStart));
+      //     this.workStartDateFormatted[0][o] = occupationDataFromDatabase[0][o][0].workStart;   
+      //     this.experienceTillNowSelected[0][o] = true;             
+      //     this.getOccupationControls(0,o).get('experienceTillNow').patchValue(this.experienceTillNowSelected[0][o]);       
+      //   };
 
-          responsibilitiesFromDatabase[o] = occupationDataFromDatabase[0][o][0].responsibilities;          
-          responsibilitiesArrayToFill[o] = ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
+      //     responsibilitiesFromDatabase[o] = occupationDataFromDatabase[0][o][0].responsibilities;          
+      //     responsibilitiesArrayToFill[o] = ((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[0].get('occupationArray')).controls[o].get('responsibilities') as FormArray);
           
 
-          if (responsibilitiesFromDatabase[o].length > 0) {
-            responsibilitiesArrayToFill[o].controls[0].get('responsibility').setValue(responsibilitiesFromDatabase[o][0]);          
-            for (let r = 1; r < responsibilitiesFromDatabase[o].length; r++) {
-            if (responsibilitiesArrayToFill[o].length < responsibilitiesFromDatabase[o].length) {
-              this.addNewResponsibility(0, o);
-            };            
-            responsibilitiesArrayToFill[o].controls[r].get('responsibility').setValue(responsibilitiesFromDatabase[o][r]);
-          };         
-        };        
+      //     if (responsibilitiesFromDatabase[o].length > 0) {
+      //       responsibilitiesArrayToFill[o].controls[0].get('responsibility').setValue(responsibilitiesFromDatabase[o][0]);          
+      //       for (let r = 1; r < responsibilitiesFromDatabase[o].length; r++) {
+      //       if (responsibilitiesArrayToFill[o].length < responsibilitiesFromDatabase[o].length) {
+      //         this.addNewResponsibility(0, o);
+      //       };            
+      //       responsibilitiesArrayToFill[o].controls[r].get('responsibility').setValue(responsibilitiesFromDatabase[o][r]);
+      //     };         
+      //   };        
 
-      }; // koniec pętli occupationFromDatabase[0]             
+      // }; // koniec pętli occupationFromDatabase[0]             
         
-        (<FormArray>this.baseCVForm.get('experience')).controls[0].get('employerName').markAsDirty();                          
+      //   (<FormArray>this.baseCVForm.get('experience')).controls[0].get('employerName').markAsDirty();                          
 
-        for (let e = 1; e < experienceFromDatabase.length; e++) {
+        for (let e = 0; e < experienceFromDatabase.length; e++) {
 
-          this.experienceCompleted[e-1] = true;    
+          // this.experienceCompleted[e-1] = true;    
           
           if ((<FormArray>this.baseCVForm.get('experience')).length < experienceFromDatabase.length) {
             (<FormArray>this.baseCVForm.get('experience')).push(this.addExperienceFormGroup());
@@ -2282,6 +2290,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
               for (let r = 1; r < responsibilitiesFromDatabase[o].length; r++) {
               if (responsibilitiesArrayToFill[o].length < responsibilitiesFromDatabase[o].length) {
                 this.addNewResponsibility(e, o);
+                this.focusOnResp = false;
               }              
               responsibilitiesArrayToFill[o].controls[r].get('responsibility').setValue(responsibilitiesFromDatabase[o][r]);
             };         
@@ -2309,35 +2318,35 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         console.log(educationFromDatabase);                
         if (educationFromDatabase.length > 0) { 
         
-          if (educationFromDatabase[0][0].educationFinish != "obecnie") {            
+          // if (educationFromDatabase[0][0].educationFinish != "obecnie") {            
   
-            ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
-            this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;  
-            ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodEnd').patchValue(educationFromDatabase[0][0].educationFinish));
-            this.educationFinishDateFormatted[0] = educationFromDatabase[0][0].educationFinish;          
-          } else {
-            ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
-            this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;   
-            this.educationTillNowSelected[0] = true;           
-            this.getEducationControls(0).get('educationTillNow').patchValue(this.educationTillNowSelected[0]);
-            this.setEducationTillNow(0);  
-          };   
+          //   ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
+          //   this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;  
+          //   ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodEnd').patchValue(educationFromDatabase[0][0].educationFinish));
+          //   this.educationFinishDateFormatted[0] = educationFromDatabase[0][0].educationFinish;          
+          // } else {
+          //   ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').patchValue(educationFromDatabase[0][0].educationStart));
+          //   this.educationStartDateFormatted[0] = educationFromDatabase[0][0].educationStart;   
+          //   this.educationTillNowSelected[0] = true;           
+          //   this.getEducationControls(0).get('educationTillNow').patchValue(this.educationTillNowSelected[0]);
+          //   this.setEducationTillNow(0);  
+          // };   
 
-          this.schoolTypeSelected[0] = educationFromDatabase[0][0].schoolTypeIndex;          
+          // this.schoolTypeSelected[0] = educationFromDatabase[0][0].schoolTypeIndex;          
 
-          ((<FormArray>this.baseCVForm.get('education')).controls[0].get('schoolType').patchValue(this.schoolTypeSelected[0]));
-          ((<FormArray>this.baseCVForm.get('education')).controls[0].get('schoolName').patchValue(educationFromDatabase[0][0].schoolName));
-          ((<FormArray>this.baseCVForm.get('education')).controls[0].get('specialization').patchValue(educationFromDatabase[0][0].schoolProfile));
-          ((<FormArray>this.baseCVForm.get('education')).controls[0].get('classProfile').patchValue(educationFromDatabase[0][0].schoolProfile));
-          ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationMode').patchValue(educationFromDatabase[0][0].schoolMode));   
+          // ((<FormArray>this.baseCVForm.get('education')).controls[0].get('schoolType').patchValue(this.schoolTypeSelected[0]));
+          // ((<FormArray>this.baseCVForm.get('education')).controls[0].get('schoolName').patchValue(educationFromDatabase[0][0].schoolName));
+          // ((<FormArray>this.baseCVForm.get('education')).controls[0].get('specialization').patchValue(educationFromDatabase[0][0].schoolProfile));
+          // ((<FormArray>this.baseCVForm.get('education')).controls[0].get('classProfile').patchValue(educationFromDatabase[0][0].schoolProfile));
+          // ((<FormArray>this.baseCVForm.get('education')).controls[0].get('educationMode').patchValue(educationFromDatabase[0][0].schoolMode));   
           
-          this.educationEndDateIssue[0] = false;
-          this.educationCurrentDateIssue[0] = false;
-          (<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').markAsDirty();  
+          // this.educationEndDateIssue[0] = false;
+          // this.educationCurrentDateIssue[0] = false;
+          // (<FormArray>this.baseCVForm.get('education')).controls[0].get('educationPeriodStart').markAsDirty();  
           
-          for (let e = 1; e < educationFromDatabase.length; e++) {
+          for (let e = 0; e < educationFromDatabase.length; e++) {
 
-            this.educationCompleted[e-1] = true;
+            // this.educationCompleted[e-1] = true;
 
             if ((<FormArray>this.baseCVForm.get('education')).length < educationFromDatabase.length) {
               (<FormArray>this.baseCVForm.get('education')).push(this.addEducationFormGroup()); 
@@ -2383,19 +2392,19 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           console.log(coursesFromDatabase);                
           if (coursesFromDatabase.length > 0) {           
             
-            ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
-            this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;                              
+            // ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').patchValue(coursesFromDatabase[0][0].courseStart));
+            // this.courseStartDateFormatted[0] = coursesFromDatabase[0][0].courseStart;                              
   
-            ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseName').patchValue(coursesFromDatabase[0][0].courseName));
-            ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseSubject').patchValue(coursesFromDatabase[0][0].courseSubject));               
+            // ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseName').patchValue(coursesFromDatabase[0][0].courseName));
+            // ((<FormArray>this.baseCVForm.get('courses')).controls[0].get('courseSubject').patchValue(coursesFromDatabase[0][0].courseSubject));               
             
-            // this.coursesEndDateIssue[0] = false;
-            this.coursesCurrentDateIssue[0] = false;
-            (<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').markAsDirty();  
+            // // this.coursesEndDateIssue[0] = false;
+            // this.coursesCurrentDateIssue[0] = false;
+            // (<FormArray>this.baseCVForm.get('courses')).controls[0].get('coursePeriodStart').markAsDirty();  
             
-            for (let c = 1; c < coursesFromDatabase.length; c++) {
+            for (let c = 0; c < coursesFromDatabase.length; c++) {
   
-              this.coursesCompleted[c-1] = true;                
+              // this.coursesCompleted[c-1] = true;                
               
               if ((<FormArray>this.baseCVForm.get('courses')).length < coursesFromDatabase.length) {
                 (<FormArray>this.baseCVForm.get('courses')).push(this.addCoursesFormGroup()); 

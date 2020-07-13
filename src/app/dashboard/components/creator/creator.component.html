@@ -1080,9 +1080,28 @@
                                 <small class="col text-muted pr-3 pl-4"><i>{{selectedLanguageDegree[l]}}</i></small>
                             </div>
                   </div>
+                  <button *ngIf="!hideNextLanguagesButton[l]"
+                        class="btn btn-info mb-2"
+                        type="button"
+                        id="addLanguagesButton"
+                        (click)="addLanguagesButtonClick(l)"
+                        (mouseover)="setHints(hoverMessages.jezykObcyDodaj)"
+                        (mouseout)="clearHints()"
+                        (focus)="setHints(hoverMessages.jezykObcyDodaj)"
+                        (blur)="clearHints()"
+                        [disabled]="languagesArray.controls[l].get('languageName').pristine">Dodaj kolejny język</button>
+                  <button *ngIf="languagesArray.controls[l].get('languageName').dirty"
+                          class="btn btn-danger mb-2"
+                          type="button"
+                          id="removeLanguagesButton"
+                          (click)="removeLanguagesButtonClick(l)"
+                          (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
+                          (mouseout)="clearHints()"
+                          (focus)="setHints(hoverMessages.jezykObcyUsun)"
+                          (blur)="clearHints()">Usuń język</button>
                 </div>
               </div>
-              <button *ngIf="languagesArray.controls[0].get('languageName').dirty"
+              <!-- <button *ngIf="languagesArray.controls[0].get('languageName').dirty"
                         class="btn btn-info mb-2"
                         type="button"
                         id="addLanguagesButton"
@@ -1090,8 +1109,8 @@
                         (mouseover)="setHints(hoverMessages.jezykObcyDodaj)"
                         (mouseout)="clearHints()"
                         (focus)="setHints(hoverMessages.jezykObcyDodaj)"
-                        (blur)="clearHints()">Dodaj kolejny język</button>
-              <button *ngIf="languagesArray.controls.length > 1"
+                        (blur)="clearHints()">Dodaj kolejny język</button> -->
+              <!-- <button *ngIf="languagesArray.controls.length > 1"
                       class="btn btn-danger mb-2"
                       type="button"
                       id="removeLanguagesButton"
@@ -1099,7 +1118,7 @@
                       (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
                       (mouseout)="clearHints()"
                       (focus)="setHints(hoverMessages.jezykObcyUsun)"
-                      (blur)="clearHints()">Usuń ostatnią pozycję</button>
+                      (blur)="clearHints()">Usuń język</button> -->              
             </div>
             <hr class="mt-2 mb-3">
               <div id="skills">
@@ -1395,7 +1414,8 @@
                                 (mouseover)="setHints(hoverMessages.zainteresowania)"
                                 (mouseout)="clearHints()"
                                 (focus)="setHints(hoverMessages.zainteresowania)"
-                                (blur)="clearHints()">
+                                (blur)="clearHints()"
+                                maxlength="300">
                     </div>
                 </div>
               </div>
