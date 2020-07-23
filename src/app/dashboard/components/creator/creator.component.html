@@ -1093,7 +1093,7 @@
                   <button *ngIf="languagesArray.controls[l].get('languageName').dirty"
                           class="btn btn-danger mb-2"
                           type="button"
-                          id="removeLanguagesButton"
+                          [id]="'removeLanguagesButton_'+l"
                           (click)="removeLanguagesButtonClick(l)"
                           (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
                           (mouseout)="clearHints()"

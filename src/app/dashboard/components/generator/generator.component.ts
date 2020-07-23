@@ -863,6 +863,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     // let lastElement = (<FormArray>this.baseCVForm.get('languages')).length;
     (<FormArray>this.cvForm.get('languages')).removeAt(l);  
     this.hideNextLanguagesButton[(<FormArray>this.cvForm.get('languages')).length - 1] = false;
+    this.selectedLanguageDegree[l] = '';
     if ((<FormArray>this.cvForm.get('languages')).length == 0) {
       (<FormArray>this.cvForm.get('languages')).push(this.addLanguagesFormGroup());
       this.hideNextLanguagesButton[0] == false;
@@ -1586,6 +1587,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
         (<FormArray>this.cvForm.get('languages')).controls[0].get('level').patchValue(languagesFromDatabase[0][0].languageLevel);     
         this.selectedLanguageDegree[0] = languagesFromDatabase[0][0].languageDescription;  
+        this.hideNextLanguagesButton[0] = true;
       }
 
       for (let l = 1; l < languagesFromDatabase.length; l++) {  // Jeśli w bazowym CV jest więcej języków niż 1
@@ -1605,7 +1607,10 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
         (<FormArray>this.cvForm.get('languages')).controls[l].get('level').patchValue(languagesFromDatabase[l][0].languageLevel);
         this.selectedLanguageDegree[l] = languagesFromDatabase[l][0].languageDescription;  
+        this.hideNextLanguagesButton[l] = true;
       };
+
+      this.hideNextLanguagesButton[(<FormArray>this.cvForm.get('languages')).length - 1] = false;
 
 
         // MOCNE STRONY
@@ -2217,7 +2222,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
       // UMIEJĘTNOŚCI
       if (this.cvForm.get('drivingLicenceDescription').value) {
-        this.PDF.drivingLicence = this.cvForm.get('drivingLicenceDescription').value;
+        this.PDF.drivingLicence = this.cvForm.get('drivingLicenceDescription').value;        
       };
       if (this.cvForm.get('knownProgramsDescription').value) {
         this.PDF.computerPrograms = this.cvForm.get('knownProgramsDescription').value;

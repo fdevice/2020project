@@ -212,7 +212,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.DatePickerYearsOnly = Object.assign({}, {containerClass: 'theme-dark-blue', minMode: this.minModeYear, dateInputFormat: 'YYYY'});
     }
 
-  ngOnInit() {          
+  ngOnInit() {            
 
     this.screenInnerWidth = window.innerWidth;  //początkowa szerokość ekranu po załadowaniu strony        
 
@@ -333,8 +333,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       if (this.hasBaseCV) {
         this.populatebaseCVForm();
       };    
-    });
-
+    });   
 
   }; // koniec onInit()
 
@@ -840,6 +839,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     // let lastElement = (<FormArray>this.baseCVForm.get('languages')).length;
     (<FormArray>this.baseCVForm.get('languages')).removeAt(l);  
     this.hideNextLanguagesButton[(<FormArray>this.baseCVForm.get('languages')).length - 1] = false;
+    this.selectedLanguageDegree[l] = '';
     if ((<FormArray>this.baseCVForm.get('languages')).length == 0) {
       (<FormArray>this.baseCVForm.get('languages')).push(this.addLanguagesFormGroup());
       this.hideNextLanguagesButton[0] == false;
@@ -1597,7 +1597,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
          this.baseCV.languageLevel[l] = ((<FormArray>this.baseCVForm.get('languages')).controls[l].get('level').value);
          this.baseCV.languageDescription[l] = this.selectedLanguageDegree[l];
-
+         
        };
      };
 
@@ -2113,6 +2113,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         (<FormArray>this.baseCVForm.get('languages')).controls[0].get('level').patchValue(languagesFromDatabase[0][0].languageLevel);     
         this.selectedLanguageDegree[0] = languagesFromDatabase[0][0].languageDescription;  
+        this.hideNextLanguagesButton[0] = true;
       }
 
       for (let l = 1; l < languagesFromDatabase.length; l++) {  // Jeśli w bazowym CV jest więcej języków niż 1
@@ -2133,7 +2134,10 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
         (<FormArray>this.baseCVForm.get('languages')).controls[l].get('level').patchValue(languagesFromDatabase[l][0].languageLevel);
         this.selectedLanguageDegree[l] = languagesFromDatabase[l][0].languageDescription;  
+        this.hideNextLanguagesButton[l] = true;
       };
+
+      this.hideNextLanguagesButton[(<FormArray>this.baseCVForm.get('languages')).length - 1] = false;
 
 
         // MOCNE STRONY
