@@ -148,6 +148,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   permissionsChecked: boolean = false;
   knownRegulationsChecked: boolean = false;
   otherSkillsChecked: boolean = false;
+
+  jobStart: any = new Array();
+  jobFinish: any = new Array();
   
   isLoading: boolean = false;
   hasBaseCV: boolean;
@@ -254,7 +257,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
     this.hintOnFocus = false;
     this.focusOnResp = false;
 
-    this.advantagesLeft = 7;
+    this.advantagesLeft = 6;
     this.advantagesError = false;
     this.polishAdvantageSuffix = '';
     // this.requirementsListLength = (<FormArray>this.cvForm.get('requirements')).length;
@@ -348,7 +351,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   }; // koniec onInit()
 
   ngAfterViewInit() {
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 3; i++) {
       this.addNewRequirement();
     }
     this.requirementsListLength = (<FormArray>this.cvForm.get('requirements')).length;
@@ -382,7 +385,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
   public addExperienceFormGroup(): FormGroup {
     return this.fb.group({            
       employerName: ['', Validators.required],
-      trade: ['', Validators.required],
+      trade: [''],
       occupationArray: this.fb.array([
         this.addOccupationFormArray()
       ])                       
@@ -546,6 +549,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
       };
 
+      // Obsługa błędów w kontrolkach formularza
       if ((!finishWork.value && !nowWork.value)) {
         (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).controls[o].setErrors({'incorrect': true});
       };
@@ -558,7 +562,21 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
         this.experienceCompleted[i] = true;
         // (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());
       }; 
-    };    
+    };   
+    
+    if (((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length > 1)) {
+      this.jobStart[i] = this.workStartDateFormatted[i][(<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length - 1];
+        if (this.getOccupationControls(i,0).get('experienceTillNow').value) {
+          this.jobFinish[i] = 'obecnie';  
+        } else {
+          this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+        };           
+    } else {
+      this.jobStart[i] = this.workStartDateFormatted[i][0];
+      this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+    };
+
+    console.log("Daty ramowe u pracodawcy: " + this.jobStart[i] + " - " + this.jobFinish[i]);
 
     if ((<FormArray>this.cvForm.get('experience')).controls[i].invalid) {
       this.experienceCompletionError = true;
@@ -630,7 +648,21 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       } else {
         this.workFinishDateFormatted[i][o] = finishWork.value;
       };
-    };           
+    };  
+    
+    if (((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length > 1)) {
+      this.jobStart[i] = this.workStartDateFormatted[i][(<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get("occupationArray")).controls.length - 1];
+        if (this.getOccupationControls(i,0).get('experienceTillNow').value) {
+          this.jobFinish[i] = 'obecnie';  
+        } else {
+          this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+        };           
+    } else {
+      this.jobStart[i] = this.workStartDateFormatted[i][0];
+      this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+    };
+    
+    console.log("Daty ramowe u pracodawcy: " + this.jobStart[i] + " - " + this.jobFinish[i]);
     
     this.cvForm.get('experience').enable();
     this.experienceEditionModeEnabled = false;
@@ -933,7 +965,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       if (control.value) {
         this.selectedAdvantagesValues.push(this.advantagesList[i]);
       }
-      this.advantagesLeft = (7 - this.selectedAdvantagesValues.length);
+      this.advantagesLeft = (6 - this.selectedAdvantagesValues.length);
       if (this.advantagesLeft < 0) {
         this.advantagesLeft = 0;
       }
@@ -981,7 +1013,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
 
     console.log(this.selectedAdvantagesValuesToDatabase);
     console.log(this.selectedAdvantagesValues);
-    this.advantagesError = ((this.selectedAdvantagesValues.length > 7) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
+    this.advantagesError = ((this.selectedAdvantagesValues.length > 6) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 6 elementów, advantagesError otrzymuje wartość true
 
     // this.selectedAdvantagesValuesToPrint = this.selectedAdvantagesValues.join('\n');
 
@@ -1342,7 +1374,7 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       this.formErrors.push('Nazwa szkoły/uczelni');
     };
     if (this.advantagesError || (this.selectedAdvantagesValues == undefined)) {
-      this.formErrors.push('Wskaż minimum 1, maksimum 7 swoich mocnych stron');
+      this.formErrors.push('Wskaż minimum 1, maksimum 6 swoich mocnych stron');
     };
     if (!hobby.valid) {
       this.formErrors.push('Zainteresowania');
@@ -1791,6 +1823,18 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
           this.hideNextExpButton = false;
 
           (<FormArray>this.cvForm.get('experience')).push(this.addExperienceFormGroup());  
+
+          if (((<FormArray>(<FormArray>this.cvForm.get('experience')).controls[e].get("occupationArray")).controls.length > 1)) {
+            this.jobStart[e] = this.workStartDateFormatted[e][(<FormArray>(<FormArray>this.cvForm.get('experience')).controls[e].get("occupationArray")).controls.length - 1];
+              if (this.getOccupationControls(e,0).get('experienceTillNow').value) {
+                this.jobFinish[e] = 'obecnie';  
+              } else {
+                this.jobFinish[e] = this.workFinishDateFormatted[e][0];
+              };           
+          } else {
+            this.jobStart[e] = this.workStartDateFormatted[e][0];
+            this.jobFinish[e] = this.workFinishDateFormatted[e][0];
+          };
        }                      
       }; // koniec doświadczenia zawodowego
 
@@ -2153,6 +2197,9 @@ export class GeneratorComponent implements OnInit, AfterViewInit {
       };
 
       this.PDF.totalOccupationArrayLength[i] = (<FormArray>(<FormArray>this.cvForm.get('experience')).controls[i].get('occupationArray')).length;
+
+      this.PDF.jobStart[i] = this.jobStart[i];
+      this.PDF.jobFinish[i] = this.jobFinish[i];
 
     };
 

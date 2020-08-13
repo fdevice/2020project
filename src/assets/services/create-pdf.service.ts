@@ -37,11 +37,14 @@ export class CreatePdfService {
   totalLanguagesLength: number;
   startWork: any = new Array();
   finishWork: any = new Array();
+  jobStart: any = new Array();
+  jobFinish: any = new Array();
   employer: any = new Array();
   trade: any = new Array();
   occupationArray: any = new Array();
   occupation: any = new Array();
   responsibilities: any = new Array();
+  splitResponsibilities: any = new Array();
   startEducation: any = new Array();
   finishEducation: any = new Array();
   schoolName: any = new Array();
@@ -88,50 +91,57 @@ export class CreatePdfService {
 
   document = new jsPDF('p', 'mm', 'a4');
 
-  public generatePDF() {
-
-    // if (this.drivingLicence != undefined) {        
-    //   this.totalSkills.push("Prawo jazdy kategorii " + this.drivingLicence);                     
-    // };    
-
-    // if (this.computerPrograms != undefined) {        
-    //   this.totalSkills.push("Obsługiwane programy: " + this.computerPrograms);              
-    // };
-
-    // if (this.programmingLanguages != undefined) {        
-    //   this.totalSkills.push("Języki programowania:" + this.programmingLanguages);              
-    // };
-
-    // if (this.devices != undefined) {        
-    //   this.totalSkills.push("Obsługa urządzeń: " + this.devices);             
-    // };
-
-    // if (this.permissions != undefined) {        
-    //   this.totalSkills.push("Specjalistyczne uprawnienia: " + this.permissions);               
-    // };
-
-    // if (this.regulations != undefined) {        
-    //   this.totalSkills.push("Ustawy i przepisy: " + this.regulations);              
-    // };
-
-    // if (this.otherSkills != undefined) {        
-    //   this.totalSkills.push("Inne istotne umiejętności: " + this.otherSkills);
-    // };
-
-    // console.log("Total skillz:");
-    // console.log(this.totalSkills);
+  public generatePDF() {    
 
     const black: number = 50;
-    const gray: number = 100;
-
-    this.fromTop = 15;
+    const gray: number = 100;    
 
     this.document.addFileToVFS("OpenSans-Regular.ttf", base64Fonts.openSansFont);
     this.document.addFont('OpenSans-Regular.ttf', 'openSans', 'normal');
     this.document.addFont('OpenSans-Regular.ttf', 'openSansBold', 'bold');
     this.document.addFont('OpenSans-Regular.ttf', 'openSansItalic', 'italic');
-    this.document.setFont('openSans');
+    this.document.setFont('openSans');    
+
+    // OPCJONALNE WYMAGANIA REKRUTACYJNE - ZAJMUJĄ PIERWSZĄ STRONĘ CV
+    if (this.requirements[0] != undefined) {
+
+      this.fromTop = 15;
+
+      let splitRequirements: any;           
+      let splitAnswers: any;
+      const reqLineLength = 150;      
+      this.document.addImage(this.requirementsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
+      this.document.setTextColor(black);
+      this.document.setFontSize(this.headerFont + 3);
+      this.document.text(this.deepMargin + 2, this.fromTop + 2, 'WYMAGANIA REKRUTACYJNE Z OFERTY');
+      this.fromTop += 10;
+      this.document.setFontSize(10);
+
+      for (let r = 0; r < this.requirements.length; r++) {
+        if (this.requirements[r] != undefined) {          
+          splitRequirements = this.document.splitTextToSize(this.requirements[r], reqLineLength);
+          splitAnswers = this.document.splitTextToSize(this.answers[r], reqLineLength);                      
+          this.document.setTextColor(black);
+          this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
+          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
+          this.fromTop += 8;
+          this.shouldAddNewPage();
+          this.document.setTextColor(gray);
+          this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
+          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitAnswers);  
+          splitRequirements = [];
+          splitAnswers = [];       
+
+          this.fromTop += 10;
+
+          this.shouldAddNewPage();
+        };      
+      };         
+      this.document.addPage();
+    }; 
+
     this.document.setFontSize(this.headerFont);
+    this.fromTop = 15;
 
   // WARUNKI ZATRUDNIENIA
     this.document.addImage(this.conditionsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 7, 7);
@@ -259,10 +269,20 @@ export class CreatePdfService {
 
         if (this.employer[i] != undefined) {
 
+          this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin, this.fromTop - 3.5, 3, 4);
+          this.document.setFontSize(7);
+          this.document.setTextColor(gray);
+          this.document.text(this.deepMargin + 5, this.fromTop, this.jobStart[i] + ' - ' + this.jobFinish[i]);
+          this.fromTop += 5;
           this.document.setFontSize(14);
           this.document.setTextColor(black);
-          this.document.circle(this.deepMargin, this.fromTop, 1, 'F');
-          this.document.text(this.deepMargin + 5, this.fromTop + 1.5, this.employer[i] + '  /  ' + (this.trade[i]).toLowerCase());
+          this.document.circle(this.deepMargin + 2, this.fromTop, 1, 'F');
+          if (this.trade[i] != undefined && this.trade[i] != '') {
+            this.document.text(this.deepMargin + 7, this.fromTop + 1.5, this.employer[i] + '  /  ' + (this.trade[i]).toLowerCase());
+          } else {
+            this.document.text(this.deepMargin + 7, this.fromTop + 1.5, this.employer[i]);
+          };
+          
           this.fromTop += 5;
 
           console.log("OccupationArray[" + i + "]: ");
@@ -271,10 +291,10 @@ export class CreatePdfService {
           for (let o = 0; o < this.totalOccupationArrayLength[i]; o++) {
 
             console.log(this.occupationArray[i][o][0]);
-            this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 10, this.fromTop - 0.5, 3, 4);
-            this.document.setFontSize(7);
-            this.document.setTextColor(gray);
-            this.document.text(this.deepMargin + 16, this.fromTop + 3, this.occupationArray[i][o][0].workStart + ' - ' + this.occupationArray[i][o][0].workFinish);
+            // this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 10, this.fromTop - 0.5, 3, 4);
+            // this.document.setFontSize(7);
+            // this.document.setTextColor(gray);
+            // this.document.text(this.deepMargin + 16, this.fromTop + 3, this.occupationArray[i][o][0].workStart + ' - ' + this.occupationArray[i][o][0].workFinish);
             this.document.setFontSize(9);
             this.document.setTextColor(black);
             this.document.text(this.deepMargin + 16, this.fromTop + 7, this.occupationArray[i][o][0].occupation);
@@ -283,9 +303,15 @@ export class CreatePdfService {
 
             for (let j = 0; j < this.occupationArray[i][o][0].responsibilities.length; j++) {      
               if (this.occupationArray[i][o][0].responsibilities[j] !== '' && this.occupationArray[i][o][0].responsibilities[j] !== undefined) {
+                    let splitResponsibility: any = this.document.splitTextToSize(this.occupationArray[i][o][0].responsibilities[j], 150);
                     this.document.circle(this.deepMargin + 20, this.fromTop, 0.5, 'F');
-                    this.document.text(this.deepMargin + 24, this.fromTop + 0.75, this.occupationArray[i][o][0].responsibilities[j]);
-                    this.fromTop += 4;
+                    this.document.text(this.deepMargin + 24, this.fromTop + 0.75, splitResponsibility);
+                    console.log("Occupation length " + i + "_" + o + "_" + j + " : " + this.occupationArray[i][o][0].responsibilities[j].length);
+                    if (this.occupationArray[i][o][0].responsibilities[j].length > 105) {
+                      this.fromTop += 7;
+                    } else {
+                      this.fromTop += 4;
+                    };                    
 
                     this.shouldAddNewPage();
               }     
@@ -644,65 +670,89 @@ export class CreatePdfService {
   
     
     if (this.drivingLicence != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 140);
+      let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
-      this.fromTop += 6;
+      if (this.drivingLicence.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.computerPrograms != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 140);
+      let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      if (this.computerPrograms.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.programmingLanguages != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Języki programowania: ' + this.programmingLanguages, 140);
+      let splitDescription: any = this.document.splitTextToSize('Języki programowania: ' + this.programmingLanguages, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      if (this.programmingLanguages.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.devices != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 140);
+      let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      if (this.devices.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.permissions != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 140);
+      let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
-      this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);      
+      if (this.permissions.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.regulations != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Ustawy i przepisy: ' + this.regulations, 140);
+      let splitDescription: any = this.document.splitTextToSize('Ustawy i przepisy: ' + this.regulations, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      if (this.regulations.length > 90) {
+        this.fromTop += 9;
+      } else {
+        this.fromTop += 7;
+      } 
       this.shouldAddNewPage();
     };
 
     if (this.otherSkills != undefined) {
-      let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 80);
+      let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 190);
       this.document.setFontSize(9);
       this.document.setTextColor(black);
       this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      this.fromTop += 6;
+      this.fromTop += 6;      
       this.shouldAddNewPage();
     };
 
@@ -802,44 +852,44 @@ export class CreatePdfService {
     this.fromTop += 9;
 
 
-    // WYMAGANIA REKRUTACYJNE    
-    if (this.requirements[0]) {
-      let splitRequirements: any;           
-      let splitAnswers: any;
-      const reqLineLength = 150;
-      this.shouldAddNewPage();
-      this.document.setDrawColor('#696969');
-      this.document.setLineWidth(0.75);
-      this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      this.fromTop += 11;
-      this.document.addImage(this.requirementsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-      this.document.setTextColor(black);
-      this.document.setFontSize(this.headerFont + 3);
-      this.document.text(this.deepMargin + 2, this.fromTop + 2, 'WYMAGANIA REKRUTACYJNE Z OFERTY');
-      this.fromTop += 8;
-      this.document.setFontSize(10);
+    // // WYMAGANIA REKRUTACYJNE    
+    // if (this.requirements[0]) {
+    //   let splitRequirements: any;           
+    //   let splitAnswers: any;
+    //   const reqLineLength = 150;
+    //   this.shouldAddNewPage();
+    //   this.document.setDrawColor('#696969');
+    //   this.document.setLineWidth(0.75);
+    //   this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
+    //   this.fromTop += 11;
+    //   this.document.addImage(this.requirementsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
+    //   this.document.setTextColor(black);
+    //   this.document.setFontSize(this.headerFont + 3);
+    //   this.document.text(this.deepMargin + 2, this.fromTop + 2, 'WYMAGANIA REKRUTACYJNE Z OFERTY');
+    //   this.fromTop += 8;
+    //   this.document.setFontSize(10);
 
-      for (let r = 0; r < this.requirements.length; r++) {
-        if (this.requirements[r] != undefined) {          
-          splitRequirements = this.document.splitTextToSize(this.requirements[r], reqLineLength);
-          splitAnswers = this.document.splitTextToSize(this.answers[r], reqLineLength);                      
-          this.document.setTextColor(black);
-          this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
-          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
-          this.fromTop += 8;
-          this.shouldAddNewPage();
-          this.document.setTextColor(gray);
-          this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
-          this.document.text(this.deepMargin + 23, this.fromTop + 1, splitAnswers);  
-          splitRequirements = [];
-          splitAnswers = [];       
+    //   for (let r = 0; r < this.requirements.length; r++) {
+    //     if (this.requirements[r] != undefined) {          
+    //       splitRequirements = this.document.splitTextToSize(this.requirements[r], reqLineLength);
+    //       splitAnswers = this.document.splitTextToSize(this.answers[r], reqLineLength);                      
+    //       this.document.setTextColor(black);
+    //       this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
+    //       this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
+    //       this.fromTop += 8;
+    //       this.shouldAddNewPage();
+    //       this.document.setTextColor(gray);
+    //       this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
+    //       this.document.text(this.deepMargin + 23, this.fromTop + 1, splitAnswers);  
+    //       splitRequirements = [];
+    //       splitAnswers = [];       
 
-          this.fromTop += 10;
+    //       this.fromTop += 10;
 
-          this.shouldAddNewPage();
-        };      
-      };      
-    };    
+    //       this.shouldAddNewPage();
+    //     };      
+    //   };      
+    // };    
 
     // STOPKA
       if (this.clause != '' && this.clause != undefined) {
@@ -854,9 +904,7 @@ export class CreatePdfService {
         this.document.text(this.leftMargin, this.documentHeight - this.footerHeight + 5, splitClause);
       };      
 
-    this.document.setFontSize(8);    
-
-    // window.open(this.document.output('bloburl'), '_blank');
+    this.document.setFontSize(8);        
 
     this.document.save(this.name + '_' + this.surname + '_CV' + '.pdf');
     this.document = new jsPDF('p', 'mm', 'a4');

@@ -146,6 +146,9 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   permissionsChecked: boolean = false;
   knownRegulationsChecked: boolean = false;
   otherSkillsChecked: boolean = false;
+
+  jobStart: any = new Array();
+  jobFinish: any = new Array();
   
   isLoading: boolean = false;  
   hasBaseCV: boolean;
@@ -248,7 +251,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
     this.hintOnFocus = false;
     this.focusOnResp = false;
 
-    this.advantagesLeft = 7;
+    this.advantagesLeft = 6;
     this.advantagesError = false;
     this.polishAdvantageSuffix = '';
     // this.requirementsListLength = (<FormArray>this.baseCVForm.get('requirements')).length;
@@ -357,7 +360,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
   public addExperienceFormGroup(): FormGroup {
     return this.fb.group({            
       employerName: ['', Validators.required],
-      trade: ['', Validators.required],
+      trade: [''],
       occupationArray: this.fb.array([
         this.addOccupationFormArray()
       ])                       
@@ -507,11 +510,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       let startWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodStart');
       let finishWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodEnd');
       let nowWork = (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].get('workPeriodNow'); 
-
-      console.log(startWork.value);
-      console.log(finishWork.value);
-      // console.log(this.workStartDateFormatted[i][o]);
-      // console.log(this.workFinishDateFormatted[i][o]);
+                
 
       if (this.workStartDateFormatted[i][o] == undefined || this.workStartDateFormatted[i][o] == 0) {
         this.workStartDateFormatted[i][o] = new Date(startWork.value).toLocaleDateString('pl', dateOptions);
@@ -521,6 +520,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
       };
 
+      // Obsługa błędów w kontrolkach formularza
       if ((!finishWork.value && !nowWork.value)) {
         (<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get('occupationArray')).controls[o].setErrors({'incorrect': true});
       };
@@ -532,11 +532,26 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.experienceCompletionError = false;
         this.experienceCompleted[i] = true;
         // (<FormArray>this.baseCVForm.get('experience')).push(this.addExperienceFormGroup());
-      }; 
+      };       
     };    
+
+    if (((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get("occupationArray")).controls.length > 1)) {
+      this.jobStart[i] = this.workStartDateFormatted[i][(<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get("occupationArray")).controls.length - 1];
+        if (this.getOccupationControls(i,0).get('experienceTillNow').value) {
+          this.jobFinish[i] = 'obecnie';  
+        } else {
+          this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+        };           
+    } else {
+      this.jobStart[i] = this.workStartDateFormatted[i][0];
+      this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+    };
+
+    console.log("Daty ramowe u pracodawcy: " + this.jobStart[i] + " - " + this.jobFinish[i]);
 
     if ((<FormArray>this.baseCVForm.get('experience')).controls[i].invalid) {
       this.experienceCompletionError = true;
+      console.log("Experience " + i + " wystąpił błąd!");
     } else {
       (<FormArray>this.baseCVForm.get('experience')).controls[i].setErrors(null);
       this.experienceCompletionError = false;
@@ -604,8 +619,22 @@ export class CreatorComponent implements OnInit, AfterViewInit {
         this.workFinishDateFormatted[i][o] = new Date(finishWork.value).toLocaleDateString('pl', dateOptions);
       } else {
         this.workFinishDateFormatted[i][o] = finishWork.value;
-      };
-    };           
+      };     
+    };   
+
+    if (((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get("occupationArray")).controls.length > 1)) {
+      this.jobStart[i] = this.workStartDateFormatted[i][(<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[i].get("occupationArray")).controls.length - 1];
+        if (this.getOccupationControls(i,0).get('experienceTillNow').value) {
+          this.jobFinish[i] = 'obecnie';  
+        } else {
+          this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+        };           
+    } else {
+      this.jobStart[i] = this.workStartDateFormatted[i][0];
+      this.jobFinish[i] = this.workFinishDateFormatted[i][0];
+    };
+    
+    console.log("Daty ramowe u pracodawcy: " + this.jobStart[i] + " - " + this.jobFinish[i]);
     
     this.baseCVForm.get('experience').enable();
     this.experienceEditionModeEnabled = false;
@@ -909,7 +938,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       if (control.value) {
         this.selectedAdvantagesValues.push(this.advantagesList[i]);
       }
-      this.advantagesLeft = (7 - this.selectedAdvantagesValues.length);
+      this.advantagesLeft = (6 - this.selectedAdvantagesValues.length);
       if (this.advantagesLeft < 0) {
         this.advantagesLeft = 0;
       }
@@ -957,7 +986,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
 
     console.log(this.selectedAdvantagesValuesToDatabase);
     console.log(this.selectedAdvantagesValues);
-    this.advantagesError = ((this.selectedAdvantagesValues.length > 7) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 5 elementów, advantagesError otrzymuje wartość true
+    this.advantagesError = ((this.selectedAdvantagesValues.length > 6) || (this.selectedAdvantagesValues.length < 1)) ? true : false; //jeśli tablica selectedAdvantagesValues ma więcej niż 6 elementów, advantagesError otrzymuje wartość true
 
     // this.selectedAdvantagesValuesToPrint = this.selectedAdvantagesValues.join('\n');
 
@@ -1304,7 +1333,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       this.formErrors.push('Nazwa szkoły/uczelni');
     };
     if (this.advantagesError || (this.selectedAdvantagesValues == undefined)) {
-      this.formErrors.push('Wskaż minimum 1, maksimum 7 swoich mocnych stron');
+      this.formErrors.push('Wskaż minimum 1, maksimum 6 swoich mocnych stron');
     };
     if (!hobby.valid) {
       this.formErrors.push('Zainteresowania');
@@ -2150,7 +2179,7 @@ export class CreatorComponent implements OnInit, AfterViewInit {
       });      
 
       this.selectedAdvantagesValues = CVData.data.baseCVData.advantages;
-      this.advantagesLeft = (7 - this.selectedAdvantagesValues.length);
+      this.advantagesLeft = (6 - this.selectedAdvantagesValues.length);
       if (this.advantagesLeft < 0) {
         this.advantagesLeft = 0;
       };
@@ -2312,7 +2341,19 @@ export class CreatorComponent implements OnInit, AfterViewInit {
           this.experienceCompleted[e] = true; 
           this.hideNextExpButton = false;
 
-          (<FormArray>this.baseCVForm.get('experience')).push(this.addExperienceFormGroup());          
+          (<FormArray>this.baseCVForm.get('experience')).push(this.addExperienceFormGroup());         
+          
+          if (((<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[e].get("occupationArray")).controls.length > 1)) {
+            this.jobStart[e] = this.workStartDateFormatted[e][(<FormArray>(<FormArray>this.baseCVForm.get('experience')).controls[e].get("occupationArray")).controls.length - 1];
+              if (this.getOccupationControls(e,0).get('experienceTillNow').value) {
+                this.jobFinish[e] = 'obecnie';  
+              } else {
+                this.jobFinish[e] = this.workFinishDateFormatted[e][0];
+              };           
+          } else {
+            this.jobStart[e] = this.workStartDateFormatted[e][0];
+            this.jobFinish[e] = this.workFinishDateFormatted[e][0];
+          };
           
        }                      
       }; // koniec doświadczenia zawodowego

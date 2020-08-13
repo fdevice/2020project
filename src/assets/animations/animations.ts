@@ -50,7 +50,7 @@ export function sidetipFadeIn() {
       state('void', style({})),
       state('*', style({})),
       transition(':enter', [
-          style({ opacity: 0, transform: 'translateX(-15%)' }),
+          style({ opacity: 0, transform: 'translateX(15%)' }),
           animate('.7s ease-in-out')
       ])
   ])

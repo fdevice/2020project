@@ -1,37 +1,36 @@
 export const LANGUAGES_LIST =
 [
-
   {
     'id': 1,
-    'lang': 'angielski'
+    'lang': 'albański'
   },
   {
     'id': 2,
-    'lang': 'niemiecki'
+    'lang': 'angielski'
   },
   {
     'id': 3,
-    'lang': 'rosyjski'
+    'lang': 'arabski'
   },
   {
     'id': 4,
-    'lang': 'francuski'
+    'lang': 'białoruski'
   },
   {
     'id': 5,
-    'lang': 'hiszpański'
+    'lang': 'bułgarski'
   },
   {
     'id': 6,
-    'lang': 'szwedzki'
+    'lang': 'chiński'
   },
   {
     'id': 7,
-    'lang': 'norweski'
+    'lang': 'chorwacki'
   },
   {
     'id': 8,
-    'lang': 'fiński'
+    'lang': 'czeski'
   },
   {
     'id': 9,
@@ -39,43 +38,43 @@ export const LANGUAGES_LIST =
   },
   {
     'id': 10,
-    'lang': 'holenderski'
+    'lang': 'estoński'
   },
   {
     'id': 11,
-    'lang': 'portugalski'
+    'lang': 'fiński'
   },
   {
     'id': 12,
-    'lang': 'włoski'
+    'lang': 'francuski'
   },
   {
     'id': 13,
-    'lang': 'czeski'
+    'lang': 'grecki'
   },
   {
     'id': 14,
-    'lang': 'słowacki'
+    'lang': 'hindi'
   },
   {
     'id': 15,
-    'lang': 'węgierski'
+    'lang': 'hiszpański'
   },
   {
     'id': 16,
-    'lang': 'rumuński'
+    'lang': 'holenderski'
   },
   {
     'id': 17,
-    'lang': 'bułgarski'
+    'lang': 'islandzki'
   },
   {
     'id': 18,
-    'lang': 'chorwacki'
+    'lang': 'japoński'
   },
   {
     'id': 19,
-    'lang': 'ukraiński'
+    'lang': 'koreański'
   },
   {
     'id': 20,
@@ -87,66 +86,70 @@ export const LANGUAGES_LIST =
   },
   {
     'id': 22,
-    'lang': 'estoński'
-  },
-  {
-    'id': 23,
-    'lang': 'albański'
-  },
-  {
-    'id': 24,
-    'lang': 'serbski'
-  },
-  {
-    'id': 25,
-    'lang': 'islandzki'
-  },
-  {
-    'id': 26,
-    'lang': 'białoruski'
-  },
-  {
-    'id': 27,
-    'lang': 'słoweński'
-  },
-  {
-    'id': 28,
     'lang': 'macedoński'
   },
   {
-    'id': 29,
-    'lang': 'grecki'
+    'id': 23,
+    'lang': 'niemiecki'
   },
   {
-    'id': 30,
-    'lang': 'turecki'
+    'id': 24,
+    'lang': 'norweski'
   },
   {
-    'id': 31,
-    'lang': 'japoński'
-  },
-  {
-    'id': 32,
-    'lang': 'chiński'
-  },
-  {
-    'id': 33,
-    'lang': 'koreański'
-  },
-  {
-    'id': 34,
-    'lang': 'arabski'
-  },
-  {
-    'id': 35,
-    'lang': 'hindi'
-  },
-  {
-    'id': 36,
+    'id': 25,
     'lang': 'perski'
   },
   {
+    'id': 26,
+    'lang': 'polski'
+  },
+  {
+    'id': 27,
+    'lang': 'portugalski'
+  },
+  {
+    'id': 28,
+    'lang': 'rosyjski'
+  }, 
+  {
+    'id': 29,
+    'lang': 'rumuński'
+  },
+  {
+    'id': 30,
+    'lang': 'serbski'
+  },
+  {
+    'id': 31,
+    'lang': 'słowacki'
+  },  
+  {
+    'id': 32,
+    'lang': 'słoweński'
+  },
+  {
+    'id': 33,
+    'lang': 'szwedzki'
+  },
+  {
+    'id': 34,
+    'lang': 'turecki'
+  },  
+  {
+    'id': 35,
+    'lang': 'ukraiński'
+  },
+  {
+    'id': 36,
+    'lang': 'węgierski'
+  },      
+  {
     'id': 37,
+    'lang': 'włoski'
+  },   
+  {
+    'id': 38,
     'lang': 'inny...'
   },
 ]

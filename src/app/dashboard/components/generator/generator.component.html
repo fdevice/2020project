@@ -19,9 +19,9 @@
     <!-- <form [formGroup]="cvForm" (ngSubmit)="generatePDF()" (keydown.enter)="$event.preventDefault()"> -->
     <form [formGroup]="cvForm">
     <div class="row">
-      <div *ngIf="(screenInnerWidth > 768)" class="col-md-3">
+      <!-- <div *ngIf="(screenInnerWidth > 768)" class="col-md-3">
         <app-side-tooltip *ngIf="!(currentHint === '')" [hintPosition]="currentHintPosition" [hint]="currentHint"></app-side-tooltip>      
-      </div>
+      </div> -->
       <div [ngClass]="{'col-md-9': (screenInnerWidth > 768), 'col-md-12': (screenInnerWidth <= 768) }">
         <div class="card mt-2 mb-2">
           <div class="card-body">
@@ -275,7 +275,7 @@
                               <input type="text"
                                     class="form-control trade-input"
                                     [id]="'trade'+i"
-                                    placeholder="Branża (np. edukacja, budownictwo)"
+                                    placeholder="Branża (np. edukacja, budownictwo) - opcjonalnie"
                                     formControlName="trade"
                                     autocomplete="off"
                                     (mouseover)="setHints(hoverMessages.branza)"
@@ -365,7 +365,7 @@
                                 <div #resp *ngFor="let resp of getResponsibilitiesControls(i, o).controls; let x = index" formArrayName="responsibilities">                                  
                                   <div [formGroupName]="x">
                                     <div class="form-group row section-row">
-                                      <div class="col-xl-6">
+                                      <div class="col-12">
                                         <input type="text"
                                             class="form-control mb-3"
                                             [id]="'responsibilities'+'_'+i+'_'+o+'_'+x"
@@ -472,11 +472,18 @@
                     </div>
   
                       <div id="experience-completed" *ngIf="(this.experienceCompleted[i] == true)" class="mb-4 ml-4">
-                        <p style="font-size: 18px; margin-bottom: 8px">
+                        <small class="text-muted">
+                          <span class="calendar-icon-default ml-0"><i class="fas fa-calendar-alt"></i></span>
+                          {{ jobStart[i] }} - {{ jobFinish[i] }}
+                        </small>  
+                        <p *ngIf="(getExperienceControls(i).get('trade').value == undefined || getExperienceControls(i).get('trade').value == '')" style="font-size: 18px; margin-bottom: 8px">
+                          <strong> {{ getExperienceControls(i).get('employerName').value }} </strong>
+                        </p>
+                        <p *ngIf="(getExperienceControls(i).get('trade').value != undefined && getExperienceControls(i).get('trade').value != '')" style="font-size: 18px; margin-bottom: 8px">
                           <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }}
                         </p>
                         <div *ngFor="let occ of getOccupation(i).controls; let o = index">
-                          <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
+                          <!-- <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
                             <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
                               {{ workStartDateFormatted[i][o] }} - obecnie
                           </small>
@@ -485,7 +492,7 @@
                               <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
                               {{ workStartDateFormatted[i][o] }} - {{ workFinishDateFormatted[i][o] }}
                             </small>
-                          </ng-template>
+                          </ng-template> -->
                           <p style="font-size: 14px; margin-bottom: 5px" class="ml-3">
                             <strong> {{ getOccupationControls(i,o).get('occupation').value }} </strong>
                           </p>
@@ -1380,7 +1387,7 @@
                       </small>
                     </div>
                     <div *ngIf="advantagesError && checkAdvantagesControlsDirty()" class="row section-row mt-2">
-                      <small class="col-xl-12 text-danger ml-2"><strong>Proszę zaznaczyć nie więcej niż 7 pozycji!</strong></small>
+                      <small class="col-xl-12 text-danger ml-2"><strong>Proszę zaznaczyć nie więcej niż 6 pozycji!</strong></small>
                     </div>
                     <div class="mb-5">
                       <br>
@@ -1432,12 +1439,12 @@
               </div>
               <div formArrayName="requirements" *ngFor="let req of requirementsArray.controls; let r = index">
                 <div [formGroupName]="r">
-                      <div class="form-group row section-row mb-3">
+                      <div class="form-group row section-row mb-3 p-1">
                         <div class="col-xl-1">
-                          <p class="py-3 requirement-index">{{ r+1 }}.</p>
+                          <p class="py-2 requirement-index">{{ r+1 }}.</p>
                         </div>
                           <div class="col-xl-5">
-                            <input type="text"
+                            <!-- <input type="text"
                                        class="form-control mb-3"
                                        [id]="'requirement'+r"
                                        placeholder="Wymaganie rekrutacyjne"
@@ -1446,10 +1453,22 @@
                                        (mouseover)="setHints(hoverMessages.wymaganie)"
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.wymaganie)"
-                                       (blur)="clearHints()">
+                                       (blur)="clearHints()"> -->
+                            <textarea type="text"
+                                      class="form-control mb-3"
+                                      [id]="'requirement'+r"
+                                      placeholder="Wymaganie rekrutacyjne"
+                                      formControlName="requirement"
+                                      rows="1"
+                                      maxlength="1000"
+                                      autocomplete="off"
+                                      (mouseover)="setHints(hoverMessages.wymaganie)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.wymaganie)"
+                                      (blur)="clearHints()"></textarea>     
                           </div>
                           <div class="col-xl-5">
-                            <input type="text"
+                            <!-- <input type="text"
                                        class="form-control mb-3"
                                        [id]="'answer'+r"
                                        placeholder="Odpowiedź na wymaganie"
@@ -1458,7 +1477,19 @@
                                        (mouseover)="setHints(hoverMessages.wymaganie)"
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.wymaganie)"
-                                       (blur)="clearHints()">
+                                       (blur)="clearHints()"> -->
+                            <textarea type="text"
+                                      class="form-control mb-3"
+                                      [id]="'answer'+r"
+                                      placeholder="Odpowiedź na wymaganie"
+                                      formControlName="answer"
+                                      rows="1"
+                                      maxlength="1000"
+                                      autocomplete="off"
+                                      (mouseover)="setHints(hoverMessages.wymaganie)"
+                                      (mouseout)="clearHints()"
+                                      (focus)="setHints(hoverMessages.wymaganie)"
+                                      (blur)="clearHints()"></textarea>
                           </div>
                 </div>
               </div>
@@ -1579,6 +1610,9 @@
                     </div>
           </div>
         </div>
+      </div>
+      <div *ngIf="(screenInnerWidth > 768)" class="col-md-3">
+        <app-side-tooltip *ngIf="!(currentHint === '')" [hintPosition]="currentHintPosition" [hint]="currentHint"></app-side-tooltip>      
       </div>
       </div>
   </form>

@@ -70,7 +70,7 @@ export const HOVER_MESSAGE =
     znajomoscPrzepisowOpis: "Wymień ustawy i przepisy, o których posiadasz specjalistyczną wiedzę",
     inneUmiejetnosci: "Zaznacz, jeżeli posiadasz umiejętności inne niż powyższe",
     inneUmiejetnosciOpis: "Wymień inne posiadane przez siebie istotne umiejętności",
-    mocneStrony: "Jeśli masz dylemat, które ze swoich kompetencji wybrać, zastanów się, które wykorzystasz w przyszłej pracy. Nie zasypuj pracodawcy za dużą liczbą informacji. Możesz wybrać od 1 do 7 kompetencji.",
+    mocneStrony: "Jeśli masz dylemat, które ze swoich kompetencji wybrać, zastanów się, które wykorzystasz w przyszłej pracy. Nie zasypuj pracodawcy za dużą liczbą informacji. Możesz wybrać od 1 do 6 kompetencji.",
     zainteresowania: "Wypełnienie zainteresowań jest dużo ważniejsze niż się wydaje. Niektóre zainteresowania mogą wykorzystywać umiejętności, które przydają się w pracy. Poza tym pracodawcy chętnie podejmują ten temat na rozmowie rekrutacyjnej.",
     zdjecie: "Zadbaj o dobre zdjęcie! Pomyśl, jak powinien prezentować się pracownik na stanowisku, na które chcesz aplikować. Pamiętaj o stroju, odpowiednim tle i jakości zdjęcia. Nie używaj robionych „z ręki“, z imprez czy skanowanych z dowodu. \nKliknij, żeby dodać zdjęcie z dysku.",
     zmienZdjecie: "Kliknij, żeby zmienić zdjęcie. Zadbaj o dobre zdjęcie! Pomyśl, jak powinien prezentować się pracownik na stanowisku, na które chcesz aplikować. Pamiętaj o stroju, odpowiednim tle i jakości zdjęcia. Nie używaj robionych „z ręki“, z imprez czy skanowanych z dowodu. \nKliknij, żeby dodać zdjęcie z dysku.",
