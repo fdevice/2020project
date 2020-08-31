@@ -13,10 +13,7 @@
   </div>
   <!-- <form [formGroup]="cvForm" (ngSubmit)="generatePDF()" (keydown.enter)="$event.preventDefault()"> -->
   <form [formGroup]="baseCVForm">
-  <div class="row">
-    <!-- <div *ngIf="(screenInnerWidth > 768)" class="col-md-3">
-      <app-side-tooltip *ngIf="!(currentHint === '')" [hintPosition]="currentHintPosition" [hint]="currentHint"></app-side-tooltip>      
-    </div> -->
+  <div class="row">    
     <div [ngClass]="{'col-md-9': (screenInnerWidth > 768), 'col-md-12': (screenInnerWidth <= 768) }">
       <div class="card mt-2 mb-2">
         <div class="card-body">
@@ -160,10 +157,7 @@
                     'photo-square': imageClass === 'square'
                   }">
                       <img [src]="uploadedImage" [alt]="baseCVForm.value.name" #userImage>
-                  </div>
-                  <!-- <div *ngIf="uploadedImage && uploadedImage !== '' && baseCVForm.get('image').valid" class="photo-portrait">
-                      <img [src]="uploadedImage" [alt]="baseCVForm.value.name" #userImage>
-                  </div> -->
+                  </div>                  
             </div>
             <div class="col-lg-7 col-sm-12">
                 <div class="form-group mb-4 mt-2">
@@ -226,8 +220,7 @@
                                (mouseout)="clearHints()"
                                (focus)="setHints(hoverMessages.zdjecie)"
                                (blur)="clearHints()">
-                        Dodaj zdjęcie
-                        <!-- <input type="file" name="file" accept="image/*" (change)="uploadImage($event)"> -->
+                        Dodaj zdjęcie                        
                         <input type="file" name="file" accept="image/*" (change)="onImagePicked($event)">
                     </div>
                     <div *ngIf="uploadedImage" class="upload-button file btn btn-info"
@@ -251,11 +244,7 @@
                 <div formArrayName="experience" *ngFor="let exp of experienceArray.controls; let i = index">
                   <div [formGroupName]="i">
                     <div *ngIf="!this.experienceCompleted[i]">
-                      <div class="form-group row section-row">
-                        <!-- <label [attr.for]="'employerName'+i"
-                               class="col-xl-1 col-form-label"
-                               (mouseover)="setHints(hoverMessages.nazwaFirmy)"
-                               (mouseout)="clearHints()">Nazwa firmy:</label> -->
+                      <div class="form-group row section-row">                        
                         <div class="col-xl-5">
                             <input type="text"
                                    class="form-control employer-name-input"
@@ -280,13 +269,9 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.branza)"
                                   (blur)="clearHints()">
-                        </div>
-                        <!-- <label [attr.for]="'occupation'+i"
-                               class="col-xl-1 col-form-label"
-                               (mouseover)="setHints(hoverMessages.stanowisko)"
-                               (mouseout)="clearHints()">Stanowisko:</label> -->                        
+                        </div>                                               
                       </div>
-                      <div formArrayName="occupationArray" *ngFor="let occ of getOccupation(i).controls; let o = index">
+                      <div formArrayName="occupationArray" *ngFor="let occ of getOccupationArray(i).controls; let o = index">
                         <div [formGroupName]="o">
                           <div class="form-group row section-row">                            
                             <div class="col-lg-10">
@@ -410,7 +395,7 @@
                                 </div>
                               </div>                              
                             </div>                                                    
-                          <div *ngIf="(getOccupation(i).length) > 1  && getExperienceControls(i).enabled" class="form-group row section-row">                            
+                          <div *ngIf="(getOccupationArray(i).length) > 1  && getExperienceControls(i).enabled" class="form-group row section-row">                            
                             <div class="col-lg-4">
                               <button
                                 class="btn btn-danger"
@@ -423,7 +408,7 @@
                                 (blur)="clearHints()">Usuń stanowisko</button>
                             </div>  
                           </div>
-                          <div *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty || (getOccupationControls(i, o).get('workPeriodStart').value !== '')) && (o == getOccupation(i).length - 1) && getExperienceControls(i).enabled" class="form-group row section-row">                            
+                          <div *ngIf="(getOccupationControls(i, o).get('workPeriodStart').dirty || (getOccupationControls(i, o).get('workPeriodStart').value !== '')) && (o == getOccupationArray(i).length - 1) && getExperienceControls(i).enabled" class="form-group row section-row">                            
                             <div class="col-lg-4">
                               <button 
                               class="btn btn-info"
@@ -438,14 +423,8 @@
                           </div>
                           <br>                         
                         </div>
-                      </div>  <!-- Koniec OccupationArray -->
+                      </div>  <!-- Koniec OccupationArray -->                     
                       
-                      <!-- <div *ngIf="this.workPeriodEndDateIssue[i][o]" class="row">
-                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodEndDateIssueMessage[i]}}</strong></p>
-                      </div> -->
-                      <!-- <div *ngIf="this.workPeriodCurrentDateIssue[i][o]" class="row">
-                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{workPeriodCurrentDateIssueMessage[i]}}</strong></p>
-                      </div>                     -->
                       <hr class="mb-3">
                       <div *ngIf="experienceCompletionError" class="row">
                         <div class="col-xl-4 mt-2 mb-2">
@@ -480,17 +459,19 @@
                       <p *ngIf="(getExperienceControls(i).get('trade').value != undefined && getExperienceControls(i).get('trade').value != '')" style="font-size: 18px; margin-bottom: 8px">
                         <strong> {{ getExperienceControls(i).get('employerName').value }} </strong> / {{ getExperienceControls(i).get('trade').value }}
                       </p>
-                      <div *ngFor="let occ of getOccupation(i).controls; let o = index">
-                        <!-- <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
-                          <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
-                            {{ workStartDateFormatted[i][o] }} - obecnie
-                        </small>
-                        <ng-template #experienceCompletedDate>
-                          <small class="text-muted">
+                      <div *ngFor="let occ of getOccupationArray(i).controls; let o = index">
+                        <div *ngIf="getOccupationArray(i).length > 1">
+                          <small *ngIf="getOccupationControls(i,o).get('experienceTillNow').value; else experienceCompletedDate" class="text-muted">
                             <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
-                            {{ workStartDateFormatted[i][o] }} - {{ workFinishDateFormatted[i][o] }}
+                              {{ workStartDateFormatted[i][o] }} - obecnie
                           </small>
-                        </ng-template> -->
+                          <ng-template #experienceCompletedDate>
+                            <small class="text-muted">
+                              <span class="calendar-icon-default ml-2"><i class="fas fa-calendar-alt"></i></span>
+                              {{ workStartDateFormatted[i][o] }} - {{ workFinishDateFormatted[i][o] }}
+                            </small>
+                          </ng-template>
+                        </div>
                         <p style="font-size: 14px; margin-bottom: 5px" class="ml-3">
                           <strong> {{ getOccupationControls(i,o).get('occupation').value }} </strong>
                         </p>
@@ -501,13 +482,9 @@
                         </ul>
                         <br>
                       </div>       <!-- Koniec pętli occupation -->                                                                      
-                      <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>
-                      <!-- <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="removeChosenExperience(i)">Usuń</button> -->
+                      <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-info mr-2" (click)="toggleExperienceEdit(i)">Edytuj</button>                      
                       <button type="button" *ngIf="!experienceEditionModeEnabled" class="btn btn-sm btn-danger" (click)="onDeleteExperience(i)">Usuń</button>
-                    </div>
-
-                  <!-- *** -->
-                  <!-- <hr class="mt-2 mb-4"> -->
+                    </div>                  
                   </div>
                 </div>
               </div>
@@ -537,9 +514,7 @@
                                   (mouseout)="clearHints()"
                                   (focus)="setHints(hoverMessages.rodzajSzkoly)"
                                   (blur)="clearHints()"
-                                  [compareWith]="compareByEdu">
-                            <!-- <mat-option [value]="1">Wyższa</mat-option>
-                            <mat-option [value]="2">Średnia</mat-option> -->
+                                  [compareWith]="compareByEdu">                            
                             <mat-option *ngFor="let type of schoolType" [value]="type.id">{{ type.value }}</mat-option>
                           </mat-select>
                         </div>
@@ -607,11 +582,7 @@
                             <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
                           </div>
 
-                        <div class="form-group row section-row">
-                            <!-- <label [attr.for]="'schoolName'+e"
-                                   class="col-xl-1 col-form-label"
-                                   (mouseover)="setHints(hoverMessages.nazwaUczelni)"
-                                   (mouseout)="clearHints()">Nazwa uczelni:</label> -->
+                        <div class="form-group row section-row">                            
                             <div class="col-lg-5">
                                 <input type="text"
                                        class="form-control"
@@ -624,11 +595,7 @@
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.nazwaUczelni)"
                                        (blur)="clearHints()">
-                            </div>
-                             <!-- <label [attr.for]="'specialization'+e"
-                                       class="col-xl-1 col-form-label"
-                                       (mouseover)="setHints(hoverMessages.specjalizacjaStudiow)"
-                                       (mouseout)="clearHints()">Specjalizacja:</label> -->
+                            </div>                             
                             <div class="col-lg-5 mb-4">
                               <input type="text"
                                       class="form-control"
@@ -727,11 +694,7 @@
                      <div *ngIf="this.educationCurrentDateIssue[e]" class="row">
                        <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
                      </div>
-                     <div class="form-group row section-row">
-                          <!-- <label [attr.for]="'schoolName'+e"
-                                   class="col-xl-1 col-form-label"
-                                   (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
-                                   (mouseout)="clearHints()">Nazwa szkoły:</label> -->
+                     <div class="form-group row section-row">                          
                             <div class="col-lg-5">
                                 <input type="text"
                                        class="form-control"
@@ -744,11 +707,7 @@
                                        (mouseout)="clearHints()"
                                        (focus)="setHints(hoverMessages.nazwaSzkoly)"
                                        (blur)="clearHints()">
-                            </div>
-                            <!-- <label [attr.for]="'classProfile'+e"
-                                       class="col-xl-1 col-form-label"
-                                       (mouseover)="setHints(hoverMessages.profilSzkoly)"
-                                       (mouseout)="clearHints()">Profil:</label> -->
+                            </div>                            
                                        <div class="col-lg-5 mb-4">
                                           <input type="text"
                                                  class="form-control"
@@ -826,11 +785,7 @@
                    <div *ngIf="this.educationCurrentDateIssue[e]" class="row">
                      <p class="col-xl-12 lead text-danger ml-2"><strong>{{educationCurrentDateIssueMessage[e]}}</strong></p>
                    </div>
-                    <div class="form-group row section-row">
-                        <!-- <label [attr.for]="'schoolName'+e"
-                                 class="col-xl-1 col-form-label"
-                                 (mouseover)="setHints(hoverMessages.nazwaSzkoly)"
-                                 (mouseout)="clearHints()">Nazwa szkoły:</label> -->
+                    <div class="form-group row section-row">                        
                           <div class="col-lg-5">
                               <input type="text"
                                      class="form-control"
@@ -989,18 +944,11 @@
 
                 </div>
 
-                <div id="course-completed" *ngIf="this.coursesCompleted[c]" class="mb-4 ml-4">
-                    <!-- <small *ngIf="getCoursesControls(c).get('courseTillNow').value; else courseCompletedDate" class="text-muted"> -->
+                <div id="course-completed" *ngIf="this.coursesCompleted[c]" class="mb-4 ml-4">                    
                     <small class="text-muted">
                       <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
                         {{ courseStartDateFormatted[c] }}
-                    </small>
-                    <!-- <ng-template #courseCompletedDate>
-                      <small class="text-muted">
-                        <span class="calendar-icon-default"><i class="fas fa-calendar-alt"></i></span>
-                        {{ courseStartDateFormatted[c] }} - {{ courseFinishDateFormatted[c] }}
-                      </small>
-                    </ng-template> -->
+                    </small>                    
                     <p *ngIf="!(getCoursesControls(c).get('courseSubject').value === ''); else onlyCourseName" style="font-size: 16px; margin-bottom: 5px">
                      <strong> {{ getCoursesControls(c).get('courseName').value }} </strong> / {{ getCoursesControls(c).get('courseSubject').value }}
                     </p>
@@ -1107,25 +1055,7 @@
                           (focus)="setHints(hoverMessages.jezykObcyUsun)"
                           (blur)="clearHints()">Usuń język</button>
                 </div>
-              </div>
-              <!-- <button *ngIf="languagesArray.controls[0].get('languageName').dirty"
-                        class="btn btn-info mb-2"
-                        type="button"
-                        id="addLanguagesButton"
-                        (click)="addLanguagesButtonClick()"
-                        (mouseover)="setHints(hoverMessages.jezykObcyDodaj)"
-                        (mouseout)="clearHints()"
-                        (focus)="setHints(hoverMessages.jezykObcyDodaj)"
-                        (blur)="clearHints()">Dodaj kolejny język</button> -->
-              <!-- <button *ngIf="languagesArray.controls.length > 1"
-                      class="btn btn-danger mb-2"
-                      type="button"
-                      id="removeLanguagesButton"
-                      (click)="removeLanguagesButtonClick()"
-                      (mouseover)="setHints(hoverMessages.jezykObcyUsun)"
-                      (mouseout)="clearHints()"
-                      (focus)="setHints(hoverMessages.jezykObcyUsun)"
-                      (blur)="clearHints()">Usuń język</button> -->              
+              </div>                           
             </div>
             <hr class="mt-2 mb-3">
               <div id="skills">
@@ -1409,135 +1339,26 @@
                 </div>
               </div>
               <div class="form-group section-row row">
-                <div class="col-xl-12">
-                    <!-- <label for="hobbies" class="col-form-label col-xl-2">Zainteresowania:</label> -->
-                    <div class="col-xl-10">
-                      <input formControlName="hobbies"
-                                type="text"
-                                id="hobbies"
+                <div class="col-xl-12">                    
+                    <div class="col-xl-11">                      
+                      <textarea type="text"
                                 class="form-control"
-                                autocomplete="off"
+                                id="hobbies"
                                 placeholder="Zainteresowania"
+                                formControlName="hobbies"
+                                rows="2"
+                                maxlength="300"
+                                autocomplete="off"
                                 (mouseover)="setHints(hoverMessages.zainteresowania)"
                                 (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.zainteresowania)"
-                                (blur)="clearHints()"
-                                maxlength="300">
+                                (mouseover)="setHints(hoverMessages.zainteresowania)"
+                                (blur)="clearHints()"></textarea>  
                     </div>
                 </div>
               </div>
           </div>
-          <hr class="mt-5 mb-4">
-
-          <!-- <div id="requirements">
-            <div class="row"
-                 (mouseover)="setHints(hoverMessages.wymaganiaPracodawcy)"
-                 (mouseout)="clearHints()">
-              <div class="col-xl-12">
-                <h5 class="section-header requirements-header"><span class="cv-icon"><i class="fas fa-file-alt mr-3" #headerIcon10></i></span><strong>WYMAGANIA REKRUTACYJNE Z OFERTY (OPCJONALNIE)</strong></h5>
-              </div>
-            </div>
-            <div formArrayName="requirements" *ngFor="let req of requirementsArray.controls; let r = index">
-              <div [formGroupName]="r">
-                    <div class="form-group row section-row mb-3">
-                      <div class="col-xl-1">
-                        <p class="py-3 requirement-index">{{ r+1 }}.</p>
-                      </div>
-                        <div class="col-xl-5">
-                          <input type="text"
-                                     class="form-control mb-3"
-                                     [id]="'requirement'+r"
-                                     placeholder="Wymaganie rekrutacyjne"
-                                     formControlName="requirement"
-                                     autocomplete="off"
-                                     (mouseover)="setHints(hoverMessages.wymaganie)"
-                                     (mouseout)="clearHints()"
-                                     (focus)="setHints(hoverMessages.wymaganie)"
-                                     (blur)="clearHints()">
-                        </div>
-                        <div class="col-xl-5">
-                          <input type="text"
-                                     class="form-control mb-3"
-                                     [id]="'answer'+r"
-                                     placeholder="Odpowiedź na wymaganie"
-                                     formControlName="answer"
-                                     autocomplete="off"
-                                     (mouseover)="setHints(hoverMessages.wymaganie)"
-                                     (mouseout)="clearHints()"
-                                     (focus)="setHints(hoverMessages.wymaganie)"
-                                     (blur)="clearHints()">
-                        </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-2">
-              <div class="col-xl-6">
-                <div class="form-group">
-                  <button class="btn btn-info mr-2 mb-2"
-                          type="button"
-                          (click)="addNewRequirement()"
-                          (mouseover)="setHints(hoverMessages.wymaganieDodaj)"
-                          (mouseout)="clearHints()"
-                          (focus)="setHints(hoverMessages.wymaganieDodaj)"
-                          (blur)="clearHints()">Dodaj wymaganie</button>
-                  <button *ngIf="requirementsArray.length > 1"
-                          class="btn btn-danger"
-                          type="button"
-                          (click)="removeRequirement(requirementsListLength-1)"
-                          (mouseover)="setHints(hoverMessages.wymaganieUsun)"
-                          (mouseout)="clearHints()"
-                          (focus)="setHints(hoverMessages.wymaganieUsun)"
-                          (blur)="clearHints()">Usuń wymaganie</button>
-                </div>
-              </div>
-            </div>
-        </div> -->
-        <!-- <hr style="border: 1px dashed;" class="mt-3 mb-5"> -->
-            <!-- <div id="clause">
-              <div class="row"
-                   (mouseover)="setHints(hoverMessages.zainteresowania)"
-                   (mouseout)="clearHints()">
-                <div class="col-xl-12">
-                  <h5 class="section-header clause-header mb-2"><span class="cv-icon"><i class="fas fa-pen-fancy mr-3"></i></span><strong>TREŚĆ KLAUZULI</strong></h5>
-                </div>
-              </div>
-              <div class="form-group section-row row">
-                <div class="col-11">
-                      <textarea formControlName="clause"
-                                type="text"
-                                id="clause"
-                                class="form-control"
-                                rows="6"
-                                maxlength="1000"
-                                autocomplete="off"
-                                [value]="defaultClause"
-                                (input)="defaultClause = $event.target.value"
-                                (mouseover)="setHints(hoverMessages.klauzula)"
-                                (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.klauzula)"
-                                (blur)="clearHints()"></textarea>
-                </div>
-              </div>
-          </div> -->
-          <!-- <hr> -->
-                <!-- <div *ngIf="isLoading">
-                  <mat-spinner>Trwa generowanie PDF</mat-spinner>
-                  <div>
-                    <p style="text-align: center; margin-top: 5px;">Proszę czekać. Trwa generowanie CV...</p>
-                  </div>
-                </div> -->
-                  <div class="row mt-2">
-                    <!-- <div class="col-xl-3">
-                      <div class="form-group">
-                        <button class="btn btn-info"
-                                type="button"
-                                (click)="generatePDF(photoContainer, headerIcon1, headerIcon2, headerIcon3, headerIcon4, headerIcon5, headerIcon6, headerIcon7, headerIcon8, headerIcon9, headerIcon10, calendarIcon)"
-                                (mouseover)="setHints(hoverMessages.generujPDF)"
-                                (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.generujPDF)"
-                                (blur)="clearHints()">Zapisz jako PDF</button>
-                      </div>
-                    </div> -->
+          <hr class="mt-5 mb-4">                                        
+                  <div class="row mt-2">                    
                     <div *ngIf="!hasBaseCV" class="col-xl-3">
                       <div class="form-group">
                         <button class="btn btn-info"
@@ -1561,19 +1382,7 @@
                                 (focus)="setHints(hoverMessages.aktualizujBazoweCV)"
                                 (blur)="clearHints()">Zaktualizuj Bazowe CV</button>
                       </div>
-                    </div>
-                    <!-- <div class="col-xl-3">
-                      <div class="form-group">
-                        <button class="btn btn-info"
-                                id="populateCVFormButton"
-                                type="button"
-                                (click)="populatebaseCVForm()"
-                                (mouseover)="setHints(hoverMessages.zapiszBazoweCV)"
-                                (mouseout)="clearHints()"
-                                (focus)="setHints(hoverMessages.zapiszBazoweCV)"
-                                (blur)="clearHints()">Pobierz dane!</button>
-                      </div>
-                    </div> -->
+                    </div>                    
                   </div>
         </div>
       </div>

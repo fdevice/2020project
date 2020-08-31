@@ -14,7 +14,7 @@ export class CreatePdfService {
   deepMargin: number = 16;
   documentWidth: number = 210;
   documentHeight: number = 297;
-  footerHeight: number = 16;
+  footerHeight: number = 12;
   headerFont: number = 14;
 
   position: string;
@@ -84,10 +84,7 @@ export class CreatePdfService {
   hobbiesHeaderIcon: any = '';
   requirementsHeaderIcon: any = '';
 
-  fromTop: number;
-  // languagesFromTop: number;
-  // skillsFromTop: number;
-  // hobbiesFromTop: number;
+  fromTop: number;  
 
   document = new jsPDF('p', 'mm', 'a4');
 
@@ -124,7 +121,7 @@ export class CreatePdfService {
           this.document.setTextColor(black);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
           this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
-          this.fromTop += 8;
+          this.fromTop += 10;
           this.shouldAddNewPage();
           this.document.setTextColor(gray);
           this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
@@ -255,8 +252,6 @@ export class CreatePdfService {
     this.fromTop += 9;
 
 
-    console.log(this.occupationArray);
-
     // DOŚWIADCZENIE ZAWODOWE
     if (this.employer[0]) {
       this.document.addImage(this.experienceHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
@@ -283,18 +278,15 @@ export class CreatePdfService {
             this.document.text(this.deepMargin + 7, this.fromTop + 1.5, this.employer[i]);
           };
           
-          this.fromTop += 5;
+          this.fromTop += 5;          
 
-          console.log("OccupationArray[" + i + "]: ");
-          console.dir(this.occupationArray[i]);
-
-          for (let o = 0; o < this.totalOccupationArrayLength[i]; o++) {
-
-            console.log(this.occupationArray[i][o][0]);
-            // this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 10, this.fromTop - 0.5, 3, 4);
-            // this.document.setFontSize(7);
-            // this.document.setTextColor(gray);
-            // this.document.text(this.deepMargin + 16, this.fromTop + 3, this.occupationArray[i][o][0].workStart + ' - ' + this.occupationArray[i][o][0].workFinish);
+          for (let o = 0; o < this.totalOccupationArrayLength[i]; o++) {            
+            if (this.totalOccupationArrayLength[i] > 1) {
+              this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 10, this.fromTop - 0.5, 3, 4);
+              this.document.setFontSize(7);
+              this.document.setTextColor(gray);
+              this.document.text(this.deepMargin + 16, this.fromTop + 3, this.occupationArray[i][o][0].workStart + ' - ' + this.occupationArray[i][o][0].workFinish);
+            };            
             this.document.setFontSize(9);
             this.document.setTextColor(black);
             this.document.text(this.deepMargin + 16, this.fromTop + 7, this.occupationArray[i][o][0].occupation);
@@ -305,8 +297,7 @@ export class CreatePdfService {
               if (this.occupationArray[i][o][0].responsibilities[j] !== '' && this.occupationArray[i][o][0].responsibilities[j] !== undefined) {
                     let splitResponsibility: any = this.document.splitTextToSize(this.occupationArray[i][o][0].responsibilities[j], 150);
                     this.document.circle(this.deepMargin + 20, this.fromTop, 0.5, 'F');
-                    this.document.text(this.deepMargin + 24, this.fromTop + 0.75, splitResponsibility);
-                    console.log("Occupation length " + i + "_" + o + "_" + j + " : " + this.occupationArray[i][o][0].responsibilities[j].length);
+                    this.document.text(this.deepMargin + 24, this.fromTop + 0.75, splitResponsibility);                    
                     if (this.occupationArray[i][o][0].responsibilities[j].length > 105) {
                       this.fromTop += 7;
                     } else {
@@ -318,33 +309,8 @@ export class CreatePdfService {
             
           };
             this.fromTop += 1;
-      };
-
-    //       this.document.addImage(this.calendarIcon, 'PNG', this.deepMargin + 2, this.fromTop - 0.5, 3, 4);
-    //       this.document.setFontSize(8);
-    //       this.document.setTextColor(gray);
-    //       this.document.text(this.deepMargin + 8, this.fromTop + 3, this.startWork[i] + ' - ' + this.finishWork[i]);
-
-
-    //       this.document.setFontSize(10);
-    //       this.document.setTextColor(black);
-    //       this.document.text(this.deepMargin + 8, this.fromTop + 8, this.employer[i] + '  /  ' + this.trade[i] + '  /  ' + this.occupation[i]);
-
-
-    //       this.document.setFontSize(9);
-    //       this.fromTop += 12;
-
-    //       for (let j = 0; j < this.responsibilities[i].length; j++) {
-    //         console.log(this.responsibilities[i][j]);
-    //         this.document.circle(this.deepMargin + 9, this.fromTop, 0.5, 'F');
-    //         this.document.text(this.deepMargin + 12, this.fromTop + 1, this.responsibilities[i][j]);
-    //         this.fromTop += 4;
-
-    //         this.shouldAddNewPage();
-    //     };
-
+      };   
           this.fromTop += 4;
-
           this.shouldAddNewPage();
         };
       };
@@ -487,167 +453,7 @@ export class CreatePdfService {
       this.document.setLineWidth(0.1);
       this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
       this.fromTop += 9;
-    };
-
-    // JĘZYKI OBCE + UMIEJĘTNOŚCI
-    // if (this.languageName[0] && this.languageName[0] != undefined) {
-    //   this.shouldAddNewPage();
-    //   this.document.addImage(this.languagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-    //   this.document.setTextColor(black);
-    //   this.document.setFontSize(this.headerFont + 3);
-    //   this.document.text(this.deepMargin + 2, this.fromTop + 2, 'JĘZYKI OBCE');
-
-      // if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
-      //   this.document.addImage(this.skillsHeaderIcon, 'PNG', 110, this.fromTop - 5, 9, 9);
-      //   this.document.setTextColor(black);
-      //   this.document.setFontSize(this.headerFont + 3);      
-      //   this.document.text(120, this.fromTop + 2, 'UMIEJĘTNOŚCI');
-      // };           
-
-      // this.fromTop += 7;
-      // this.languagesFromTop = this.fromTop;
-      // this.skillsFromTop = this.fromTop;
-
-      // // this.shouldAddNewPage();
-      // this.document.setFontSize(10);
-      // this.document.setTextColor(black);
-      // this.document.text(this.deepMargin, this.fromTop + 3, this.languageName[0] + ' ' + this.languageLevel[0]);
-      // this.document.setFontSize(7);
-      // this.document.setTextColor(gray);
-
-      // let splitDescription: any = this.document.splitTextToSize(this.languageDescription[0], 80);
-
-      // this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
-      // this.fromTop += 14;
-      // this.languagesFromTop = this.fromTop;      
-
-      // this.shouldAddNewPage();
-
-      // for (let l = 1; l < this.totalLanguagesLength; l++) {
-
-      //   if (this.languageName[l] != undefined) {
-
-      //     // this.shouldAddNewPage();
-      //     this.document.setFontSize(10);
-      //     this.document.setTextColor(black);
-      //     this.document.text(this.deepMargin, this.fromTop + 3, this.languageName[l] + ' ' + this.languageLevel[l]);
-      //     this.document.setFontSize(7);
-      //     this.document.setTextColor(gray);
-
-      //     let splitDescription: any = this.document.splitTextToSize(this.languageDescription[l], 80);
-
-      //     this.document.text(this.deepMargin, this.fromTop + 7, splitDescription);
-      //     this.fromTop += 15;
-      //     this.languagesFromTop = this.fromTop;
-      //     console.log("LangFromTop: " + this.languagesFromTop);
-
-      //     this.shouldAddNewPage();
-      //   };
-      // };
-
-      // // pozioma linia po Językach Obcych
-      // this.document.setDrawColor('#CFE6EF');
-      // this.document.setLineWidth(0.1);
-      // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      // this.fromTop += 9;
-
-      // UMIEJĘTNOŚCI
-    // if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
-    //   this.shouldAddNewPage();
-    //   this.document.addImage(this.skillsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-    //   // this.document.addImage(this.skillsHeaderIcon, 'PNG', 120, this.fromTop - 5, 9, 9);
-    //   this.document.setTextColor(black);
-    //   this.document.setFontSize(this.headerFont + 3);
-    //   this.document.text(this.deepMargin + 2, this.fromTop + 2, 'UMIEJĘTNOŚCI');
-    //   // this.document.text(124, this.fromTop + 2, 'UMIEJĘTNOŚCI');
-    //   this.fromTop += 7;
-
-    //   // (wzór umiejętności)
-    //   if (this.drivingLicence != undefined) {
-    //     let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
-    //     this.document.setFontSize(10);
-    //     this.document.setTextColor(black);
-    //     this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
-    //     this.fromTop += 5;
-    //     this.shouldAddNewPage();
-    //   };
-    
-      // (wzór umiejętności na siatce 2 + 2)
-      // if (this.drivingLicence != undefined) {        
-      //   console.log("SkillsFromTop: " + this.skillsFromTop);
-      //   let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
-      //   this.document.setFontSize(9);
-      //   this.document.setTextColor(black);
-      //   this.document.text(120, this.skillsFromTop + 3, splitDescription);
-      //   this.skillsFromTop += 6;                      
-      // };
-
-      // if (this.computerPrograms != undefined) {               
-      //   let splitDescription: any = this.document.splitTextToSize('Obsługiwane programy: ' + this.computerPrograms, 80);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;    
-      //   this.shouldAddNewPage();            
-      // };
-
-      // if (this.programmingLanguages != undefined) {               
-      //   let splitDescription: any = this.document.splitTextToSize('Języki programowania: ' + this.programmingLanguages, 80);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;
-      //   this.shouldAddNewPage();                
-      // };
-
-      // if (this.devices != undefined) {
-      //   let splitDescription: any = this.document.splitTextToSize('Obsługa urządzeń: ' + this.devices, 80);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;     
-      //   this.shouldAddNewPage();         
-      // };
-
-      // if (this.permissions != undefined) {               
-      //   let splitDescription: any = this.document.splitTextToSize('Specjalistyczne uprawnienia: ' + this.permissions, 90);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;    
-      //   this.shouldAddNewPage();            
-      // };
-
-      // if (this.regulations != undefined) {              
-      //   let splitDescription: any = this.document.splitTextToSize('Ustawy i przepisy: ' + this.regulations, 80);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;     
-      //   this.shouldAddNewPage();          
-      // };
-
-      // if (this.otherSkills != undefined) {              
-      //   let splitDescription: any = this.document.splitTextToSize('Inne istotne umiejętności: ' + this.otherSkills, 80);
-      //   this.document.setFontSize(10);
-      //   this.document.setTextColor(black);
-      //   this.document.text(this.deepMargin, this.fromTop + 3,  splitDescription);
-      //   this.fromTop += 5;       
-      //   this.shouldAddNewPage();
-      // };
-
-      // this.fromTop += 5;
-
-      // pozioma linia po Umiejętnościach
-      // this.document.setDrawColor('#CFE6EF');
-      // this.document.setLineWidth(0.1);
-      // this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-      // this.fromTop += 9;
-    // };
-
-    //   } else {           
-            // ... 
-    // };   
+    };   
 
   // UMIEJĘTNOŚCI
   if (this.drivingLicence || this.computerPrograms || this.programmingLanguages || this.devices || this.permissions || this.regulations || this.otherSkills) {
@@ -656,18 +462,7 @@ export class CreatePdfService {
     this.document.setTextColor(black);
     this.document.setFontSize(this.headerFont + 3);
     this.document.text(this.deepMargin + 2, this.fromTop + 2, 'UMIEJĘTNOŚCI');          
-    this.fromTop += 7;
-
-    // (wzór umiejętności)
-    // if (this.drivingLicence != undefined) {
-    //   let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 80);
-    //   this.document.setFontSize(10);
-    //   this.document.setTextColor(black);
-    //   this.document.text(this.deepMargin, this.fromTop + 3, splitDescription);
-    //   this.fromTop += 5;
-    //   this.shouldAddNewPage();
-    // };
-  
+    this.fromTop += 7;     
     
     if (this.drivingLicence != undefined) {
       let splitDescription: any = this.document.splitTextToSize('Prawo jazdy kategorii ' + this.drivingLicence, 190);
@@ -769,28 +564,6 @@ export class CreatePdfService {
     // MOCNE STRONY
     this.shouldAddNewPage();
 
-    // if (this.fromTop >= (this.documentHeight - this.footerHeight - 40)) {
-    //   this.document.addPage();
-    //   this.fromTop = 15;
-
-    //   // STOPKA
-    //   this.document.setFontSize(8);
-    //   this.document.setDrawColor('#CFE6EF');
-    //   this.document.setLineWidth(0.1);
-    //   this.document.line(this.leftMargin, this.documentHeight - this.footerHeight, this.documentWidth - this.rightMargin, this.documentHeight - this.footerHeight);
-
-    //   let splitClause: any = this.document.splitTextToSize(this.clause, 270);
-    //   this.document.setTextColor(gray);
-    //   this.document.setFontSize(6);
-    //   this.document.text(this.leftMargin, (this.documentHeight - this.footerHeight) + 7, splitClause);
-    //   };
-
-    // if (this.skillsFromTop != undefined && this.skillsFromTop > this.fromTop) {     // jeśli odległość od górnej krawędzi strony w sekcji z umiejętnościami jest większa niż po stronie języków
-    //   this.fromTop = this.skillsFromTop;
-    // }
-    // this.fromTop += 10;
-    // this.hobbiesFromTop = this.fromTop;
-
     if (this.advantages != undefined) {
     this.document.addImage(this.advantagesHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
     this.document.setTextColor(black);
@@ -807,21 +580,6 @@ export class CreatePdfService {
       };
     };
     this.fromTop += 5;
-
-    // ZAINTERESOWANIA    
-    // this.document.addImage(this.hobbiesHeaderIcon, 'PNG', 110, this.hobbiesFromTop - 5, 9, 9);
-    // this.document.setTextColor(black);
-    // this.document.setFontSize(this.headerFont + 3);
-    // this.document.text(120, this.hobbiesFromTop + 2, 'ZAINTERESOWANIA');
-    // this.hobbiesFromTop += 7;
-
-    // let splitHobbies: any = this.document.splitTextToSize(this.hobbies, 120);
-    // this.document.setFontSize(10);
-    // this.document.setTextColor(black);
-    // this.document.text(120, this.hobbiesFromTop + 3,  splitHobbies);
-    // this.fromTop += 12;
-    // this.shouldAddNewPage();
-
 
     // pozioma linia po Mocnych Stronach
     this.document.setDrawColor('#CFE6EF');
@@ -852,49 +610,10 @@ export class CreatePdfService {
     this.fromTop += 9;
 
 
-    // // WYMAGANIA REKRUTACYJNE    
-    // if (this.requirements[0]) {
-    //   let splitRequirements: any;           
-    //   let splitAnswers: any;
-    //   const reqLineLength = 150;
-    //   this.shouldAddNewPage();
-    //   this.document.setDrawColor('#696969');
-    //   this.document.setLineWidth(0.75);
-    //   this.document.line(this.leftMargin, this.fromTop, this.documentWidth - this.rightMargin, this.fromTop);
-    //   this.fromTop += 11;
-    //   this.document.addImage(this.requirementsHeaderIcon, 'PNG', this.leftMargin, this.fromTop - 5, 9, 9);
-    //   this.document.setTextColor(black);
-    //   this.document.setFontSize(this.headerFont + 3);
-    //   this.document.text(this.deepMargin + 2, this.fromTop + 2, 'WYMAGANIA REKRUTACYJNE Z OFERTY');
-    //   this.fromTop += 8;
-    //   this.document.setFontSize(10);
-
-    //   for (let r = 0; r < this.requirements.length; r++) {
-    //     if (this.requirements[r] != undefined) {          
-    //       splitRequirements = this.document.splitTextToSize(this.requirements[r], reqLineLength);
-    //       splitAnswers = this.document.splitTextToSize(this.answers[r], reqLineLength);                      
-    //       this.document.setTextColor(black);
-    //       this.document.text(this.deepMargin, this.fromTop + 1, 'Wymaganie: ');
-    //       this.document.text(this.deepMargin + 23, this.fromTop + 1, splitRequirements);
-    //       this.fromTop += 8;
-    //       this.shouldAddNewPage();
-    //       this.document.setTextColor(gray);
-    //       this.document.text(this.deepMargin, this.fromTop + 1, 'Odpowiedź: ');
-    //       this.document.text(this.deepMargin + 23, this.fromTop + 1, splitAnswers);  
-    //       splitRequirements = [];
-    //       splitAnswers = [];       
-
-    //       this.fromTop += 10;
-
-    //       this.shouldAddNewPage();
-    //     };      
-    //   };      
-    // };    
-
     // STOPKA
       if (this.clause != '' && this.clause != undefined) {
         this.fromTop += 10;
-        this.document.setFontSize(6);        
+        this.document.setFontSize(5);        
         this.document.setDrawColor('#696969');
         this.document.setLineWidth(0.1);        
         this.document.setTextColor(black);
@@ -912,29 +631,10 @@ export class CreatePdfService {
   }
 
   public shouldAddNewPage() {    
-    if (this.fromTop >= (this.documentHeight - this.footerHeight - 10)) {
+    if (this.fromTop >= (this.documentHeight - this.footerHeight - 6)) {
       this.document.addPage();
-      this.fromTop = 15; 
-      // this.skillsFromTop = 15;  // not sure...           
+      this.fromTop = 15;                 
     };
   }
-
-  // public shouldLanguagesAddNewPage() {    
-  //   if (this.languagesFromTop >= (this.documentHeight - this.footerHeight - 10)) {
-  //     this.document.addPage();
-  //     this.fromTop = 15; 
-  //     this.languagesFromTop = this.fromTop;
-  //     // this.skillsFromTop = 15;  // not sure...           
-  //   };
-  // }
-
-  // public shouldSkillsAddNewPage() {    
-  //   if (this.skillsFromTop >= (this.documentHeight - this.footerHeight - 10)) {
-  //     this.document.addPage();
-  //     this.fromTop = 15; 
-  //     this.skillsFromTop = this.fromTop;
-  //     // this.skillsFromTop = 15;  // not sure...           
-  //   };
-  // }
 
 }
