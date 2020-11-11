@@ -21,7 +21,7 @@ import { AuthService } from "./auth/auth.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'GorillaJob';
+  title = 'RaccoonPlace';
   // hasError = false;
   // private errorSub: Subscription;
 
@@ -62,8 +62,8 @@ export class AppComponent implements OnInit {
 
     this.configService.updateConfig({
           sidenav: {
-            title: 'GorillaJob',
-            imageUrl: 'assets/img/gorillajob/gorillawhite.png',
+            title: 'RaccoonPlace',
+            imageUrl: 'assets/img/gorillajob/raccoon.png',
             showCollapsePin: false,
             state: 'expanded'
           },
@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
       },
       {
         type: 'link',
-        label: 'Bazowe CV',
+        label: 'Brudnopis',
         route: '/bazowe-cv',
         icon: icLayers
       },

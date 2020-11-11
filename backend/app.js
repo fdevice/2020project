@@ -7,8 +7,9 @@ const userRoutes = require("./routes/user");
 const app = express();
 
 mongoose
-  .connect(    
-    "mongodb+srv://Dominik:" + process.env.MONGO_ATLAS_PW + "@cluster0-skyji.mongodb.net/gorillajob-test",
+  .connect(        
+    // "mongodb+srv://dominik:njy3eMG6Uph1MBAf@cluster0.usbpw.mongodb.net/test?retryWrites=true&w=majority",
+    "mongodb+srv://dominik:" + process.env.MONGO_ATLAS_PW + "@cluster0.usbpw.mongodb.net/test?retryWrites=true&w=majority",
     { 
       useNewUrlParser: true,
       useUnifiedTopology: true,
