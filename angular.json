@@ -135,8 +135,5 @@
       }
     }
   },
-  "defaultProject": "vex",
-  "cli": {
-    "analytics": false
-  }
+  "defaultProject": "vex"
 }
