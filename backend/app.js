@@ -8,8 +8,8 @@ const app = express();
 
 mongoose
   .connect(        
-    // "mongodb+srv://dominik:njy3eMG6Uph1MBAf@cluster0.usbpw.mongodb.net/test?retryWrites=true&w=majority",
-    "mongodb+srv://dominik:" + process.env.MONGO_ATLAS_PW + "@cluster0.usbpw.mongodb.net/test?retryWrites=true&w=majority",
+    "mongodb+srv://Dominik:lYAmieK4aw42OJkR@cluster0.skyji.mongodb.net/?retryWrites=true&w=majority",
+    // "mongodb+srv://dominik:" + process.env.MONGO_ATLAS_PW + "@cluster0.usbpw.mongodb.net/test?retryWrites=true&w=majority",
     { 
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -19,7 +19,8 @@ mongoose
   .then(() => {
     console.log("Connected to database!");
   })
-  .catch(() => {
+  .catch((err) => {
+    console.log(err);
     console.log("Connection failed!");
   });
 
